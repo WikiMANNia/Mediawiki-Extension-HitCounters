@@ -7,7 +7,8 @@
 			"Selven"
 		]
 	},
-	"hitcounters-desc": "Fornisce statistiche per ogni vizualizzazione di pagina",
+	"hitcounters-extensionname": "Hit Counters",
+	"hitcounters-desc": "Fornisce [[Special:PopularPages|statistiche per ogni vizualizzazione di pagina]]",
 	"hitcounters-nviews": "$1 {{PLURAL:$1|visualizzazione|visualizzazioni}}",
 	"popularpages": "Pagine popolari",
 	"hitcounters-pageinfo-views": "Numero di visualizzazioni",

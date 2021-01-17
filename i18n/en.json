@@ -5,7 +5,7 @@
 		]
 	},
 	"hitcounters-extensionname": "Hit Counters",
-	"hitcounters-desc": "Provides per page view statistics",
+	"hitcounters-desc": "Provides per [[Special:PopularPages|page view statistics]]",
 	"hitcounters-page-label": "[[$1|$1]]",
 	"hitcounters-nviews": "$1 {{PLURAL:$1|view|views}}",
 	"popularpages": "Popular pages",
