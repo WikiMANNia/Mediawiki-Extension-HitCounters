@@ -5,7 +5,8 @@
 			"Wladek92"
 		]
 	},
-	"hitcounters-desc": "Fournit les statistiques de consultation par page",
+	"hitcounters-extensionname": "Hit Counters",
+	"hitcounters-desc": "Fournit les [[Special:PopularPages|statistiques de consultation par page]]",
 	"hitcounters-nviews": "$1 {{PLURAL:$1|consultation|consultations}}",
 	"popularpages": "Pages les plus populaires",
 	"hitcounters-pageinfo-views": "Nombre de consultations",

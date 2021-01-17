@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Macofe",
-			"Fitoschido"
+			"Fitoschido",
+			"Macofe"
 		]
 	},
-	"hitcounters-desc": "Proporciona estadísticas de visualizaciones por página",
+	"hitcounters-extensionname": "Hit Counters",
+	"hitcounters-desc": "Proporciona [[Special:PopularPages|estadísticas de visualizaciones por página]]",
 	"hitcounters-nviews": "$1 {{PLURAL:$1|visualización|visualizaciones}}",
 	"popularpages": "Páginas populares",
 	"hitcounters-pageinfo-views": "Número de visualizaciones",
@@ -14,5 +15,7 @@
 	"hitcounters-statistics-views-total-desc": "No se incluyen las visualizaciones a páginas que no existan ni a las páginas especiales",
 	"hitcounters-statistics-views-peredit": "Visualizaciones por edición",
 	"hitcounters-statistics-mostpopular": "Páginas más vistas",
-	"abusefilter-edit-builder-vars-page-views": "Vistas de la página"
+	"abusefilter-edit-builder-vars-page-views": "Vistas de la página",
+	"abusefilter-edit-builder-vars-movedfrom-views": "Vistas de la página origen",
+	"abusefilter-edit-builder-vars-movedto-views": "Vistas de la página destina"
 }
