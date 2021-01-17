@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Vitorvicentevalente",
-			"Hamilton Abreu"
+			"Hamilton Abreu",
+			"Vitorvicentevalente"
 		]
 	},
-	"hitcounters-desc": "Fornece estatísticas de visualização por página",
+	"hitcounters-extensionname": "Hit Counters",
+	"hitcounters-desc": "Fornece [[Special:PopularPages|estatísticas de visualização por página]]",
 	"hitcounters-nviews": "$1 {{PLURAL:$1|visualização|visualizações}}",
 	"popularpages": "Páginas populares",
 	"hitcounters-pageinfo-views": "Número de visualizações",

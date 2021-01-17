@@ -5,6 +5,7 @@
 			"Matma Rex"
 		]
 	},
+	"hitcounters-desc": "Dostarcza [[Special:PopularPages|statystyki odsłon dla każdej strony]]",
 	"popularpages": "Popularne strony",
 	"hitcounters-pageinfo-views": "Liczba wyświetleń",
 	"hitcounters-statistics-header-views": "Zobacz statystyki",
