@@ -1,8 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
+			"Michawiki",
 			"Qualia"
 		]
 	},
-	"popularpages": "Woblubowane boki"
+	"popularpages": "Woblubowane boki",
+	"abusefilter-edit-builder-vars-page-views": "Wobglědanja boka"
 }

@@ -5,7 +5,8 @@
 			"Macofe"
 		]
 	},
-	"hitcounters-desc": "Proporciona estadísticas de visualizaciones por página",
+	"hitcounters-extensionname": "Hit Counters",
+	"hitcounters-desc": "Proporciona [[Special:PopularPages|estadísticas de visualizaciones por página]]",
 	"hitcounters-nviews": "$1 {{PLURAL:$1|visualización|visualizaciones}}",
 	"popularpages": "Páginas populares",
 	"hitcounters-pageinfo-views": "Número de visualizaciones",
