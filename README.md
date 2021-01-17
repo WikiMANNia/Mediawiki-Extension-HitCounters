@@ -1,5 +1,11 @@
 # HitCounters
 
+Die Pflege dieser MediaWiki-Erweiterung wird von WikiMANNia verwaltet.
+
+The maintenance of this MediaWiki extension is managed by WikiMANNia.
+
+El mantenimiento de esta extensión MediaWiki está gestionado por WikiMANNia.
+
 ## Version history
 
 v0.3.0
@@ -28,6 +34,10 @@ v0.3.1.1
 - Link to the special page in the documental message
 - Localisation updates from https://translatewiki.net.
 - Fix - 27 Mar 2020: Use the magic word value cache for magic word handlers - [Bug: T236813](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/564f55661b8a44a4cf5a681078d2c4f95d2a2426)
+
+v0.3.2
+
+- Fix: Fixed a problem with backward compatibility to version 1.25
 
 ## Background
 
