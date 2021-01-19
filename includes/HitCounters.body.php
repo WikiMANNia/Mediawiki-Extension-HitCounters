@@ -16,6 +16,7 @@ use PPFrame;
 use Title;
 
 class HitCounters {
+	/** @var int|null */
 	protected static $mViews;
 
 	protected static function cacheStore( $cache, $key, $views ) {
@@ -29,7 +30,8 @@ class HitCounters {
 	}
 
 	/**
-	 * @return int The view count for the page
+	 * @param Title $title
+	 * @return int|null The view count for the page
 	 */
 	public static function getCount( Title $title ) {
 		if ( $title->isSpecialPage() ) {
@@ -49,16 +51,15 @@ class HitCounters {
 
 		if ( !$views || $views == 1 ) {
 			$dbr = wfGetDB( DB_REPLICA );
-			$row = $dbr->select(
+			$hits = $dbr->selectField(
 				[ 'hit_counter' ],
 				[ 'hits' => 'page_counter' ],
 				[ 'page_id' => $title->getArticleID() ],
 				__METHOD__ );
 
-			if ( $row !== false && $current = $row->current() ) {
-				$views = $current->hits;
-				wfDebugLog( "HitCounters", "Got result=" .
-					var_export( $current, true ) .
+			if ( $hits !== false ) {
+				$views = $hits;
+				wfDebugLog( "HitCounters", "Got result=" . $hits .
 					" from DB and setting cache." );
 				self::cacheStore( $cache, $key, $views );
 			}
@@ -98,6 +99,10 @@ class HitCounters {
 	 * don't really need to use the $parser and $cache parameters.
 	 *
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+	 * @param Parser $parser
+	 * @param PPFrame $frame
+	 * @param array $args
+	 * @return int|null
 	 */
 	public static function numberOfViews(
 		Parser $parser, PPFrame $frame, $args
@@ -109,6 +114,10 @@ class HitCounters {
 	 * {{NUMBEROFPAGEVIEWS}} - number of total views of the page
 	 *
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+	 * @param Parser $parser
+	 * @param PPFrame $frame
+	 * @param array $args
+	 * @return int|null
 	 */
 	public static function numberOfPageViews(
 		Parser $parser, PPFrame $frame, $args
