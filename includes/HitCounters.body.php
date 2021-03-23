@@ -63,7 +63,7 @@ class HitCounters {
 
 	public static function views() {
 		# Should check for MiserMode here
-		$cache = ObjectCache::getInstance( CACHE_ANYTHING );
+		$cache = ObjectCache::getLocalClusterInstance();
 		$key = $cache->makeKey( 'sitestats', 'activeusers-updated' );
 		// Re-calculate the count if the last tally is old...
 		if ( !self::$mViews ) {
