@@ -47,6 +47,7 @@ v0.3.2.1
 Version 0.3.2.1 is compatible with 1.27+ until 1.35+.
 
 - Fix -  7 Dec 2020: Replaced removed wfMemcKey (deprecated since 1.30) with makeKey (since 1.27) - [Bug: T266502](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/d31e0b8fe417bea31275c8be47b54a6adc6c75cc)
+- Fix - 16 Mar 2021: Fix replacement for wfGetMainCache - [Bug: T277494](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/c4c98d3dea5887fd49b72a22ded7c54fade49a60)
 
 v0.3.2.2
 
