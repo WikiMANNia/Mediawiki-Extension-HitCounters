@@ -34,16 +34,14 @@ class Hooks {
 	public static function onSpecialStatsAddExtra(
 		array &$extraStats, IContextSource $statsPage
 	) {
-		global $wgContLang;
-
 		$totalViews = HitCounters::views();
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-total'] = $totalViews;
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-peredit'] =
-			$wgContLang->formatNum( $totalViews
+				$totalViews
 				? sprintf( '%.2f', $totalViews / SiteStats::edits() )
-				: 0 );
+				: 0;
 		$extraStats['hitcounters-statistics-mostpopular'] =
 			self::getMostViewedPages( $statsPage );
 		return true;
