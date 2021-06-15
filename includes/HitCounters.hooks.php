@@ -6,11 +6,10 @@ use CoreParserFunctions;
 use DatabaseUpdater;
 use DeferredUpdates;
 use IContextSource;
+use MediaWiki\MediaWikiServices;
 use Parser;
 use PPFrame;
-use QuickTemplate;
 use SiteStats;
-use SkinTemplate;
 use Title;
 use User;
 use ViewCountUpdate;
@@ -34,18 +33,15 @@ class Hooks {
 	public static function onSpecialStatsAddExtra(
 		array &$extraStats, IContextSource $statsPage
 	) {
-		global $wgContLang;
-
 		$totalViews = HitCounters::views();
-		$extraStats['hitcounters-statistics-header-views']
-			['hitcounters-statistics-views-total'] = $totalViews;
-		$extraStats['hitcounters-statistics-header-views']
-			['hitcounters-statistics-views-peredit'] =
-			$wgContLang->formatNum( $totalViews
-				? sprintf( '%.2f', $totalViews / SiteStats::edits() )
-				: 0 );
-		$extraStats['hitcounters-statistics-mostpopular'] =
-			self::getMostViewedPages( $statsPage );
+		$extraStats = [
+			'hitcounters-statistics-header-views' => [
+				'hitcounters-statistics-views-total' => $totalViews,
+				'hitcounters-statistics-views-peredit' =>
+					$totalViews ? sprintf( '%.2f', $totalViews / SiteStats::edits() ) : 0
+			],
+			'hitcounters-statistics-mostpopular' => self::getMostViewedPages( $statsPage )
+		];
 		return true;
 	}
 
@@ -96,11 +92,11 @@ class Hooks {
 
 	public static function onParserGetVariableValueSwitch( Parser $parser,
 		array &$cache, $magicWordId, &$ret, PPFrame $frame ) {
-		global $wgDisableCounters;
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
 
 		foreach ( self::getMagicWords() as $magicWord => $processingFunction ) {
 			if ( $magicWord === $magicWordId ) {
-				if ( !$wgDisableCounters ) {
+				if ( !$conf->get( "DisableCounters" ) ) {
 					$ret = $cache[$magicWordId] = CoreParserFunctions::formatRaw(
 						call_user_func( $processingFunction, $parser, $frame, null ),
 						null,
@@ -116,11 +112,11 @@ class Hooks {
 	}
 
 	public static function onPageViewUpdates( WikiPage $wikipage, User $user ) {
-		global $wgDisableCounters;
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
 
 		// Don't update page view counters on views from bot users (bug 14044)
 		if (
-			!$wgDisableCounters &&
+			!$conf->get( "DisableCounters" ) &&
 			!$user->isAllowed( 'bot' ) &&
 			$wikipage->exists()
 		) {
@@ -138,28 +134,33 @@ class Hooks {
 	 *   and value should be an HTML string.
 	 */
 	public static function onSkinAddFooterLinks(
-		SkinTemplate $skin,
+		$skin,
 		string $key,
 		array &$footerLinks
 	) {
-		global $wgDisableCounters;
-
 		if ( $key !== 'info' ) {
 			return;
 		}
 
-		if ( !$wgDisableCounters ) {
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
+
+		if ( !$conf->get( "DisableCounters" ) && $conf->get( "EnableCountersAtTheFooter" ) ) {
 
 			$viewcount = HitCounters::getCount( $skin->getTitle() );
+
 			if ( $viewcount ) {
 				wfDebugLog(
 					"HitCounters",
 					"Got viewcount=$viewcount and putting in page"
 				);
-				$viewcountMsg = $skin->msg( 'hitcounters-nviews' )->
-					numParams( $viewcount )->parse();
+				$msg = 'hitcounters-viewcount';
+				$msg .= $conf->get( "EnableAddTextLength" ) ? '-len' : '';
+				$charactercount = $skin->getTitle()->getLength();
+				$viewcountMsg = $skin->msg( $msg )
+									 ->numParams( $viewcount )
+									 ->numParams( $charactercount );
 
-				// Verbindung zur Fußzeile herstellen
+				// Set up the footer
 				if ( is_array( $footerLinks ) ) {
 					// 'viewcount' goes after 'lastmod', we'll just assume
 					// 'viewcount' is the 0th item
