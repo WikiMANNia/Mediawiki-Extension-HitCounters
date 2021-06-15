@@ -5,7 +5,7 @@
 			"Ghsuvr"
 		]
 	},
-	"hitcounters-nviews": "{{PLURAL:$1|צפייה אחת|$1 צפיות}}",
+	"hitcounters-pop-page-line": "{{PLURAL:$1|צפייה אחת|$1 צפיות}}",
 	"hitcounters-viewcount": "דף זה נצפה {{PLURAL:$1|פעם אחת|פעמיים|$1 פעמים}}.",
 	"popularpages": "דפים מובילים",
 	"hitcounters-pageinfo-views": "מספר הצפיות",

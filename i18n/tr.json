@@ -9,7 +9,7 @@
 		]
 	},
 	"hitcounters-desc": "[[Special:PopularPages|Sayfa görüntüleme istatistiklerini]] sağlar",
-	"hitcounters-nviews": "$1 görüntüleme",
+	"hitcounters-pop-page-line": "$1 görüntüleme",
 	"hitcounters-viewcount": "Bu sayfaya {{PLURAL:$1|bir|$1}} defa erişilmiş.",
 	"popularpages": "Popüler sayfalar",
 	"hitcounters-pageinfo-views": "Görüntüleme sayısı",

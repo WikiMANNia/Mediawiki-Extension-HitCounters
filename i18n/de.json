@@ -2,13 +2,19 @@
 	"@metadata": {
 		"authors": [
 			"Kghbln",
-			"Metalhead64"
+			"Metalhead64",
+			"WikiMANNia"
 		]
 	},
-	"hitcounters-extensionname": "Hit Counters",
+	"hitcounters-extensionname": "Seitenaufruf-Zähler",
 	"hitcounters-desc": "Ermöglicht die Aufzeichnung und Darstellung von [[Special:PopularPages|Seitenaufruf-Statistiken]]",
-	"hitcounters-nviews": "{{PLURAL:$1|Ein Aufruf|$1 Aufrufe}}",
+	"hitcounters-pop-page-line": "{{PLURAL:$1|Ein Aufruf|$1 Aufrufe}}",
+	"hitcounters-pop-page-line-len": "{{PLURAL:$1|Ein Aufruf|$1 Aufrufe}} &ndash; $2 Zeichen",
+	"hitcounters-pop-page-line-len-id": "id: $3 &ndash; {{PLURAL:$1|Ein Aufruf|$1 Aufrufe}} &ndash; $2 Zeichen",
+	"hitcounters-pop-page-line-id": "id: $3 &ndash; {{PLURAL:$1|Ein Aufruf|$1 Aufrufe}}",
 	"hitcounters-viewcount": "Diese Seite wurde bisher {{PLURAL:$1|einmal|$1 mal}} abgerufen.",
+	"hitcounters-viewcount-len": "Diese Seite wurde bisher {{PLURAL:$1|einmal|$1 mal}} abgerufen und enthält {{PLURAL:$2|ein|$2}} Zeichen.",
+	"hitcounters-viewcount-len-w": "Diese Seite wurde bisher {{PLURAL:$1|einmal|$1 mal}} abgerufen und enthält {{PLURAL:$2|ein|$2}} Zeichen bzw. {{PLURAL:$3|ein Wort|$3 Wörter}}.",
 	"popularpages": "Beliebteste Seiten",
 	"hitcounters-pageinfo-views": "Anzahl der Aufrufe",
 	"hitcounters-statistics-header-views": "Aufrufstatistik",
