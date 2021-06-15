@@ -1,5 +1,11 @@
 # HitCounters
 
+Die Pflege dieses Forks der MediaWiki-Erweiterung [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters) wird von WikiMANNia verwaltet.
+
+The maintenance of this fork of the MediaWiki extension [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters) is managed by WikiMANNia.
+
+El mantenimiento de esta bifurcación de la extensión de MediaWiki [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters) está gestionado por WikiMANNia.
+
 ## Version history
 
 v0.3.0
@@ -24,11 +30,12 @@ v0.3.1
 
 - Add -  8 Feb 2020: Support for PostgreSQL to the HitCounters extension - [Bug: T110655](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/ac04330d4d416dab505f19b0766a0c8ec367034d)
 
-v0.3.1.1
+v0.3.1.2
 
 - Link to the special page in the documental message
 - Localisation updates from https://translatewiki.net.
 - Fix - 27 Mar 2020: Use the magic word value cache for magic word handlers - [Bug: T236813](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/564f55661b8a44a4cf5a681078d2c4f95d2a2426)
+- 29 Mar 2021: Stop using $wgContLang global - [diff](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/35624f0b2d75f1896e38a81aeb77c696d87a2c0b)
 
 v0.3.2
 
@@ -54,6 +61,22 @@ v0.3.2.3
 Version 0.3.2.3 is compatible with 1.35+.
 
 - Update - Use Hook [SkinAddFooterLinks](https://www.mediawiki.org/wiki/Manual:Hooks/SkinAddFooterLinks) (since 1.35) instead of [SkinTemplateOutputPageBeforeExec](https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateOutputPageBeforeExec). (deprecated since 1.35)
+
+v0.3.3
+
+- Add: Output of the text length in the special page "Popular Pages"
+- Add: Variables for configuration in "LocalSettings.php"
+
+v0.3.4
+- Use: MediaWikiServices
+
+# Default settings
+
+* $wgDisableCounters = false;              Set to true to disable them completely.
+* $wgEnableAddPageId = false;              Set to true to display the page id on [[Special:PopularPages]].
+* $wgEnableAddTextLength = false;          Set to true to display the page length on [[Special:PopularPages]].
+* $wgEnableCountersAtTheFooter = true;     Set to false to disable them at the footer.
+* $wgHitcounterUpdateFreq = 1;
 
 ## Background
 

@@ -39,7 +39,7 @@ $specialPageAliases['nl'] = [
 ];
 
 /** Portuguese (Português) */
-$specialPageAliases['nl'] = [
+$specialPageAliases['pt'] = [
 	'PopularPages' => [ 'Páginas_populares' ],
 ];
 
