@@ -33,12 +33,13 @@ class Hooks {
 	public static function onSpecialStatsAddExtra(
 		array &$extraStats, IContextSource $statsPage
 	) {
+		$totalEdits = SiteStats::edits();
 		$totalViews = HitCounters::views();
 		$extraStats = [
 			'hitcounters-statistics-header-views' => [
 				'hitcounters-statistics-views-total' => $totalViews,
 				'hitcounters-statistics-views-peredit' =>
-					$totalViews ? sprintf( '%.2f', $totalViews / SiteStats::edits() ) : 0
+					$totalEdits ? sprintf( '%.2f', $totalViews / $totalEdits ) : 0
 			],
 			'hitcounters-statistics-mostpopular' => self::getMostViewedPages( $statsPage )
 		];
@@ -61,9 +62,10 @@ class Hooks {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
 
 				if ( $title instanceof Title ) {
+					$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 					$ret[ $title->getPrefixedText() ]['number'] = $row->value;
 					$ret[ $title->getPrefixedText() ]['name'] =
-						\Linker::link( $title );
+						$linkRenderer->makeLink( $title );
 				}
 			}
 			$res->free();
