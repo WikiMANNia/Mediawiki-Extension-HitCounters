@@ -30,7 +30,7 @@ v0.3.1
 
 - Add -  8 Feb 2020: Support for PostgreSQL to the HitCounters extension - [Bug: T110655](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/ac04330d4d416dab505f19b0766a0c8ec367034d)
 
-v0.3.1.1
+v0.3.1.2
 
 - Link to the special page in the documental message
 - Localisation updates from https://translatewiki.net.
@@ -54,12 +54,30 @@ v0.3.2.2
 Version 0.3.2.2 is compatible with 1.32+ until 1.35+.
 
 - Fix - 10 Dec 2020: Avoid calls to deprecated Database::onTransactionIdle() method (since 1.32) - [diff](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/ba48ca56e9a271eeb14dd55a83dce8cd5e4e52ac)
+- Fix - 29 Mar 2021: Stop using $wgContLang global, "getLanguage()" -> "getContentLanguage()" (since 1.32) - [diff](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/35624f0b2d75f1896e38a81aeb77c696d87a2c0b)
+- Fix - 12 Jul 2022: Replace most usages of Linker with LinkRenderer - [Bug: T279351](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/6b3438c4ea33fa817097e6aeb44fc34c4a26f83b)
 
 v0.3.2.3
 
 Version 0.3.2.3 is compatible with 1.35+.
 
 - Update - Use Hook [SkinAddFooterLinks](https://www.mediawiki.org/wiki/Manual:Hooks/SkinAddFooterLinks) (since 1.35) instead of [SkinTemplateOutputPageBeforeExec](https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateOutputPageBeforeExec). (deprecated since 1.35)
+
+v0.3.3
+
+- Add: Output of the text length in the special page "Popular Pages"
+- Add: Variables for configuration in "LocalSettings.php"
+
+v0.3.4
+- Use: MediaWikiServices
+
+# Default settings
+
+* $wgDisableCounters = false;              Set to true to disable them completely.
+* $wgEnableAddPageId = false;              Set to true to display the page id on [[Special:PopularPages]].
+* $wgEnableAddTextLength = false;          Set to true to display the page length on [[Special:PopularPages]].
+* $wgEnableCountersAtTheFooter = true;     Set to false to disable them at the footer.
+* $wgHitcounterUpdateFreq = 1;
 
 ## Background
 
