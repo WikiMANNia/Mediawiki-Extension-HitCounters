@@ -1,18 +1,18 @@
 # HitCounters
 
-Die Pflege dieser MediaWiki-Erweiterung wird von WikiMANNia verwaltet.
+Die Pflege dieses Forks der MediaWiki-Erweiterung [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters) wird von WikiMANNia verwaltet.
 
-The maintenance of this MediaWiki extension is managed by WikiMANNia.
+The maintenance of this fork of the MediaWiki extension [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters) is managed by WikiMANNia.
 
-El mantenimiento de esta extensión MediaWiki está gestionado por WikiMANNia.
+El mantenimiento de esta bifurcación de la extensión de MediaWiki [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters) está gestionado por WikiMANNia.
 
 ## Version history
 
-v0.3.0
+v0.2.0
 
-As found [here](https://github.com/wikimedia/mediawiki-extensions-HitCounters/releases/tag/0.3) (24 Nov 2015)
+As found [here](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/HitCounters/+/refs/heads/REL1_25) (07 Nov 2015)
 
-v0.3.0.1-0.3.0.8
+v0.3.0.8
 
 - Fix: Several translation issues
 - Fix - 23 Nov 2017: {{NUMBEROFVIEWS}} in MediaWiki 1.29 - [Bug: T142127](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/213b2c6e40b5ef332381c82655d3ce227ace5c71)
@@ -30,15 +30,33 @@ v0.3.1
 
 - Add -  8 Feb 2020: Support for PostgreSQL to the HitCounters extension - [Bug: T110655](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/ac04330d4d416dab505f19b0766a0c8ec367034d)
 
-v0.3.1.1
+v0.3.1.2
 
 - Link to the special page in the documental message
 - Localisation updates from https://translatewiki.net.
 - Fix - 27 Mar 2020: Use the magic word value cache for magic word handlers - [Bug: T236813](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/564f55661b8a44a4cf5a681078d2c4f95d2a2426)
+- 29 Mar 2021: Stop using $wgContLang global - [diff](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/35624f0b2d75f1896e38a81aeb77c696d87a2c0b)
 
 v0.3.2
 
+Version 0.3.2 is compatible with 1.25+ until 1.35+.
+
 - Fixed a problem with backward compatibility to version 1.25
+
+v0.3.3
+
+- Add: Output of the text length in the special page "Popular Pages"
+- Add: Variables for configuration in "LocalSettings.php"
+
+v0.3.4
+
+# Default settings
+
+* $wgDisableCounters = false;              Set to true to disable them completely.
+* $wgEnableAddPageId = false;              Set to true to display the page id on [[Special:PopularPages]].
+* $wgEnableAddTextLength = false;          Set to true to display the page length on [[Special:PopularPages]].
+* $wgEnableCountersAtTheFooter = false;    Set to true to display them at the footer.
+* $wgHitcounterUpdateFreq = 1;
 
 ## Background
 
