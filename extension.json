@@ -48,7 +48,7 @@
 	"config": {
 		"HitcounterUpdateFreq": 1,
 		"DisableCounters": false,
-		"EnableCountersAtTheFooter": true,
+		"EnableCountersAtTheFooter": false,
 		"EnableAddTextLength": false,
 		"EnableAddPageId": false
 	},
