@@ -34,16 +34,15 @@ class Hooks {
 	public static function onSpecialStatsAddExtra(
 		array &$extraStats, IContextSource $statsPage
 	) {
-		global $wgContLang;
-
+		$totalEdits = SiteStats::edits();
 		$totalViews = HitCounters::views();
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-total'] = $totalViews;
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-peredit'] =
-			$wgContLang->formatNum( $totalViews
-				? sprintf( '%.2f', $totalViews / SiteStats::edits() )
-				: 0 );
+				$totalEdits
+				? sprintf( '%.2f', $totalViews / $totalEdits )
+				: 0;
 		$extraStats['hitcounters-statistics-mostpopular'] =
 			self::getMostViewedPages( $statsPage );
 		return true;
@@ -67,7 +66,7 @@ class Hooks {
 				if ( $title instanceof Title ) {
 					$ret[ $title->getPrefixedText() ]['number'] = $row->value;
 					$ret[ $title->getPrefixedText() ]['name'] =
-						\Linker::link( $title );
+						\Linker::linkKnown( $title );
 				}
 			}
 			$res->free();
@@ -128,11 +127,16 @@ class Hooks {
 		}
 	}
 
+	/**
+	 * Hook: SkinTemplateOutputPageBeforeExec
+	 * @param SkinTemplate $skin
+	 * @param QuickTemplate $tpl
+	 */
 	public static function onSkinTemplateOutputPageBeforeExec(
 		SkinTemplate &$skin,
 		QuickTemplate &$tpl
 	) {
-		global $wgDisableCounters;
+		global $wgDisableCounters, $wgEnableCountersAtTheFooter, $wgEnableAddTextLength;
 
 		/* Without this check two lines are added to the page. */
 		static $called = false;
@@ -141,7 +145,8 @@ class Hooks {
 		}
 		$called = true;
 
-		if ( !$wgDisableCounters ) {
+		if ( !$wgDisableCounters && $wgEnableCountersAtTheFooter ) {
+
 			$footer = $tpl->get( 'footerlinks' );
 			if ( isset( $footer['info'] ) && is_array( $footer['info'] ) ) {
 				// 'viewcount' goes after 'lastmod', we'll just assume
@@ -151,13 +156,21 @@ class Hooks {
 			}
 
 			$viewcount = HitCounters::getCount( $skin->getTitle() );
+
 			if ( $viewcount ) {
 				wfDebugLog(
 					"HitCounters",
 					"Got viewcount=$viewcount and putting in page"
 				);
-				$tpl->set( 'viewcount', $skin->msg( 'hitcounters-nviews' )->
-					numParams( $viewcount )->parse() );
+				$msg = 'hitcounters-viewcount';
+				if ( $conf->get( "EnableAddTextLength" ) ) {
+					$msg .= '-len';
+				}
+				$charactercount = $skin->getTitle()->getLength();
+				$tpl->set( 'viewcount',
+					$skin->msg( $msg )
+						->numParams( $viewcount )->parse()
+						->numParams( $charactercount )->parse() );
 			}
 		}
 	}
