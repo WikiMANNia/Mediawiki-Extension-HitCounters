@@ -35,6 +35,7 @@ v0.3.1.2
 - Link to the special page in the documental message
 - Localisation updates from https://translatewiki.net.
 - Fix - 27 Mar 2020: Use the magic word value cache for magic word handlers - [Bug: T236813](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/564f55661b8a44a4cf5a681078d2c4f95d2a2426)
+- 29 Mar 2021: Stop using $wgContLang global - [diff](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/35624f0b2d75f1896e38a81aeb77c696d87a2c0b)
 
 v0.3.2
 
@@ -76,7 +77,7 @@ v0.3.4
 * $wgDisableCounters = false;              Set to true to disable them completely.
 * $wgEnableAddPageId = false;              Set to true to display the page id on [[Special:PopularPages]].
 * $wgEnableAddTextLength = false;          Set to true to display the page length on [[Special:PopularPages]].
-* $wgEnableCountersAtTheFooter = true;     Set to false to disable them at the footer.
+* $wgEnableCountersAtTheFooter = false;    Set to true to display them at the footer.
 * $wgHitcounterUpdateFreq = 1;
 
 ## Background
