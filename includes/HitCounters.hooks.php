@@ -10,6 +10,7 @@ use MediaWiki\MediaWikiServices;
 use Parser;
 use PPFrame;
 use SiteStats;
+use SkinTemplate;
 use Title;
 use User;
 use ViewCountUpdate;
@@ -35,14 +36,15 @@ class Hooks {
 	) {
 		$totalEdits = SiteStats::edits();
 		$totalViews = HitCounters::views();
-		$extraStats = [
-			'hitcounters-statistics-header-views' => [
-				'hitcounters-statistics-views-total' => $totalViews,
-				'hitcounters-statistics-views-peredit' =>
-					$totalEdits ? sprintf( '%.2f', $totalViews / $totalEdits ) : 0
-			],
-			'hitcounters-statistics-mostpopular' => self::getMostViewedPages( $statsPage )
-		];
+		$extraStats['hitcounters-statistics-header-views']
+			['hitcounters-statistics-views-total'] = $totalViews;
+		$extraStats['hitcounters-statistics-header-views']
+			['hitcounters-statistics-views-peredit'] =
+				$totalEdits
+				? sprintf( '%.2f', $totalViews / $totalEdits )
+				: 0;
+		$extraStats['hitcounters-statistics-mostpopular'] =
+			self::getMostViewedPages( $statsPage );
 		return true;
 	}
 
@@ -136,7 +138,7 @@ class Hooks {
 	 *   and value should be an HTML string.
 	 */
 	public static function onSkinAddFooterLinks(
-		$skin,
+		SkinTemplate $skin,
 		string $key,
 		array &$footerLinks
 	) {
@@ -156,11 +158,13 @@ class Hooks {
 					"Got viewcount=$viewcount and putting in page"
 				);
 				$msg = 'hitcounters-viewcount';
-				$msg .= $conf->get( "EnableAddTextLength" ) ? '-len' : '';
+				if ( $conf->get( "EnableAddTextLength" ) ) {
+					$msg .= '-len';
+				}
 				$charactercount = $skin->getTitle()->getLength();
 				$viewcountMsg = $skin->msg( $msg )
-									 ->numParams( $viewcount )
-									 ->numParams( $charactercount );
+					->numParams( $viewcount )->parse()
+					->numParams( $charactercount )->parse();
 
 				// Set up the footer
 				if ( is_array( $footerLinks ) ) {
