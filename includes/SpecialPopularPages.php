@@ -61,6 +61,8 @@ class SpecialPopularPages extends QueryPage {
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	public function formatResult( $skin, $result ) {
+		$enableAddPageId     = $this->getConfig()->get( 'EnableAddPageId' );
+		$enableAddTextLength = $this->getConfig()->get( 'EnableAddTextLength' );
 
 		$title = Title::makeTitleSafe( $result->namespace, $result->title );
 		if ( !$title ) {
@@ -74,14 +76,20 @@ class SpecialPopularPages extends QueryPage {
 			);
 		}
 
-		$link = Linker::linkKnown(
+		$link = $this->getLinkRenderer()->makeKnownLink(
 			$title,
-			$this->getLanguage()->convert( htmlspecialchars( $title->getPrefixedText() ) )
+			$this->getContentLanguage()->convert( $title->getPrefixedText() )
 		);
 
+		$msg = 'hitcounters-nviews';
+		$msg .= $enableAddTextLength ? '-nlengh' : '';
+		$msg .= $enableAddPageId ? '-id' : '';
 		return $this->getLanguage()->specialList(
 			$link,
-			$this->msg( 'hitcounters-nviews' )->numParams( $result->value )->escaped()
+			$this->msg( $msg )
+				->numParams( $result->value )->escaped()
+				->numParams( $result->length )->escaped()
+				->numParams( $title->getArticleID() )
 		);
 	}
 
