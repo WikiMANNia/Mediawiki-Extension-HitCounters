@@ -2,12 +2,17 @@
 	"@metadata": {
 		"authors": [
 			"Gomoko",
+			"Verdy p",
+			"WikiMANNia",
 			"Wladek92"
 		]
 	},
 	"hitcounters-extensionname": "Hit Counters",
 	"hitcounters-desc": "Fournit les [[Special:PopularPages|statistiques de consultation par page]]",
-	"hitcounters-nviews": "$1 {{PLURAL:$1|consultation|consultations}}",
+	"hitcounters-nviews": "$1 {{PLURAL:$1|vue|vues}}",
+	"hitcounters-nviews-id": "id : $3 &ndash; $1 {{PLURAL:$1|vue|vues}}",
+	"hitcounters-nviews-nlength": "$1 {{PLURAL:$1|vue|vues}} &ndash; {{PLURAL:$2|1 caractère|$2 caractères}}",
+	"hitcounters-nviews-nlength-id": "id : $3 &ndash; $1 {{PLURAL:$1|vue|vues}} &ndash; {{PLURAL:$2|1 caractère|$2 caractères}}",
 	"popularpages": "Pages les plus populaires",
 	"hitcounters-pageinfo-views": "Nombre de consultations",
 	"hitcounters-statistics-header-views": "Statistiques des consultations",

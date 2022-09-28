@@ -4,12 +4,16 @@
 			"Alexmar983",
 			"Beta16",
 			"Gianfranco",
-			"Selven"
+			"Selven",
+			"WikiMANNia"
 		]
 	},
 	"hitcounters-extensionname": "Hit Counters",
 	"hitcounters-desc": "Fornisce [[Special:PopularPages|statistiche per ogni vizualizzazione di pagina]]",
-	"hitcounters-nviews": "$1 {{PLURAL:$1|visualizzazione|visualizzazioni}}",
+	"hitcounters-nviews": "$1 {{PLURAL:$1|visita|visite}}",
+	"hitcounters-nviews-id": "id: $3 &ndash; $1 {{PLURAL:$1|visita|visite}}",
+	"hitcounters-nviews-nlength": "$1 {{PLURAL:$1|visita|visite}} &ndash; {{PLURAL:$2|1 carattere|$2 caratteri}}",
+	"hitcounters-nviews-nlength-id": "id: $3 &ndash; $1 {{PLURAL:$1|visita|visite}} &ndash; {{PLURAL:$2|1 carattere|$2 caratteri}}",
 	"popularpages": "Pagine popolari",
 	"hitcounters-pageinfo-views": "Numero di visualizzazioni",
 	"hitcounters-statistics-header-views": "Vedi statistiche",
