@@ -6,6 +6,7 @@ use CoreParserFunctions;
 use DatabaseUpdater;
 use DeferredUpdates;
 use IContextSource;
+use MediaWiki\MediaWikiServices;
 use Parser;
 use PPFrame;
 use QuickTemplate;
@@ -34,16 +35,15 @@ class Hooks {
 	public static function onSpecialStatsAddExtra(
 		array &$extraStats, IContextSource $statsPage
 	) {
-		global $wgContLang;
-
+		$totalEdits = SiteStats::edits();
 		$totalViews = HitCounters::views();
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-total'] = $totalViews;
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-peredit'] =
-			$wgContLang->formatNum( $totalViews
-				? sprintf( '%.2f', $totalViews / SiteStats::edits() )
-				: 0 );
+				$totalEdits
+				? sprintf( '%.2f', $totalViews / $totalEdits )
+				: 0;
 		$extraStats['hitcounters-statistics-mostpopular'] =
 			self::getMostViewedPages( $statsPage );
 		return true;
@@ -65,9 +65,10 @@ class Hooks {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
 
 				if ( $title instanceof Title ) {
+					$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 					$ret[ $title->getPrefixedText() ]['number'] = $row->value;
 					$ret[ $title->getPrefixedText() ]['name'] =
-						\Linker::link( $title );
+						$linkRenderer->makeLink( $title );
 				}
 			}
 			$res->free();
@@ -96,11 +97,11 @@ class Hooks {
 
 	public static function onParserGetVariableValueSwitch( Parser $parser,
 		array &$cache, $magicWordId, &$ret, PPFrame $frame ) {
-		global $wgDisableCounters;
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
 
 		foreach ( self::getMagicWords() as $magicWord => $processingFunction ) {
 			if ( $magicWord === $magicWordId ) {
-				if ( !$wgDisableCounters ) {
+				if ( !$conf->get( "DisableCounters" ) ) {
 					$ret = $cache[$magicWordId] = CoreParserFunctions::formatRaw(
 						call_user_func( $processingFunction, $parser, $frame, null ),
 						null,
@@ -116,11 +117,11 @@ class Hooks {
 	}
 
 	public static function onPageViewUpdates( WikiPage $wikipage, User $user ) {
-		global $wgDisableCounters;
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
 
 		// Don't update page view counters on views from bot users (bug 14044)
 		if (
-			!$wgDisableCounters &&
+			!$conf->get( "DisableCounters" ) &&
 			!$user->isAllowed( 'bot' ) &&
 			$wikipage->exists()
 		) {
@@ -128,12 +129,15 @@ class Hooks {
 		}
 	}
 
+	/**
+	 * Hook: SkinTemplateOutputPageBeforeExec
+	 * @param SkinTemplate $skin
+	 * @param QuickTemplate $tpl
+	 */
 	public static function onSkinTemplateOutputPageBeforeExec(
 		SkinTemplate &$skin,
 		QuickTemplate &$tpl
 	) {
-		global $wgDisableCounters, $wgEnableCountersAtTheFooter, $wgEnableAddTextLength;
-
 		/* Without this check two lines are added to the page. */
 		static $called = false;
 		if ( $called ) {
@@ -141,11 +145,10 @@ class Hooks {
 		}
 		$called = true;
 
-		/* === wima hack ===
-		if ( !$wgDisableCounters ) {
-		------------------- */
-		if ( !$wgDisableCounters && $wgEnableCountersAtTheFooter ) {
-		/* === End hack === */
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
+
+		if ( !$conf->get( "DisableCounters" ) && $conf->get( "EnableCountersAtTheFooter" ) ) {
+
 			$footer = $tpl->get( 'footerlinks' );
 			if ( isset( $footer['info'] ) && is_array( $footer['info'] ) ) {
 				// 'viewcount' goes after 'lastmod', we'll just assume
@@ -155,24 +158,21 @@ class Hooks {
 			}
 
 			$viewcount = HitCounters::getCount( $skin->getTitle() );
+
 			if ( $viewcount ) {
 				wfDebugLog(
 					"HitCounters",
 					"Got viewcount=$viewcount and putting in page"
 				);
-				/* === wima hack ===
-				$tpl->set( 'viewcount', $skin->msg( 'viewcount' )->
-					numParams( $viewcount )->parse() );
-				------------------- */
-				if ( $wgEnableAddTextLength ) {
-					$charactercount = $skin->getTitle()->getLength(); // strlen( $text );
-					$tpl->set( 'viewcount', $skin->msg( 'hitcounters-viewcount2' )->
-						numParams( $viewcount )->numParams( $charactercount )->parse() );
-				} else {
-					$tpl->set( 'viewcount', $skin->msg( 'hitcounters-viewcount' )->
-						numParams( $viewcount )->parse() );
+				$msg = 'hitcounters-viewcount';
+				if ( $conf->get( "EnableAddTextLength" ) ) {
+					$msg .= '-len';
 				}
-				/* === End hack === */
+				$charactercount = $skin->getTitle()->getLength();
+				$tpl->set( 'viewcount',
+					$skin->msg( $msg )
+						->numParams( $viewcount )->parse()
+						->numParams( $charactercount )->parse() );
 			}
 		}
 	}
