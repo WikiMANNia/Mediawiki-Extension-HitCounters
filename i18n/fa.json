@@ -6,6 +6,7 @@
 		]
 	},
 	"hitcounters-nviews": "$1 {{PLURAL:$1|بازدید|بازدید}}",
+	"hitcounters-viewcount": "از این صفحه {{PLURAL:$1|یک‌بار|$1بار}} بازدید شده‌است.",
 	"popularpages": "صفحه‌های محبوب",
 	"hitcounters-pageinfo-views": "شمار بازدیدها",
 	"hitcounters-statistics-header-views": "آمار بازدیدها",

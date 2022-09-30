@@ -5,6 +5,14 @@
 			"Ghsuvr"
 		]
 	},
+	"hitcounters-nviews": "{{PLURAL:$1|צפייה אחת|$1 צפיות}}",
+	"hitcounters-viewcount": "דף זה נצפה {{PLURAL:$1|פעם אחת|פעמיים|$1 פעמים}}.",
 	"popularpages": "דפים מובילים",
+	"hitcounters-pageinfo-views": "מספר הצפיות",
+	"hitcounters-statistics-header-views": "סטטיסטיקות צפייה",
+	"hitcounters-statistics-views-total": "מספר הצפיות הכולל",
+	"hitcounters-statistics-views-total-desc": "צפיות בדפים שאינם קיימים ובדפים מיוחדים אינן כלולות",
+	"hitcounters-statistics-views-peredit": "מספר הצפיות לעריכה",
+	"hitcounters-statistics-mostpopular": "הדפים הנצפים ביותר",
 	"abusefilter-edit-builder-vars-page-views": "מספר הצגות הדף"
 }

@@ -9,6 +9,7 @@
 	"hitcounters-extensionname": "عداد الرؤية",
 	"hitcounters-desc": "يوفر عرض إحصائيات لكل صفحة",
 	"hitcounters-nviews": "$1 {{PLURAL:$1|مشاهدة|مشاهدات}}",
+	"hitcounters-viewcount": "{{PLURAL:$1|لم تعرض هذه الصفحة أبدا|تم عرض هذه الصفحة مرة واحدة|تم عرض هذه الصفحة مرتين|تم عرض هذه الصفحة $1 مرات|تم عرض هذه الصفحة $1 مرة}}.",
 	"popularpages": "صفحات شعبية",
 	"hitcounters-pageinfo-views": "عدد المشاهدات",
 	"hitcounters-statistics-header-views": "عرض الإحصاءات",
