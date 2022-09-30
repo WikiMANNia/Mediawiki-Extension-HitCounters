@@ -81,15 +81,15 @@ class SpecialPopularPages extends QueryPage {
 			$this->getContentLanguage()->convert( $title->getPrefixedText() )
 		);
 
-		$msg = 'hitcounters-pop-page-line';
-		$msg .= $enableAddTextLength ? '-len' : '';
+		$msg = 'hitcounters-nviews';
+		$msg .= $enableAddTextLength ? '-nlengh' : '';
 		$msg .= $enableAddPageId ? '-id' : '';
 		return $this->getLanguage()->specialList(
 			$link,
 			$this->msg( $msg )
-				 ->numParams( $result->value )
-				 ->numParams( $result->length )
-				 ->numParams( $title->getArticleID() )
+				->numParams( $result->value )->escaped()
+				->numParams( $result->length )->escaped()
+				->numParams( $title->getArticleID() )
 		);
 	}
 

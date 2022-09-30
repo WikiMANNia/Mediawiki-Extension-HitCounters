@@ -37,14 +37,15 @@ class Hooks {
 	) {
 		$totalEdits = SiteStats::edits();
 		$totalViews = HitCounters::views();
-		$extraStats = [
-			'hitcounters-statistics-header-views' => [
-				'hitcounters-statistics-views-total' => $totalViews,
-				'hitcounters-statistics-views-peredit' =>
-					$totalEdits ? sprintf( '%.2f', $totalViews / $totalEdits ) : 0
-			],
-			'hitcounters-statistics-mostpopular' => self::getMostViewedPages( $statsPage )
-		];
+		$extraStats['hitcounters-statistics-header-views']
+			['hitcounters-statistics-views-total'] = $totalViews;
+		$extraStats['hitcounters-statistics-header-views']
+			['hitcounters-statistics-views-peredit'] =
+				$totalEdits
+				? sprintf( '%.2f', $totalViews / $totalEdits )
+				: 0;
+		$extraStats['hitcounters-statistics-mostpopular'] =
+			self::getMostViewedPages( $statsPage );
 		return true;
 	}
 
@@ -164,12 +165,14 @@ class Hooks {
 					"Got viewcount=$viewcount and putting in page"
 				);
 				$msg = 'hitcounters-viewcount';
-				$msg .= $conf->get( "EnableAddTextLength" ) ? '-len' : '';
+				if ( $conf->get( "EnableAddTextLength" ) ) {
+					$msg .= '-len';
+				}
 				$charactercount = $skin->getTitle()->getLength();
 				$tpl->set( 'viewcount',
 					$skin->msg( $msg )
-						 ->numParams( $viewcount )
-						 ->numParams( $charactercount ) );
+						->numParams( $viewcount )->parse()
+						->numParams( $charactercount )->parse() );
 			}
 		}
 	}
