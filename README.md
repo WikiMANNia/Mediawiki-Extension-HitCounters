@@ -55,9 +55,10 @@ v0.3.2.2
 Version 0.3.2.2 is compatible with 1.32+ until 1.35+.
 
 - Fix - 10 Dec 2020: Avoid calls to deprecated Database::onTransactionIdle() method (since 1.32) - [diff](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/ba48ca56e9a271eeb14dd55a83dce8cd5e4e52ac)
-- Fix - 29 Mar 2021:Stop using $wgContLang global, "getLanguage()" -> "getContentLanguage()" (since 1.32) - [diff](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/35624f0b2d75f1896e38a81aeb77c696d87a2c0b)
+- Fix - 29 Mar 2021: Stop using $wgContLang global, "getLanguage()" -> "getContentLanguage()" (since 1.32) - [diff](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/35624f0b2d75f1896e38a81aeb77c696d87a2c0b)
 - Fix - 12 Jul 2022: Replace most usages of Linker with LinkRenderer - [Bug: T279351](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/6b3438c4ea33fa817097e6aeb44fc34c4a26f83b)
 
+v0.3.3
 - Add: Output of the text length in the special page "Popular Pages"
 - Add: Variables for configuration in "LocalSettings.php"
 
@@ -69,7 +70,7 @@ v0.3.4
 * $wgDisableCounters = false;              Set to true to disable them completely.
 * $wgEnableAddPageId = false;              Set to true to display the page id on [[Special:PopularPages]].
 * $wgEnableAddTextLength = false;          Set to true to display the page length on [[Special:PopularPages]].
-* $wgEnableCountersAtTheFooter = true;     Set to false to disable them at the footer.
+* $wgEnableCountersAtTheFooter = false;    Set to true to display them at the footer.
 * $wgHitcounterUpdateFreq = 1;
 
 ## Background
