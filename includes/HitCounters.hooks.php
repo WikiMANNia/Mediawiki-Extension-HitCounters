@@ -103,7 +103,7 @@ class Hooks {
 					$ret = $cache[$magicWordId] = CoreParserFunctions::formatRaw(
 						call_user_func( $processingFunction, $parser, $frame, null ),
 						null,
-						$parser->getFunctionLang()
+						$parser->getTargetLanguage()
 					);
 					return true;
 				} else {
@@ -163,9 +163,7 @@ class Hooks {
 					"Got viewcount=$viewcount and putting in page"
 				);
 				$msg = 'hitcounters-viewcount';
-				if ( $conf->get( "EnableAddTextLength" ) ) {
-					$msg .= '-len';
-				}
+				$msg .= $wgEnableAddTextLength ? '-len' : '';
 				$charactercount = $skin->getTitle()->getLength();
 				$tpl->set( 'viewcount',
 					$skin->msg( $msg )

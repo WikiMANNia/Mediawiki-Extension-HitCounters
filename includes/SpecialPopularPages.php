@@ -81,13 +81,13 @@ class SpecialPopularPages extends QueryPage {
 		);
 
 		$msg = 'hitcounters-nviews';
-		$msg .= $enableAddTextLength ? '-nlengh' : '';
-		$msg .= $enableAddPageId ? '-id' : '';
+		$msg .= $wgEnableAddTextLength ? '-nlength' : '';
+		$msg .= $wgEnableAddPageId ? '-id' : '';
 		return $this->getLanguage()->specialList(
 			$link,
 			$this->msg( $msg )
-				->numParams( $result->value )->escaped()
-				->numParams( $result->length )->escaped()
+				->numParams( $result->value )
+				->numParams( $result->length )
 				->numParams( $title->getArticleID() )
 		);
 	}
