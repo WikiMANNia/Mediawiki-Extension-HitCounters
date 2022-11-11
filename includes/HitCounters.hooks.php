@@ -104,7 +104,7 @@ class Hooks {
 					$ret = $cache[$magicWordId] = CoreParserFunctions::formatRaw(
 						call_user_func( $processingFunction, $parser, $frame, null ),
 						null,
-						$parser->getFunctionLang()
+						$parser->getTargetLanguage()
 					);
 					return true;
 				} else {

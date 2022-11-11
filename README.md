@@ -71,6 +71,7 @@ v0.3.3
 
 v0.3.4
 - Use: MediaWikiServices
+- Update - Replace Parser::getFunctionLang() with ::getTargetLanguage(). Parser::getFunctionLang() is being deprecated. [Bug: T318860](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/9af63d30b535efd4bc181736adee53dc70e53a3a)
 
 # Default settings
 

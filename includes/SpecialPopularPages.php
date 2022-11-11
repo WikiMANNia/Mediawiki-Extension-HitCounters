@@ -31,6 +31,7 @@ namespace HitCounters;
 
 use Html;
 use Linker;
+use MediaWiki\MediaWikiServices;
 use QueryPage;
 use Skin;
 use Title;
@@ -78,17 +79,17 @@ class SpecialPopularPages extends QueryPage {
 
 		$link = $this->getLinkRenderer()->makeKnownLink(
 			$title,
-			$this->getContentLanguage()->convert( $title->getPrefixedText() )
+			MediaWikiServices::getInstance()->getContentLanguage()->convert( $title->getPrefixedText() )
 		);
 
 		$msg = 'hitcounters-nviews';
-		$msg .= $enableAddTextLength ? '-nlengh' : '';
+		$msg .= $enableAddTextLength ? '-nlength' : '';
 		$msg .= $enableAddPageId ? '-id' : '';
 		return $this->getLanguage()->specialList(
 			$link,
 			$this->msg( $msg )
-				->numParams( $result->value )->escaped()
-				->numParams( $result->length )->escaped()
+				->numParams( $result->value )
+				->numParams( $result->length )
 				->numParams( $title->getArticleID() )
 		);
 	}
