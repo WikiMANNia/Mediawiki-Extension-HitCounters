@@ -49,10 +49,12 @@ class Hooks {
 	}
 
 	protected static function getMostViewedPages( IContextSource $statsPage ) {
+		global $wgNumberOfMostViewedPages;
+
 		$dbr = wfGetDB( DB_REPLICA );
 		$param = HitCounters::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
-		$options['LIMIT'] = 10;
+		$options['LIMIT'] = $wgNumberOfMostViewedPages;
 		$res = $dbr->select(
 			$param['tables'], $param['fields'], [], __METHOD__,
 			$options, $param['join_conds']
@@ -163,7 +165,9 @@ class Hooks {
 					"Got viewcount=$viewcount and putting in page"
 				);
 				$msg = 'hitcounters-viewcount';
-				$msg .= $wgEnableAddTextLength ? '-len' : '';
+				if ( $wgEnableAddTextLength ) {
+					$msg .= '-len';
+				}
 				$charactercount = $skin->getTitle()->getLength();
 				$tpl->set( 'viewcount',
 					$skin->msg( $msg )

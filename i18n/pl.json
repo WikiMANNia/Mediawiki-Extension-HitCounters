@@ -6,7 +6,7 @@
 			"SemanticPioneer"
 		]
 	},
-	"hitcounters-desc": "Zawiera [[Special:PopularPages|statystyki wyświetleń każdej strony]]",
+	"hitcounters-desc": "Dostarcza [[Special:PopularPages|statystyki odsłon dla każdej strony]]",
 	"hitcounters-nviews": "$1 {{PLURAL:$1|odsłona|odsłony|odsłon}}",
 	"hitcounters-viewcount": "Tę stronę obejrzano {{PLURAL:$1|tylko raz|$1 razy}}.",
 	"popularpages": "Popularne strony",
