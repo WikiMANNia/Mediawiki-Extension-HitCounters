@@ -66,12 +66,17 @@ Version 0.3.2.3 is compatible with 1.35+.
 
 v0.3.3
 
-- Add: Output of the text length in the special page "Popular Pages"
-- Add: Variables for configuration in "LocalSettings.php"
+- Add: Output of the text length in the special page `Popular Pages`
+- Add: Variables for configuration in `LocalSettings.php`
 
 v0.3.4
+
 - Use: MediaWikiServices
-- Update - Replace Parser::getFunctionLang() with ::getTargetLanguage(). Parser::getFunctionLang() is being deprecated. [Bug: T318860](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/9af63d30b535efd4bc181736adee53dc70e53a3a)
+- Update - 28 Sep 2022: Replace Parser::getFunctionLang() with ::getTargetLanguage(). Parser::getFunctionLang() is being deprecated. [Bug: T318860](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/9af63d30b535efd4bc181736adee53dc70e53a3a)
+
+v0.3.5
+
+Add global variable `$wgNumberOfMostViewedPages`
 
 # Default settings
 
@@ -79,6 +84,7 @@ v0.3.4
 * $wgEnableAddPageId = false;              Set to true to display the page id on [[Special:PopularPages]].
 * $wgEnableAddTextLength = false;          Set to true to display the page length on [[Special:PopularPages]].
 * $wgEnableCountersAtTheFooter = false;    Set to true to display them at the footer.
+* $wgNumberOfMostViewedPages = 10;         Set the Number of Most Viewed Pages
 * $wgHitcounterUpdateFreq = 1;
 
 ## Background

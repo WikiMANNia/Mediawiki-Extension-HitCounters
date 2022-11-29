@@ -49,10 +49,12 @@ class Hooks {
 	}
 
 	protected static function getMostViewedPages( IContextSource $statsPage ) {
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
+
 		$dbr = wfGetDB( DB_REPLICA );
 		$param = HitCounters::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
-		$options['LIMIT'] = 10;
+		$options['LIMIT'] = $conf->get( "NumberOfMostViewedPages" );
 		$res = $dbr->select(
 			$param['tables'], $param['fields'], [], __METHOD__,
 			$options, $param['join_conds']
