@@ -2,12 +2,19 @@
 	"@metadata": {
 		"authors": [
 			"AS",
+			"DDPAT",
+			"Ice bulldog",
 			"Piramidion",
 			"Ата"
 		]
 	},
+	"hitcounters-extensionname": "Лічильники ударів",
 	"hitcounters-desc": "Забезпечує статистику переглядів посторінково",
 	"hitcounters-nviews": "$1 {{PLURAL:$1|перегляд|перегляди|переглядів}}",
+	"hitcounters-nviews-id": "id: $3 &ndash; $1 {{PLURAL:$1|перегляд|переглядів}}",
+	"hitcounters-nviews-nlength": "$1 {{PLURAL:$1|перегляд|переглядів}} &ndash; {{PLURAL:$2|1 символ|$2 символів}}",
+	"hitcounters-nviews-nlength-id": "id: $3 &ndash; $1 {{PLURAL:$1|перегляд|переглядів}} &ndash; {{PLURAL:$2|1 символ|$2 символів}}",
+	"hitcounters-viewcount": "Цю сторінку переглядали $1 {{PLURAL:$1|раз|рази|разів}}.",
 	"popularpages": "Популярні сторінки",
 	"hitcounters-pageinfo-views": "Кількість переглядів",
 	"hitcounters-statistics-header-views": "Статистика переглядів",
