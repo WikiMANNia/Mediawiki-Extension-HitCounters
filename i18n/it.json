@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajeje Brazorf",
 			"Alexmar983",
 			"Beta16",
 			"Gianfranco",
@@ -10,10 +11,10 @@
 	},
 	"hitcounters-extensionname": "Hit Counters",
 	"hitcounters-desc": "Fornisce [[Special:PopularPages|statistiche per ogni vizualizzazione di pagina]]",
-	"hitcounters-nviews": "$1 {{PLURAL:$1|visita|visite}}",
-	"hitcounters-nviews-id": "id: $3 &ndash; $1 {{PLURAL:$1|visita|visite}}",
-	"hitcounters-nviews-nlength": "$1 {{PLURAL:$1|visita|visite}} &ndash; {{PLURAL:$2|1 carattere|$2 caratteri}}",
-	"hitcounters-nviews-nlength-id": "id: $3 &ndash; $1 {{PLURAL:$1|visita|visite}} &ndash; {{PLURAL:$2|1 carattere|$2 caratteri}}",
+	"hitcounters-nviews": "$1 {{PLURAL:$1|visualizzazione|visualizzazioni}}",
+	"hitcounters-nviews-id": "id: $3 &ndash; $1 {{PLURAL:$1|visualizzazione|visualizzazioni}}",
+	"hitcounters-nviews-nlength": "$1 {{PLURAL:$1|visualizzazione|visualizzazioni}} &ndash; {{PLURAL:$2|1 carattere|$2 caratteri}}",
+	"hitcounters-nviews-nlength-id": "id: $3 &ndash; $1 {{PLURAL:$1|visualizzazione|visualizzazioni}} &ndash; {{PLURAL:$2|1 carattere|$2 caratteri}}",
 	"hitcounters-viewcount": "Questa pagina è stata letta {{PLURAL:$1|una volta|$1 volte}}.",
 	"hitcounters-viewcount-len": "Questa pagina è stata letta {{PLURAL:$1|una volta|$1 volte}} e contiene {{PLURAL:$2|un carattere|$2 caratteri}}.",
 	"hitcounters-viewcount-len-w": "Questa pagina è stata letta {{PLURAL:$1|una volta|$1 volte}} e contiene {{PLURAL:$2|un carattere|$2 caratteri}} o {{PLURAL:$3|una parola|$3 parole}}.",
@@ -25,6 +26,6 @@
 	"hitcounters-statistics-views-peredit": "Visite per modifica",
 	"hitcounters-statistics-mostpopular": "Pagine più viste",
 	"abusefilter-edit-builder-vars-page-views": "Visualizzazioni di pagina",
-	"abusefilter-edit-builder-vars-movedfrom-views": "Visualizzazioni di pagina di origine",
+	"abusefilter-edit-builder-vars-movedfrom-views": "Visualizzazioni della pagina sorgente",
 	"abusefilter-edit-builder-vars-movedto-views": "Visualizzazioni di pagina di destinazione"
 }

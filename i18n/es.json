@@ -1,20 +1,23 @@
 {
 	"@metadata": {
 		"authors": [
+			"Agent",
+			"DiegoAmbrocio",
 			"Fitoschido",
+			"Jackiezelaya",
 			"Macofe",
 			"WikiMANNia"
 		]
 	},
 	"hitcounters-extensionname": "Hit Counters",
 	"hitcounters-desc": "Proporciona [[Special:PopularPages|estadísticas de visualizaciones por página]]",
-	"hitcounters-nviews": "$1 {{PLURAL:$1|visualización|visualizaciones}}",
-	"hitcounters-nviews-id": "id: $3 &ndash; $1 {{PLURAL:$1|visualización|visualizaciones}}",
-	"hitcounters-nviews-nlength": "$1 {{PLURAL:$1|visualización|visualizaciones}} &ndash; {{PLURAL:$2|1 símbolo|$2 símbolos}}",
-	"hitcounters-nviews-nlength-id": "id: $3 &ndash; $1 {{PLURAL:$1|visualización|visualizaciones}} &ndash; {{PLURAL:$2|1 símbolo|$2 símbolos}}",
+	"hitcounters-nviews": "{{PLURAL:$1|Una visualización|$1 visualizaciones}}",
+	"hitcounters-nviews-id": "id: $3 &ndash; {{PLURAL:$1|Una visualización|$1 visualizaciones}}",
+	"hitcounters-nviews-nlength": "{{PLURAL:$1|Una visualización|$1 visualizaciones}} &ndash; {{PLURAL:$2|Un carácter|$2 caracteres}}",
+	"hitcounters-nviews-nlength-id": "id: $3 &ndash; {{PLURAL:$1|Una visualización|$1 visualizaciones}} &ndash; {{PLURAL:$2|Un carácter|$2 caracteres}}",
 	"hitcounters-viewcount": "Esta página se ha visitado {{PLURAL:$1|una vez|$1 veces}}.",
-	"hitcounters-viewcount-len": "Esta página se ha visitado {{PLURAL:$1|una vez|$1 veces}} y contiene {{PLURAL:$2|un caracter|$2 caracteres}}.",
-	"hitcounters-viewcount-len-w": "Esta página se ha visitado {{PLURAL:$1|una vez|$1 veces}} y contiene {{PLURAL:$2|un caracter|$2 caracteres}} o {{PLURAL:$3|una palabra|$3 palabras}}.",
+	"hitcounters-viewcount-len": "Esta página se ha visitado {{PLURAL:$1|una vez|$1 veces}} y contiene {{PLURAL:$2|un carácter|$2 caracteres}}.",
+	"hitcounters-viewcount-len-w": "Esta página se ha visitado {{PLURAL:$1|una vez|$1 veces}} y contiene {{PLURAL:$2|un carácter|$2 caracteres}} o {{PLURAL:$3|una palabra|$3 palabras}}.",
 	"popularpages": "Páginas populares",
 	"hitcounters-pageinfo-views": "Número de visualizaciones",
 	"hitcounters-statistics-header-views": "Ver estadísticas",
@@ -23,6 +26,6 @@
 	"hitcounters-statistics-views-peredit": "Visualizaciones por edición",
 	"hitcounters-statistics-mostpopular": "Páginas más vistas",
 	"abusefilter-edit-builder-vars-page-views": "Vistas de la página",
-	"abusefilter-edit-builder-vars-movedfrom-views": "Vistas de la página origen",
-	"abusefilter-edit-builder-vars-movedto-views": "Vistas de la página destina"
+	"abusefilter-edit-builder-vars-movedfrom-views": "Páginas vistas de la fuente",
+	"abusefilter-edit-builder-vars-movedto-views": "Páginas de destino"
 }
