@@ -2,9 +2,15 @@
 	"@metadata": {
 		"authors": [
 			"Ainali",
+			"Sabelöga",
 			"WikiPhoenix"
 		]
 	},
+	"hitcounters-nviews": "$1 {{PLURAL:$1|visning|visningar}}",
+	"hitcounters-nviews-id": "id: $3 &ndash; $1 {{PLURAL:$1|visning|visningar}}",
+	"hitcounters-nviews-nlength": "$1 {{PLURAL:$1|visning|visningar}} &ndash; {{PLURAL:$2|1 tecken|$2 tecken}}",
+	"hitcounters-nviews-nlength-id": "id: $3 &ndash; $1 {{PLURAL:$1|visning|visningar}} &ndash; {{PLURAL:$2|1 tecken|$2 tecken}}",
+	"hitcounters-viewcount": "Den här sidan har visats {{PLURAL:$1|en gång|$1 gånger}}.",
 	"popularpages": "Populära sidor",
 	"abusefilter-edit-builder-vars-page-views": "Sidvisningar",
 	"abusefilter-edit-builder-vars-movedfrom-views": "Visningar för källsida",

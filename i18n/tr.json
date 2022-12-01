@@ -3,6 +3,7 @@
 		"authors": [
 			"BaRaN6161 TURK",
 			"Emperyan",
+			"Hedda",
 			"Joseph",
 			"MuratTheTurkish",
 			"Watermelon juice"
@@ -10,6 +11,9 @@
 	},
 	"hitcounters-desc": "[[Special:PopularPages|Sayfa görüntüleme istatistiklerini]] sağlar",
 	"hitcounters-nviews": "$1 görüntüleme",
+	"hitcounters-nviews-id": "kimlik: $3 &ndash; $1 {{PLURAL:$1|görüntülenme}}",
+	"hitcounters-nviews-nlength": "$1 {{PLURAL:$1|görüntülenme}} &ndash; {{PLURAL:$2|1 karakter|$2 karakter}}",
+	"hitcounters-nviews-nlength-id": "kimlik: $3 &ndash; $1 {{PLURAL:$1|görüntülenme}} &ndash; {{PLURAL:$2|1 karakter|$2 karakter}}",
 	"hitcounters-viewcount": "Bu sayfaya {{PLURAL:$1|bir|$1}} defa erişilmiş.",
 	"popularpages": "Popüler sayfalar",
 	"hitcounters-pageinfo-views": "Görüntüleme sayısı",
