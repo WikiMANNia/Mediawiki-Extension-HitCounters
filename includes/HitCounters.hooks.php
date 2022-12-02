@@ -1,17 +1,15 @@
 <?php
 namespace HitCounters;
 
-use AbuseFilterVariableHolder;
 use CoreParserFunctions;
 use DatabaseUpdater;
 use DeferredUpdates;
 use IContextSource;
+use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 use MediaWiki\MediaWikiServices;
 use Parser;
 use PPFrame;
-use QuickTemplate;
 use SiteStats;
-use SkinTemplate;
 use Title;
 use User;
 use ViewCountUpdate;
@@ -37,23 +35,26 @@ class Hooks {
 	) {
 		$totalEdits = SiteStats::edits();
 		$totalViews = HitCounters::views();
-		$extraStats['hitcounters-statistics-header-views']
-			['hitcounters-statistics-views-total'] = $totalViews;
-		$extraStats['hitcounters-statistics-header-views']
-			['hitcounters-statistics-views-peredit'] =
-				$totalEdits
-				? sprintf( '%.2f', $totalViews / $totalEdits )
-				: 0;
-		$extraStats['hitcounters-statistics-mostpopular'] =
-			self::getMostViewedPages( $statsPage );
+		$extraStats = [
+			'hitcounters-statistics-header-views' => [
+				'hitcounters-statistics-views-total' => $totalViews,
+				'hitcounters-statistics-views-peredit' => 
+					$totalEdits
+					? sprintf( '%.2f', $totalViews / $totalEdits )
+					: 0
+				],
+			'hitcounters-statistics-mostpopular' => self::getMostViewedPages( $statsPage )
+		];
 		return true;
 	}
 
 	protected static function getMostViewedPages( IContextSource $statsPage ) {
-		$dbr = wfGetDB( DB_REPLICA );
-		$param = HitCounters::getQueryInfo();
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
+
+		$dbr = DBConnect::getReadingConnect();
+		$param = DBConnect::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
-		$options['LIMIT'] = 10;
+		$options['LIMIT'] = $conf->get( "NumberOfMostViewedPages" );
 		$res = $dbr->select(
 			$param['tables'], $param['fields'], [], __METHOD__,
 			$options, $param['join_conds']
@@ -61,11 +62,13 @@ class Hooks {
 
 		$ret = [];
 		if ( $res->numRows() > 0 ) {
+
+			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+
 			foreach ( $res as $row ) {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
 
 				if ( $title instanceof Title ) {
-					$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 					$ret[ $title->getPrefixedText() ]['number'] = $row->value;
 					$ret[ $title->getPrefixedText() ]['name'] =
 						$linkRenderer->makeLink( $title );
@@ -105,7 +108,7 @@ class Hooks {
 					$ret = $cache[$magicWordId] = CoreParserFunctions::formatRaw(
 						call_user_func( $processingFunction, $parser, $frame, null ),
 						null,
-						$parser->getFunctionLang()
+						$parser->getTargetLanguage()
 					);
 					return true;
 				} else {
@@ -139,9 +142,9 @@ class Hooks {
 	 *   and value should be an HTML string.
 	 */
 	public static function onSkinAddFooterLinks(
-		SkinTemplate $skin,
+		$skin,
 		string $key,
-		array &$footerLinks
+		?array &$footerLinks
 	) {
 		if ( $key !== 'info' ) {
 			return;
@@ -158,14 +161,14 @@ class Hooks {
 					"HitCounters",
 					"Got viewcount=$viewcount and putting in page"
 				);
-				$msg = 'hitcounters-nviews';
+				$msg = 'hitcounters-viewcount';
 				if ( $conf->get( "EnableAddTextLength" ) ) {
-					$msg .= '-nlength' : '';
+					$msg .= '-len';
 				}
 				$charactercount = $skin->getTitle()->getLength();
 				$viewcountMsg = $skin->msg( $msg )
-									 ->numParams( $viewcount )->parse()
-									 ->numParams( $charactercount )->parse();
+					->numParams( $viewcount )
+					->numParams( $charactercount )->parse();
 
 				// Set up the footer
 				if ( is_array( $footerLinks ) ) {
@@ -201,13 +204,13 @@ class Hooks {
 
 	/**
 	 * Lazy-loads the article_views variable
-	 * @param AbuseFilterVariableHolder $vars
+	 * @param VariableHolder $vars
 	 * @param Title $title
 	 * @param string $prefix
 	 * @return void
 	 */
 	public static function onAbuseFilterGenerateTitleVars(
-		AbuseFilterVariableHolder $vars,
+		VariableHolder $vars,
 		Title $title,
 		$prefix
 	) {
@@ -217,7 +220,7 @@ class Hooks {
 	/**
 	 * Computes the article_views variables
 	 * @param string $method
-	 * @param AbuseFilterVariableHolder $vars
+	 * @param VariableHolder $vars
 	 * @param array $parameters
 	 * @param null &$result
 	 * @return bool

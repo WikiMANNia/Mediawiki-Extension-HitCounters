@@ -2,7 +2,6 @@
 
 namespace HitCounters;
 
-use MWNamespace;
 use ObjectCache;
 use Parser;
 use PPFrame;
@@ -41,7 +40,7 @@ class HitCounters {
 		$views = $cache->get( $key );
 
 		if ( !$views || $views == 1 ) {
-			$dbr = wfGetDB( DB_REPLICA );
+			$dbr = DBConnect::getReadingConnect();
 			$hits = $dbr->selectField(
 				[ 'hit_counter' ],
 				[ 'hits' => 'page_counter' ],
@@ -68,7 +67,7 @@ class HitCounters {
 				. ": got " . var_export( self::$mViews, true ) .
 				" from cache." );
 			if ( !self::$mViews || self::$mViews == 1 ) {
-				$dbr = wfGetDB( DB_REPLICA );
+				$dbr = DBConnect::getReadingConnect();
 				self::$mViews = $dbr->selectField(
 					'hit_counter', 'SUM(page_counter)', '', __METHOD__
 				);
@@ -112,29 +111,5 @@ class HitCounters {
 		Parser $parser, PPFrame $frame, $args
 	) {
 		return self::getCount( $frame->title );
-	}
-
-	public static function getQueryInfo() {
-		global $wgDBprefix;
-
-		return [
-			'tables' => [ 'page', 'hit_counter' ],
-			'fields' => [
-				'namespace' => 'page_namespace',
-				'title'  => 'page_title',
-				'value'  => 'page_counter',
-				'length' => 'page_len'
-			],
-			'conds' => [
-				'page_is_redirect' => 0,
-				'page_namespace' => MWNamespace::getContentNamespaces(),
-			],
-			'join_conds' => [
-				'page' => [
-					'INNER JOIN',
-					$wgDBprefix . 'page.page_id = ' .
-					$wgDBprefix . 'hit_counter.page_id' ]
-			]
-		];
 	}
 }
