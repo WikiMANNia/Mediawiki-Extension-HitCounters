@@ -1,7 +1,7 @@
 {
 	"name": "HitCounters",
 	"namemsg": "hitcounters-extensionname",
-	"version": "0.3.5",
+	"version": "0.4.0",
 	"author": [
 		"[//mwstake.org Mark A. Hershberger]",
 		"[//wikimannia.org WikiMANNia]"
@@ -39,6 +39,7 @@
 		"AbuseFilter-computeVariable": "HitCounters\\Hooks::onAbuseFilterComputeVariable"
 	},
 	"AutoloadClasses": {
+		"HitCounters\\DBConnect": "includes/HitCountersDBConnect.php",
 		"HitCounters\\Hooks": "includes/HitCounters.hooks.php",
 		"HitCounters\\HitCounters": "includes/HitCounters.body.php",
 		"ViewCountUpdate": "includes/ViewCountUpdate.php",

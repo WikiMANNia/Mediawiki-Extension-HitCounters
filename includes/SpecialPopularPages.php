@@ -37,8 +37,23 @@ use Skin;
 use Title;
 
 class SpecialPopularPages extends QueryPage {
+
+	private $mLinkRenderer;
+	private $mContentLanguage;
+	private $mMsgToken;
+
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
+
+		$enableAddPageId     = $this->getConfig()->get( 'EnableAddPageId' );
+		$enableAddTextLength = $this->getConfig()->get( 'EnableAddTextLength' );
+
+		$this->mMsgToken = 'hitcounters-nviews';
+		$this->mMsgToken .= $enableAddTextLength ? '-nlength' : '';
+		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
+
+		$this->mLinkRenderer = $this->getLinkRenderer();
+		$this->mContentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
 	}
 
 	public function isExpensive() {
@@ -50,7 +65,7 @@ class SpecialPopularPages extends QueryPage {
 	}
 
 	public function getQueryInfo() {
-		return HitCounters::getQueryInfo();
+		return DBConnect::getQueryInfo();
 	}
 
 	/**
@@ -62,8 +77,6 @@ class SpecialPopularPages extends QueryPage {
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	public function formatResult( $skin, $result ) {
-		$enableAddPageId     = $this->getConfig()->get( 'EnableAddPageId' );
-		$enableAddTextLength = $this->getConfig()->get( 'EnableAddTextLength' );
 
 		$title = Title::makeTitleSafe( $result->namespace, $result->title );
 		if ( !$title ) {
@@ -77,17 +90,14 @@ class SpecialPopularPages extends QueryPage {
 			);
 		}
 
-		$link = $this->getLinkRenderer()->makeKnownLink(
+		$link = $this->mLinkRenderer->makeKnownLink(
 			$title,
-			MediaWikiServices::getInstance()->getContentLanguage()->convert( $title->getPrefixedText() )
+			$this->mContentLanguage->convert( $title->getPrefixedText() )
 		);
 
-		$msg = 'hitcounters-nviews';
-		$msg .= $enableAddTextLength ? '-nlength' : '';
-		$msg .= $enableAddPageId ? '-id' : '';
 		return $this->getLanguage()->specialList(
 			$link,
-			$this->msg( $msg )
+			$this->msg( $this->mMsgToken )
 				->numParams( $result->value )
 				->numParams( $result->length )
 				->numParams( $title->getArticleID() )

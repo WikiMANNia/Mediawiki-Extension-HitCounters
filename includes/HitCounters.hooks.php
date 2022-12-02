@@ -51,8 +51,8 @@ class Hooks {
 	protected static function getMostViewedPages( IContextSource $statsPage ) {
 		$conf = MediaWikiServices::getInstance()->getMainConfig();
 
-		$dbr = wfGetDB( DB_REPLICA );
-		$param = HitCounters::getQueryInfo();
+		$dbr = DBConnect::getReadingConnect();
+		$param = DBConnect::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
 		$options['LIMIT'] = $conf->get( "NumberOfMostViewedPages" );
 		$res = $dbr->select(
@@ -62,11 +62,13 @@ class Hooks {
 
 		$ret = [];
 		if ( $res->numRows() > 0 ) {
+
+			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+
 			foreach ( $res as $row ) {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
 
 				if ( $title instanceof Title ) {
-					$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 					$ret[ $title->getPrefixedText() ]['number'] = $row->value;
 					$ret[ $title->getPrefixedText() ]['name'] =
 						$linkRenderer->makeLink( $title );
@@ -142,7 +144,7 @@ class Hooks {
 	public static function onSkinAddFooterLinks(
 		SkinTemplate $skin,
 		string $key,
-		array &$footerLinks
+		?array &$footerLinks
 	) {
 		if ( $key !== 'info' ) {
 			return;
@@ -165,7 +167,7 @@ class Hooks {
 				}
 				$charactercount = $skin->getTitle()->getLength();
 				$viewcountMsg = $skin->msg( $msg )
-					->numParams( $viewcount )->parse()
+					->numParams( $viewcount )
 					->numParams( $charactercount )->parse();
 
 				// Set up the footer
