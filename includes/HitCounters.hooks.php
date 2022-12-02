@@ -171,7 +171,7 @@ class Hooks {
 				$charactercount = $skin->getTitle()->getLength();
 				$tpl->set( 'viewcount',
 					$skin->msg( $msg )
-						->numParams( $viewcount )->parse()
+						->numParams( $viewcount )
 						->numParams( $charactercount )->parse() );
 			}
 		}
