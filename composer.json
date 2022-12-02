@@ -19,6 +19,12 @@
 			"email": "mah@nichework.com",
 			"homepage": "http://hexmode.com",
 			"role": "developer"
+		},
+		{
+			"name": "WikiMANNia",
+			"email": "chef@wikimannia.org",
+			"homepage": "http://wikimannia.org",
+			"role": "developer"
 		}
 	],
 	"suppport": {

@@ -35,7 +35,7 @@ class UpdateHitCounter extends Maintenance {
 	public function execute() {
 		# Attempt to connect to the database as a privileged user
 		# This will vomit up an error if there are permissions problems
-		$dbconn = wfGetDB( DB_MASTER );
+		$dbconn = DBConnect::getWritingConnect();
 
 		$shared = $this->hasOption( 'doshared' );
 		$updater = HCUpdater::newForDb( $dbconn, $shared, $this );
@@ -45,5 +45,5 @@ class UpdateHitCounter extends Maintenance {
 	}
 }
 
-$maintClass = 'HitCounters\\UpdateHitCounter';
+$maintClass = UpdateHitCounter::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

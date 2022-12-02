@@ -56,6 +56,10 @@ v0.3.5
 
 Add global variable `$wgNumberOfMostViewedPages`
 
+v0.4.0
+
+Refactoring: Add file `HitCountersDBConnect.php` and class `DBConnect`
+
 # Default settings
 
 * $wgDisableCounters = false;              Set to true to disable them completely.

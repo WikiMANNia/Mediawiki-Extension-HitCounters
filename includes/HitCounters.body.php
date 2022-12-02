@@ -2,15 +2,6 @@
 
 namespace HitCounters;
 
-/**
-* backward compatibility to MediaWiki v1.25 and v1.26
-* fix an issue that was introduced here:
-* https://github.com/WikiMANNia/mediawiki-extensions-HitCounters/commit/822140f6d96974f5051449837e7f46a771d5f6a5#diff-1b6cef982bd7ace2232d91536185b83a
-* DB_REPLICA remains undefined in MediaWiki before v1.27
-*/
-defined('DB_REPLICA') or define('DB_REPLICA', DB_SLAVE);
-
-use MWNamespace;
 use Parser;
 use PPFrame;
 use Title;
@@ -48,7 +39,7 @@ class HitCounters {
 		$views = $cache->get( $key );
 
 		if ( !$views || $views == 1 ) {
-			$dbr = wfGetDB( DB_REPLICA );
+			$dbr = DBConnect::getReadingConnect();
 			$hits = $dbr->selectField(
 				[ 'hit_counter' ],
 				[ 'hits' => 'page_counter' ],
@@ -75,7 +66,7 @@ class HitCounters {
 				. ": got " . var_export( self::$mViews, true ) .
 				" from cache." );
 			if ( !self::$mViews || self::$mViews == 1 ) {
-				$dbr = wfGetDB( DB_REPLICA );
+				$dbr = DBConnect::getReadingConnect();
 				self::$mViews = $dbr->selectField(
 					'hit_counter', 'SUM(page_counter)', '', __METHOD__
 				);
@@ -119,29 +110,5 @@ class HitCounters {
 		Parser $parser, PPFrame $frame, $args
 	) {
 		return self::getCount( $frame->title );
-	}
-
-	public static function getQueryInfo() {
-		global $wgDBprefix;
-
-		return [
-			'tables' => [ 'page', 'hit_counter' ],
-			'fields' => [
-				'namespace' => 'page_namespace',
-				'title'  => 'page_title',
-				'value'  => 'page_counter',
-				'length' => 'page_len'
-			],
-			'conds' => [
-				'page_is_redirect' => 0,
-				'page_namespace' => MWNamespace::getContentNamespaces(),
-			],
-			'join_conds' => [
-				'page' => [
-					'INNER JOIN',
-					$wgDBprefix . 'page.page_id = ' .
-					$wgDBprefix . 'hit_counter.page_id' ]
-			]
-		];
 	}
 }

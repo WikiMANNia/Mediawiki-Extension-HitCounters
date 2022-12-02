@@ -51,8 +51,8 @@ class Hooks {
 	protected static function getMostViewedPages( IContextSource $statsPage ) {
 		global $wgNumberOfMostViewedPages;
 
-		$dbr = wfGetDB( DB_REPLICA );
-		$param = HitCounters::getQueryInfo();
+		$dbr = DBConnect::getReadingConnect();
+		$param = DBConnect::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
 		$options['LIMIT'] = $wgNumberOfMostViewedPages;
 		$res = $dbr->select(

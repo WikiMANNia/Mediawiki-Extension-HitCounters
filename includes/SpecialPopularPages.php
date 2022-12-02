@@ -36,8 +36,17 @@ use Skin;
 use Title;
 
 class SpecialPopularPages extends QueryPage {
+
+	private $mMsgToken;
+
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
+
+		global $wgEnableAddTextLength, $wgEnableAddPageId;
+
+		$this->mMsgToken = 'hitcounters-nviews';
+		$this->mMsgToken .= $wgEnableAddTextLength ? '-nlength' : '';
+		$this->mMsgToken .= $wgEnableAddPageId ? '-id' : '';
 	}
 
 	public function isExpensive() {
@@ -49,7 +58,7 @@ class SpecialPopularPages extends QueryPage {
 	}
 
 	public function getQueryInfo() {
-		return HitCounters::getQueryInfo();
+		return DBConnect::getQueryInfo();
 	}
 
 	/**
@@ -61,7 +70,6 @@ class SpecialPopularPages extends QueryPage {
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	public function formatResult( $skin, $result ) {
-		global $wgEnableAddTextLength, $wgEnableAddPageId;
 
 		$title = Title::makeTitleSafe( $result->namespace, $result->title );
 		if ( !$title ) {
@@ -80,12 +88,9 @@ class SpecialPopularPages extends QueryPage {
 			$this->getLanguage()->convert( $title->getPrefixedText() )
 		);
 
-		$msg = 'hitcounters-nviews';
-		$msg .= $wgEnableAddTextLength ? '-nlength' : '';
-		$msg .= $wgEnableAddPageId ? '-id' : '';
 		return $this->getLanguage()->specialList(
 			$link,
-			$this->msg( $msg )
+			$this->msg( $this->mMsgToken )
 				->numParams( $result->value )
 				->numParams( $result->length )
 				->numParams( $title->getArticleID() )
