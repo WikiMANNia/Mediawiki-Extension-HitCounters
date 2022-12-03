@@ -34,6 +34,8 @@ class Hooks {
 	public static function onSpecialStatsAddExtra(
 		array &$extraStats, IContextSource $statsPage
 	) {
+		global $wgNumberOfMostViewedPages;
+
 		$totalEdits = SiteStats::edits();
 		$totalViews = HitCounters::views();
 		$extraStats['hitcounters-statistics-header-views']
@@ -43,13 +45,6 @@ class Hooks {
 				$totalEdits
 				? sprintf( '%.2f', $totalViews / $totalEdits )
 				: 0;
-		$extraStats['hitcounters-statistics-mostpopular'] =
-			self::getMostViewedPages( $statsPage );
-		return true;
-	}
-
-	protected static function getMostViewedPages( IContextSource $statsPage ) {
-		global $wgNumberOfMostViewedPages;
 
 		$dbr = DBConnect::getReadingConnect();
 		$param = DBConnect::getQueryInfo();
@@ -60,20 +55,23 @@ class Hooks {
 			$options, $param['join_conds']
 		);
 
-		$ret = [];
+		$most_viewed_pages_array = [];
 		if ( $res->numRows() > 0 ) {
 			foreach ( $res as $row ) {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
 
 				if ( $title instanceof Title ) {
-					$ret[ $title->getPrefixedText() ]['number'] = $row->value;
-					$ret[ $title->getPrefixedText() ]['name'] =
+					$most_viewed_pages_array[ $title->getPrefixedText() ]['number'] = $row->value;
+					$most_viewed_pages_array[ $title->getPrefixedText() ]['name'] =
 						\Linker::linkKnown( $title );
 				}
 			}
 			$res->free();
+
+			$extraStats['hitcounters-statistics-mostpopular'] = $most_viewed_pages_array;
 		}
-		return $ret;
+
+		return true;
 	}
 
 	protected static function getMagicWords() {
