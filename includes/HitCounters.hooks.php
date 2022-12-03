@@ -43,15 +43,9 @@ class Hooks {
 				$totalEdits
 				? sprintf( '%.2f', $totalViews / $totalEdits )
 				: 0;
-		$extraStats['hitcounters-statistics-mostpopular'] =
-			self::getMostViewedPages( $statsPage );
-		return true;
-	}
-
-	protected static function getMostViewedPages( IContextSource $statsPage ) {
-		$conf = MediaWikiServices::getInstance()->getMainConfig();
 
 		$dbr = DBConnect::getReadingConnect();
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
 		$param = DBConnect::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
 		$options['LIMIT'] = $conf->get( "NumberOfMostViewedPages" );
@@ -60,7 +54,7 @@ class Hooks {
 			$options, $param['join_conds']
 		);
 
-		$ret = [];
+		$most_viewed_pages_array = [];
 		if ( $res->numRows() > 0 ) {
 
 			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
@@ -69,14 +63,17 @@ class Hooks {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
 
 				if ( $title instanceof Title ) {
-					$ret[ $title->getPrefixedText() ]['number'] = $row->value;
-					$ret[ $title->getPrefixedText() ]['name'] =
+					$most_viewed_pages_array[ $title->getPrefixedText() ]['number'] = $row->value;
+					$most_viewed_pages_array[ $title->getPrefixedText() ]['name'] =
 						$linkRenderer->makeLink( $title );
 				}
 			}
 			$res->free();
+
+			$extraStats['hitcounters-statistics-mostpopular'] = $most_viewed_pages_array;
 		}
-		return $ret;
+
+		return true;
 	}
 
 	protected static function getMagicWords() {
