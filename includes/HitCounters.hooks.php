@@ -35,23 +35,16 @@ class Hooks {
 	) {
 		$totalEdits = SiteStats::edits();
 		$totalViews = HitCounters::views();
-		$extraStats = [
-			'hitcounters-statistics-header-views' => [
-				'hitcounters-statistics-views-total' => $totalViews,
-				'hitcounters-statistics-views-peredit' => 
-					$totalEdits
-					? sprintf( '%.2f', $totalViews / $totalEdits )
-					: 0
-				],
-			'hitcounters-statistics-mostpopular' => self::getMostViewedPages( $statsPage )
-		];
-		return true;
-	}
-
-	protected static function getMostViewedPages( IContextSource $statsPage ) {
-		$conf = MediaWikiServices::getInstance()->getMainConfig();
+		$extraStats['hitcounters-statistics-header-views']
+			['hitcounters-statistics-views-total'] = $totalViews;
+		$extraStats['hitcounters-statistics-header-views']
+			['hitcounters-statistics-views-peredit'] =
+				$totalEdits
+				? sprintf( '%.2f', $totalViews / $totalEdits )
+				: 0;
 
 		$dbr = DBConnect::getReadingConnect();
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
 		$param = DBConnect::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
 		$options['LIMIT'] = $conf->get( "NumberOfMostViewedPages" );
@@ -60,7 +53,7 @@ class Hooks {
 			$options, $param['join_conds']
 		);
 
-		$ret = [];
+		$most_viewed_pages_array = [];
 		if ( $res->numRows() > 0 ) {
 
 			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
@@ -69,14 +62,17 @@ class Hooks {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
 
 				if ( $title instanceof Title ) {
-					$ret[ $title->getPrefixedText() ]['number'] = $row->value;
-					$ret[ $title->getPrefixedText() ]['name'] =
+					$most_viewed_pages_array[ $title->getPrefixedText() ]['number'] = $row->value;
+					$most_viewed_pages_array[ $title->getPrefixedText() ]['name'] =
 						$linkRenderer->makeLink( $title );
 				}
 			}
 			$res->free();
+
+			$extraStats['hitcounters-statistics-mostpopular'] = $most_viewed_pages_array;
 		}
-		return $ret;
+
+		return true;
 	}
 
 	protected static function getMagicWords() {
@@ -172,8 +168,6 @@ class Hooks {
 
 				// Set up the footer
 				if ( is_array( $footerLinks ) ) {
-					// 'viewcount' goes after 'lastmod', we'll just assume
-					// 'viewcount' is the 0th item
 					array_splice( $footerLinks, 1, 0, [ 'viewcount' => $viewcountMsg ] );
 				} else {
 					$footerLinks['viewcount'] = $viewcountMsg;

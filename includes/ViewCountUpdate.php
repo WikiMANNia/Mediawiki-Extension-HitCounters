@@ -123,7 +123,6 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 		$acchitsTable = $dbw->tableName( 'acchits' );
 		$pageTable = $dbw->tableName( 'hit_counter' );
 
-		$dbw->lockTables( [], [ $hitcounterTable ], __METHOD__, false );
 		$dbw->query(
 			"CREATE TEMPORARY TABLE $acchitsTable $tabletype AS " .
 			"SELECT hc_id,COUNT(*) AS hc_n FROM $hitcounterTable " .
@@ -131,7 +130,6 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 			__METHOD__
 		);
 		$dbw->delete( $hitcounterTable, '*', __METHOD__ );
-		$dbw->unlockTables( __METHOD__ );
 
 		if ( $dbType === 'mysql' ) {
 			$dbw->query(
