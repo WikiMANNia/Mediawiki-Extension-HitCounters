@@ -40,7 +40,7 @@ class SpecialPopularPages extends QueryPage {
 
 	private $mLinkRenderer;
 	private $mContentLanguage;
-	private $mMsgToken;
+	private string $mMsgToken;
 
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
@@ -90,10 +90,7 @@ class SpecialPopularPages extends QueryPage {
 			);
 		}
 
-		$link = $this->mLinkRenderer->makeKnownLink(
-			$title,
-			$this->mContentLanguage->convert( $title->getPrefixedText() )
-		);
+		$link = $this->mLinkRenderer->makeKnownLink( $title );
 
 		return $this->getLanguage()->specialList(
 			$link,

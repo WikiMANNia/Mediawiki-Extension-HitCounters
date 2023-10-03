@@ -29,7 +29,7 @@ use MediaWiki\MediaWikiServices;
  * 'page_counter' field or use the 'hitcounter' table and then collect the data
  * from that table to update the 'page_counter' field in a batch operation.
  */
-class ViewCountUpdate implements DeferrableUpdate {
+class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 	/** @var int Page ID to increment the view count */
 	protected $pageId;
 
@@ -40,6 +40,10 @@ class ViewCountUpdate implements DeferrableUpdate {
 	 */
 	public function __construct( $pageId ) {
 		$this->pageId = intval( $pageId );
+	}
+
+	public function getTransactionRoundRequirement() {
+		return self::TRX_ROUND_ABSENT;
 	}
 
 	/**
@@ -78,11 +82,14 @@ class ViewCountUpdate implements DeferrableUpdate {
 				static function () use ( $dbw, $pageId, $fname, $updateFreq ) {
 					try {
 						// Since this table is non-transactional, the contention is minimal
+						$lockName = 'hit_counter_extension';
+						$dbw->lock( $lockName, $fname );
 						$dbw->insert( 'hit_counter_extension', [ 'hc_id' => $pageId ], $fname );
 						$checkfreq = intval( $updateFreq / 25 + 1 );
 						if ( ( ( rand() % $checkfreq ) == 0 ) && ( $dbw->lastErrno() == 0 ) ) {
 							$this->collect();
 						}
+						$dbw->unlock( $lockName, $fname );
 					} catch ( DBError $e ) {
 						// Not important enough to warrant an error page in case of failure
 						error_log( "exception during insert update: " . $e->getMessage() );
@@ -96,10 +103,16 @@ class ViewCountUpdate implements DeferrableUpdate {
 	protected function collect() {
 		$updateFreq = MediaWikiServices::getInstance()->getMainConfig()
 													  ->get( "HitcounterUpdateFreq" );
-		$dbw = DBConnect::getWritingConnect();
 
-		$rown = $dbw->selectField( $hitcounterTable, 'COUNT(*)', [], __METHOD__ );
-		if ( $rown < $updateFreq ) {
+		$dbw = DBConnect::getWritingConnect();
+		$count = $dbw->selectRowCount(
+			'hit_counter_extension',
+			'*',
+			[],
+			__METHOD__,
+			[ 'LIMIT' => $updateFreq ]
+		);
+		if ( $count < $updateFreq ) {
 			return;
 		}
 
@@ -109,7 +122,6 @@ class ViewCountUpdate implements DeferrableUpdate {
 		$acchitsTable = $dbw->tableName( 'acchits' );
 		$pageTable = $dbw->tableName( 'hit_counter' );
 
-		$dbw->lockTables( [], [ $hitcounterTable ], __METHOD__, false );
 		$dbw->query(
 			"CREATE TEMPORARY TABLE $acchitsTable $tabletype AS " .
 			"SELECT hc_id,COUNT(*) AS hc_n FROM $hitcounterTable " .
@@ -117,7 +129,6 @@ class ViewCountUpdate implements DeferrableUpdate {
 			__METHOD__
 		);
 		$dbw->delete( $hitcounterTable, '*', __METHOD__ );
-		$dbw->unlockTables( __METHOD__ );
 
 		if ( $dbType === 'mysql' ) {
 			$dbw->query(

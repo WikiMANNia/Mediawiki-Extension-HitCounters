@@ -34,13 +34,13 @@ class Hooks {
 	public static function onSpecialStatsAddExtra(
 		array &$extraStats, IContextSource $statsPage
 	) {
-		$totalEdits = SiteStats::edits();
-		$totalViews = HitCounters::views();
+		$totalEdits = SiteStats::edits() ?? 0;
+		$totalViews = HitCounters::views() ?? 0;
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-total'] = $totalViews;
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-peredit'] =
-				$totalEdits
+				( $totalEdits > 0 )
 				? sprintf( '%.2f', $totalViews / $totalEdits )
 				: 0;
 
@@ -56,16 +56,16 @@ class Hooks {
 
 		$most_viewed_pages_array = [];
 		if ( $res->numRows() > 0 ) {
-
 			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 
 			foreach ( $res as $row ) {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
+				$key   = $title->getPrefixedText();
+				$link  = $linkRenderer->makeLink( $title );
 
 				if ( $title instanceof Title ) {
-					$most_viewed_pages_array[ $title->getPrefixedText() ]['number'] = $row->value;
-					$most_viewed_pages_array[ $title->getPrefixedText() ]['name'] =
-						$linkRenderer->makeLink( $title );
+					$most_viewed_pages_array[ $key ]['number'] = $row->value;
+					$most_viewed_pages_array[ $key ]['name']   = $link;
 				}
 			}
 			$res->free();
@@ -141,7 +141,7 @@ class Hooks {
 	public static function onSkinAddFooterLinks(
 		SkinTemplate $skin,
 		string $key,
-		?array &$footerLinks
+		array &$footerLinks
 	) {
 		if ( $key !== 'info' ) {
 			return;
@@ -168,13 +168,7 @@ class Hooks {
 					->numParams( $charactercount )->parse();
 
 				// Set up the footer
-				if ( is_array( $footerLinks ) ) {
-					// 'viewcount' goes after 'lastmod', we'll just assume
-					// 'viewcount' is the 0th item
-					array_splice( $footerLinks, 1, 0, [ 'viewcount' => $viewcountMsg ] );
-				} else {
-					$footerLinks['viewcount'] = $viewcountMsg;
-				}
+				$footerLinks['viewcount'] = $viewcountMsg;
 			}
 		}
 	}
