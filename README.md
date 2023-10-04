@@ -74,9 +74,9 @@ v0.3.4
 - Use: MediaWikiServices
 - Change - 10 Oct 2021: Avoid using MWNamespace class - [Bug: T291389](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/d0f37b82b53368fc2bb50c2ff3ce29ba0b3b4cbc)
 - Change -  4 Nov 2021: Replace $wgDBprefix with use of table alias (https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/6827d8cdd7420074c50d38a8724c72fac5feac32)
-- Update - 28 Sep 2022: Replace Parser::getFunctionLang() with ::getTargetLanguage(). Parser::getFunctionLang() is being deprecated. [Bug: T318860](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/9af63d30b535efd4bc181736adee53dc70e53a3a)
 - Fix -  2 Dec 2021: Avoid the use of Database::lockTables() - [Bug: T294969] (https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/f58214de83c10fe3034249c9cb5e98e4db5511e8)
   use TRX_ROUND_ABSENT and onTransactionPreCommitOrIdle() to avoid the automatic DeferredUpdates transaction
+- Update - 28 Sep 2022: Replace Parser::getFunctionLang() with ::getTargetLanguage(). Parser::getFunctionLang() is being deprecated. [Bug: T318860](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/9af63d30b535efd4bc181736adee53dc70e53a3a)
 
 v0.3.5
 
@@ -86,14 +86,22 @@ v0.4.0
 
 Refactoring: Add file `HitCountersDBConnect.php` and class `DBConnect`
 
+v0.4.1
+
+Code Review.
+
 # Default settings
 
 * $wgDisableCounters = false;              Set to true to disable them completely.
 * $wgEnableAddPageId = false;              Set to true to display the page id on [[Special:PopularPages]].
 * $wgEnableAddTextLength = false;          Set to true to display the page length on [[Special:PopularPages]].
 * $wgEnableCountersAtTheFooter = false;    Set to true to display them at the footer.
-* $wgNumberOfMostViewedPages = 10;         Set the Number of Most Viewed Pages
+* $wgNumberOfMostViewedPages = 50;         Set the Number of Most Viewed Pages
 * $wgHitcounterUpdateFreq = 1;
+
+## Compatibility
+
+This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.13`, `1.39.5` and, `1.40.1`.
 
 ## Background
 
