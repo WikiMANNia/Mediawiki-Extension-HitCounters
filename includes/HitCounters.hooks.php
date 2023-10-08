@@ -7,8 +7,10 @@ use DatabaseUpdater;
 use DeferredUpdates;
 use IContextSource;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserIdentity;
 use Parser;
 use PPFrame;
+use RequestContext;
 use SiteStats;
 use SkinTemplate;
 use Title;
@@ -25,6 +27,31 @@ use WikiPage;
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Hooks {
+
+	/**
+	 * @param User $user
+	 * @param array &$preferences
+	 */
+	public static function onGetPreferences( User $user, array &$preferences ) {
+		$preferences['hitcounters-pageid'] = [
+			'type' => 'toggle',
+			'label-message' => 'hitcounters-pageid-label',
+			'section' => 'hitcounters',
+		];
+		$preferences['hitcounters-textlength'] = [
+			'type' => 'toggle',
+			'label-message' => 'hitcounters-textlength-label',
+			'section' => 'hitcounters',
+		];
+		$preferences['hitcounters-numberofmostviewedpages'] = [
+			'type' => 'int',
+			'label-message' => 'hitcounters-numberofmostviewedpages-label',
+			'maxLength' => 4,
+			'default' => 50,
+			'section' => 'hitcounters',
+		];
+	}
+
 	public static function onLoadExtensionSchemaUpdates(
 		DatabaseUpdater $updater
 	) {
@@ -45,10 +72,11 @@ class Hooks {
 				: 0;
 
 		$dbr = DBConnect::getReadingConnect();
-		$conf = MediaWikiServices::getInstance()->getMainConfig();
+		$conf = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$user = RequestContext::getMain()->getUser();
 		$param = DBConnect::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
-		$options['LIMIT'] = $conf->get( "NumberOfMostViewedPages" );
+		$options['LIMIT'] = $conf->getIntOption( $user, 'hitcounters-numberofmostviewedpages' );
 		$res = $dbr->select(
 			$param['tables'], $param['fields'], [], __METHOD__,
 			$options, $param['join_conds']

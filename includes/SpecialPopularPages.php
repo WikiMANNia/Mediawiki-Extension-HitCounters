@@ -45,8 +45,8 @@ class SpecialPopularPages extends QueryPage {
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
 
-		$enableAddPageId     = $this->getConfig()->get( 'EnableAddPageId' );
-		$enableAddTextLength = $this->getConfig()->get( 'EnableAddTextLength' );
+		$enableAddPageId     = MediaWikiServices::getInstance()->getUserOptionsLookup()->getBoolOption( $this->getUser(), 'hitcounters-pageid' );
+		$enableAddTextLength = MediaWikiServices::getInstance()->getUserOptionsLookup()->getBoolOption( $this->getUser(), 'hitcounters-textlength' );
 
 		$this->mMsgToken = 'hitcounters-nviews';
 		$this->mMsgToken .= $enableAddTextLength ? '-nlength' : '';
