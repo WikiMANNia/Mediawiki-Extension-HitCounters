@@ -54,7 +54,7 @@ class ViewCountUpdate implements DeferrableUpdate {
 
 		if ( $updateFreq <= 1 || $dbw->getType() === 'sqlite' ) {
 			$dbw->onTransactionIdle(
-				function () use ( $dbw, $pageId, $fname ) {
+				static function () use ( $dbw, $pageId, $fname ) {
 					try {
 						wfDebugLog( "HitCounter", "About to update $pageId" );
 						$dbw->upsert( 'hit_counter',
@@ -73,7 +73,7 @@ class ViewCountUpdate implements DeferrableUpdate {
 			);
 		} else {
 			$dbw->onTransactionIdle(
-				function () use ( $dbw, $pageId, $fname, $updateFreq ) {
+				static function () use ( $dbw, $pageId, $fname, $updateFreq ) {
 					try {
 						// Since this table is non-transactional, the contention is minimal
 						$dbw->insert( 'hit_counter_extension', [ 'hc_id' => $pageId ], $fname );
@@ -96,8 +96,13 @@ class ViewCountUpdate implements DeferrableUpdate {
 
 		$dbw = DBConnect::getWritingConnect();
 
-		$rown = $dbw->selectField( $hitcounterTable, 'COUNT(*)', [], __METHOD__ );
-		if ( $rown < $wgHitcounterUpdateFreq ) {
+		$count = $dbw->selectField(
+			'hit_counter_extension',
+			'COUNT(*)',
+			[],
+			__METHOD__
+		);
+		if ( $count < $wgHitcounterUpdateFreq ) {
 			return;
 		}
 

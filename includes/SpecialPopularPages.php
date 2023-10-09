@@ -42,11 +42,13 @@ class SpecialPopularPages extends QueryPage {
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
 
-		global $wgEnableAddTextLength, $wgEnableAddPageId;
+		$user = $this->getUser();
+		$enableAddPageId     = $user->getBoolOption( 'hitcounters-pageid' );
+		$enableAddTextLength = $user->getBoolOption( 'hitcounters-textlength' );
 
 		$this->mMsgToken = 'hitcounters-nviews';
-		$this->mMsgToken .= $wgEnableAddTextLength ? '-nlength' : '';
-		$this->mMsgToken .= $wgEnableAddPageId ? '-id' : '';
+		$this->mMsgToken .= $enableAddTextLength ? '-nlength' : '';
+		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
 	}
 
 	public function isExpensive() {
@@ -83,10 +85,7 @@ class SpecialPopularPages extends QueryPage {
 			);
 		}
 
-		$link = Linker::linkKnown(
-			$title,
-			$this->getLanguage()->convert( $title->getPrefixedText() )
-		);
+		$link = Linker::linkKnown( $title );
 
 		return $this->getLanguage()->specialList(
 			$link,

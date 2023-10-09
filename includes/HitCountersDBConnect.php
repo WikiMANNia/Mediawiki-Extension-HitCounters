@@ -6,9 +6,6 @@ use MWNamespace;
 
 /**
  * Settings is a singleton - used to get access to DB.
- *
- * Seit PHP 5.4 kann auch eine kurze Array-Syntax verwendet werden,
- * welche array() durch [] ersetzt.
  */
 
 /**
@@ -56,31 +53,30 @@ class DBConnect {
 		return wfGetDB( DB_PRIMARY );
 	}
 
-	public static function getDBPrefix() {
-		global $wgDBprefix;
-		return $wgDBprefix; // 'test_'
-	}
-
 	public static function getQueryInfo() {
-		$prefix = self::getDBPrefix();
+
+		$namespaces = MWNamespace::getContentNamespaces();
 
 		return [
-			'tables' => [ 'page', 'hit_counter' ],
+			'tables' => [
+				'p' => 'page',
+				'h' => 'hit_counter'
+			],
 			'fields' => [
-				'namespace' => 'page_namespace',
-				'title'  => 'page_title',
-				'value'  => 'page_counter',
-				'length' => 'page_len'
+				'namespace' => 'p.page_namespace',
+				'title'  => 'p.page_title',
+				'value'  => 'h.page_counter',
+				'length' => 'p.page_len'
 			],
 			'conds' => [
-				'page_is_redirect' => 0,
-				'page_namespace' => MWNamespace::getContentNamespaces(),
+				'p.page_is_redirect' => 0,
+				'p.page_namespace' => $namespaces
 			],
 			'join_conds' => [
-				'page' => [
-					'INNER JOIN',
-					$prefix . 'page.page_id = ' .
-					$prefix . 'hit_counter.page_id'
+				'p' => [
+					'INNER JOIN', [
+						'p.page_id = h.page_id'
+					]
 				]
 			]
 		];

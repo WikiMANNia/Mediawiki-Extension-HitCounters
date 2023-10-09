@@ -8,6 +8,7 @@ use DeferredUpdates;
 use IContextSource;
 use Parser;
 use PPFrame;
+use RequestContext;
 use QuickTemplate;
 use SiteStats;
 use SkinTemplate;
@@ -25,6 +26,32 @@ use WikiPage;
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Hooks {
+
+	/**
+	 * @param User $user
+	 * @param array &$preferences
+	 */
+	public static function onGetPreferences( $user, &$preferences ) {
+		$preferences['hitcounters-pageid'] = [
+			'type' => 'toggle',
+			'label-message' => 'hitcounters-pageid-label',
+			'section' => 'hitcounters',
+		];
+		$preferences['hitcounters-textlength'] = [
+			'type' => 'toggle',
+			'label-message' => 'hitcounters-textlength-label',
+			'section' => 'hitcounters',
+		];
+		$preferences['hitcounters-numberofmostviewedpages'] = [
+			'type' => 'int',
+			'label-message' => 'hitcounters-numberofmostviewedpages-label',
+			'maxLength' => 4,
+			'default' => 50,
+			'section' => 'hitcounters',
+		];
+		return true;
+	}
+
 	public static function onLoadExtensionSchemaUpdates(
 		DatabaseUpdater $updater
 	) {
@@ -34,22 +61,21 @@ class Hooks {
 	public static function onSpecialStatsAddExtra(
 		array &$extraStats, IContextSource $statsPage
 	) {
-		global $wgNumberOfMostViewedPages;
-
-		$totalEdits = SiteStats::edits();
-		$totalViews = HitCounters::views();
+		$totalEdits = SiteStats::edits() ?? 0;
+		$totalViews = HitCounters::views() ?? 0;
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-total'] = $totalViews;
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-peredit'] =
-				$totalEdits
+				( $totalEdits > 0 )
 				? sprintf( '%.2f', $totalViews / $totalEdits )
 				: 0;
 
 		$dbr = DBConnect::getReadingConnect();
+		$user = RequestContext::getMain()->getUser();
 		$param = DBConnect::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
-		$options['LIMIT'] = $wgNumberOfMostViewedPages;
+		$options['LIMIT'] = $user->getIntOption( 'hitcounters-numberofmostviewedpages' );
 		$res = $dbr->select(
 			$param['tables'], $param['fields'], [], __METHOD__,
 			$options, $param['join_conds']
@@ -59,11 +85,12 @@ class Hooks {
 		if ( $res->numRows() > 0 ) {
 			foreach ( $res as $row ) {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
+				$key   = $title->getPrefixedText();
+				$link  = \Linker::linkKnown( $title );
 
 				if ( $title instanceof Title ) {
-					$most_viewed_pages_array[ $title->getPrefixedText() ]['number'] = $row->value;
-					$most_viewed_pages_array[ $title->getPrefixedText() ]['name'] =
-						\Linker::linkKnown( $title );
+					$most_viewed_pages_array[ $key ]['number'] = $row->value;
+					$most_viewed_pages_array[ $key ]['name']   = $link;
 				}
 			}
 			$res->free();
