@@ -23,6 +23,10 @@
 	"hitcounters-statistics-views-total-desc": "Views to non-existing pages and special pages are not included",
 	"hitcounters-statistics-views-peredit": "Views per edit",
 	"hitcounters-statistics-mostpopular": "Most viewed pages",
+	"prefs-hitcounters": "Hit Counters",
+	"hitcounters-numberofmostviewedpages-label": "Number of most viewed pages",
+	"hitcounters-pageid-label": "Show page ID",
+	"hitcounters-textlength-label": "Show textlength",
 	"abusefilter-edit-builder-vars-page-views": "Page views",
 	"abusefilter-edit-builder-vars-movedfrom-views": "Source page views",
 	"abusefilter-edit-builder-vars-movedto-views": "Target page views"

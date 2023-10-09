@@ -25,6 +25,10 @@
 	"hitcounters-statistics-views-total-desc": "No se incluyen las visualizaciones a páginas que no existan ni a las páginas especiales",
 	"hitcounters-statistics-views-peredit": "Visualizaciones por edición",
 	"hitcounters-statistics-mostpopular": "Páginas más vistas",
+	"prefs-hitcounters": "Hit Counters",
+	"hitcounters-numberofmostviewedpages-label": "Número de páginas más vistas",
+	"hitcounters-pageid-label": "Mostrar ID de página",
+	"hitcounters-textlength-label": "Mostrar longitud de texto",
 	"abusefilter-edit-builder-vars-page-views": "Vistas de la página",
 	"abusefilter-edit-builder-vars-movedfrom-views": "Páginas vistas de la fuente",
 	"abusefilter-edit-builder-vars-movedto-views": "Páginas de destino"
