@@ -23,7 +23,7 @@
 	"hitcounters-statistics-views-total-desc": "Views to non-existing pages and special pages are not included",
 	"hitcounters-statistics-views-peredit": "Views per edit",
 	"hitcounters-statistics-mostpopular": "Most viewed pages",
-	"prefs-hitcounters": "Seitenaufruf-Zähler",
+	"prefs-hitcounters": "Hit Counters",
 	"hitcounters-numberofmostviewedpages-label": "Number of most viewed pages",
 	"hitcounters-pageid-label": "Show page ID",
 	"hitcounters-textlength-label": "Show textlength",
