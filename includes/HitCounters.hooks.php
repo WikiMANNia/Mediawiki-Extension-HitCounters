@@ -61,8 +61,8 @@ class Hooks {
 	public static function onSpecialStatsAddExtra(
 		array &$extraStats, IContextSource $statsPage
 	) {
-		$totalEdits = SiteStats::edits() ?? 0;
-		$totalViews = HitCounters::views() ?? 0;
+		$totalEdits = SiteStats::edits() ? SiteStats::edits() : 0;
+		$totalViews = HitCounters::views() ? HitCounters::views() : 0;
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-total'] = $totalViews;
 		$extraStats['hitcounters-statistics-header-views']
