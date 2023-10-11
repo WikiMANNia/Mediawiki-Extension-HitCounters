@@ -15,11 +15,8 @@ class HCUpdater extends DatabaseUpdater {
 				break;
 		}
 
-		/* This is an ugly abuse to rename a table. */
-		$updater->modifyExtensionField( 'hitcounter', 'hc_id', "$base/rename_table.sql" );
 		$updater->addExtensionTable( 'hit_counter_extension', "$base/hit_counter_extension.sql" );
 		$updater->addExtensionTable( 'hit_counter', "$base/page_counter.sql" );
-		$updater->dropExtensionField( 'page', 'page_counter', "$sqlDirBase/drop_field.sql" );
 	}
 
 	public function clearExtensionUpdates() {

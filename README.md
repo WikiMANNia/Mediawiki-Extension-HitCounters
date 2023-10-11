@@ -8,11 +8,11 @@ El mantenimiento de esta bifurcación de la extensión de MediaWiki [HitCounters
 
 ## Version history
 
-v0.2.0
+v0.3.0
 
-As found [here](https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/HitCounters/+/refs/heads/REL1_25) (07 Nov 2015)
+As found [here](https://github.com/wikimedia/mediawiki-extensions-HitCounters/releases/tag/0.3) (24 Nov 2015)
 
-v0.3.0.8
+v0.3.0.1-0.3.0.8
 
 - Fix: Several translation issues
 - Fix - 23 Nov 2017: {{NUMBEROFVIEWS}} in MediaWiki 1.29 - [Bug: T142127](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/213b2c6e40b5ef332381c82655d3ce227ace5c71)
@@ -43,6 +43,27 @@ Version 0.3.2 is compatible with 1.25+ until 1.35+.
 
 - Fixed a problem with backward compatibility to version 1.25
 
+v0.3.2.1
+
+Version 0.3.2.1 is compatible with 1.27+ until 1.35+.
+
+- Fix -  7 Dec 2020: Replaced removed wfMemcKey (deprecated since 1.30) with makeKey (since 1.27) - [Bug: T266502](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/d31e0b8fe417bea31275c8be47b54a6adc6c75cc)
+- Fix - 16 Mar 2021: Fix replacement for wfGetMainCache - [Bug: T277494](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/c4c98d3dea5887fd49b72a22ded7c54fade49a60)
+
+v0.3.2.2
+
+Version 0.3.2.2 is compatible with 1.32+ until 1.35+.
+
+- Fix - 10 Dec 2020: Avoid calls to deprecated Database::onTransactionIdle() method (since 1.32) - [diff](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/ba48ca56e9a271eeb14dd55a83dce8cd5e4e52ac)
+- Fix - 29 Mar 2021: Stop using $wgContLang global, "getLanguage()" -> "getContentLanguage()" (since 1.32) - [diff](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/35624f0b2d75f1896e38a81aeb77c696d87a2c0b)
+- Fix - 12 Jul 2022: Replace most usages of Linker with LinkRenderer - [Bug: T279351](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/6b3438c4ea33fa817097e6aeb44fc34c4a26f83b)
+
+v0.3.2.3
+
+Version 0.3.2.3 is compatible with 1.35+.
+
+- Update - Use Hook [SkinAddFooterLinks](https://www.mediawiki.org/wiki/Manual:Hooks/SkinAddFooterLinks) (since 1.35) instead of [SkinTemplateOutputPageBeforeExec](https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateOutputPageBeforeExec). (deprecated since 1.35)
+
 v0.3.3
 
 - Add: Output of the text length in the special page `Popular Pages`
@@ -50,6 +71,11 @@ v0.3.3
 
 v0.3.4
 
+- Use: MediaWikiServices
+- Change - 10 Oct 2021: Avoid using MWNamespace class - [Bug: T291389](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/d0f37b82b53368fc2bb50c2ff3ce29ba0b3b4cbc)
+- Change -  4 Nov 2021: Replace $wgDBprefix with use of table alias (https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/6827d8cdd7420074c50d38a8724c72fac5feac32)
+- Fix -  2 Dec 2021: Avoid the use of Database::lockTables() - [Bug: T294969] (https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/f58214de83c10fe3034249c9cb5e98e4db5511e8)
+  use TRX_ROUND_ABSENT and onTransactionPreCommitOrIdle() to avoid the automatic DeferredUpdates transaction
 - Update - 28 Sep 2022: Replace Parser::getFunctionLang() with ::getTargetLanguage(). Parser::getFunctionLang() is being deprecated. [Bug: T318860](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/9af63d30b535efd4bc181736adee53dc70e53a3a)
 
 v0.3.5
@@ -79,7 +105,7 @@ Benutzerdefinierte [Einstellungen](https://www.mediawiki.org/wiki/Help:Preferenc
 
 ## Compatibility
 
-This extension works from REL1_25 and has been tested up to MediaWiki version `1.25.6`, `1.31.16` and, `1.35.13`.
+This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.13`, `1.39.5` and, `1.40.1`.
 
 ## Background
 

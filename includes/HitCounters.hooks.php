@@ -6,10 +6,11 @@ use CoreParserFunctions;
 use DatabaseUpdater;
 use DeferredUpdates;
 use IContextSource;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserIdentity;
 use Parser;
 use PPFrame;
 use RequestContext;
-use QuickTemplate;
 use SiteStats;
 use SkinTemplate;
 use Title;
@@ -31,7 +32,7 @@ class Hooks {
 	 * @param User $user
 	 * @param array &$preferences
 	 */
-	public static function onGetPreferences( $user, &$preferences ) {
+	public static function onGetPreferences( User $user, array &$preferences ) {
 		$preferences['hitcounters-pageid'] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-pageid-label',
@@ -50,7 +51,6 @@ class Hooks {
 			'default' => 50,
 			'section' => 'hitcounters',
 		];
-		return true;
 	}
 
 	public static function onLoadExtensionSchemaUpdates(
@@ -62,8 +62,8 @@ class Hooks {
 	public static function onSpecialStatsAddExtra(
 		array &$extraStats, IContextSource $statsPage
 	) {
-		$totalEdits = SiteStats::edits() ? SiteStats::edits() : 0;
-		$totalViews = HitCounters::views() ? HitCounters::views() : 0;
+		$totalEdits = SiteStats::edits() ?? 0;
+		$totalViews = HitCounters::views() ?? 0;
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-total'] = $totalViews;
 		$extraStats['hitcounters-statistics-header-views']
@@ -73,10 +73,11 @@ class Hooks {
 				: 0;
 
 		$dbr = DBConnect::getReadingConnect();
+		$conf = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		$user = RequestContext::getMain()->getUser();
 		$param = DBConnect::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
-		$options['LIMIT'] = $user->getIntOption( 'hitcounters-numberofmostviewedpages', 50 );
+		$options['LIMIT'] = $conf->getIntOption( $user, 'hitcounters-numberofmostviewedpages', 50 );
 		$res = $dbr->select(
 			$param['tables'], $param['fields'], [], __METHOD__,
 			$options, $param['join_conds']
@@ -84,10 +85,12 @@ class Hooks {
 
 		$most_viewed_pages_array = [];
 		if ( $res->numRows() > 0 ) {
+			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+
 			foreach ( $res as $row ) {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
 				$key   = $title->getPrefixedText();
-				$link  = \Linker::linkKnown( $title );
+				$link  = $linkRenderer->makeLink( $title );
 
 				if ( $title instanceof Title ) {
 					$most_viewed_pages_array[ $key ]['number'] = $row->value;
@@ -123,11 +126,11 @@ class Hooks {
 
 	public static function onParserGetVariableValueSwitch( Parser $parser,
 		array &$cache, $magicWordId, &$ret, PPFrame $frame ) {
-		global $wgDisableCounters;
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
 
 		foreach ( self::getMagicWords() as $magicWord => $processingFunction ) {
 			if ( $magicWord === $magicWordId ) {
-				if ( !$wgDisableCounters ) {
+				if ( !$conf->get( "DisableCounters" ) ) {
 					$ret = $cache[$magicWordId] = CoreParserFunctions::formatRaw(
 						call_user_func( $processingFunction, $parser, $frame, null ),
 						null,
@@ -143,11 +146,11 @@ class Hooks {
 	}
 
 	public static function onPageViewUpdates( WikiPage $wikipage, User $user ) {
-		global $wgDisableCounters;
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
 
 		// Don't update page view counters on views from bot users (bug 14044)
 		if (
-			!$wgDisableCounters &&
+			!$conf->get( "DisableCounters" ) &&
 			!$user->isAllowed( 'bot' ) &&
 			$wikipage->exists()
 		) {
@@ -156,32 +159,26 @@ class Hooks {
 	}
 
 	/**
-	 * Hook: SkinTemplateOutputPageBeforeExec
-	 * @param SkinTemplate $skin
-	 * @param QuickTemplate $tpl
+	 * Hook: SkinAddFooterLinks
+	 * @param Skin $skin
+	 * @param string $key the current key for the current group (row) of footer links.
+	 *   e.g. `info` or `places`.
+	 * @param array &$footerLinks an empty array that can be populated with new links.
+	 *   keys should be strings and will be used for generating the ID of the footer item
+	 *   and value should be an HTML string.
 	 */
-	public static function onSkinTemplateOutputPageBeforeExec(
-		SkinTemplate &$skin,
-		QuickTemplate &$tpl
+	public static function onSkinAddFooterLinks(
+		SkinTemplate $skin,
+		string $key,
+		array &$footerLinks
 	) {
-		global $wgDisableCounters, $wgEnableCountersAtTheFooter, $wgEnableAddTextLength;
-
-		/* Without this check two lines are added to the page. */
-		static $called = false;
-		if ( $called ) {
+		if ( $key !== 'info' ) {
 			return;
 		}
-		$called = true;
 
-		if ( !$wgDisableCounters && $wgEnableCountersAtTheFooter ) {
+		$conf = MediaWikiServices::getInstance()->getMainConfig();
 
-			$footer = $tpl->get( 'footerlinks' );
-			if ( isset( $footer['info'] ) && is_array( $footer['info'] ) ) {
-				// 'viewcount' goes after 'lastmod', we'll just assume
-				// 'viewcount' is the 0th item
-				array_splice( $footer['info'], 1, 0, 'viewcount' );
-				$tpl->set( 'footerlinks', $footer );
-			}
+		if ( !$conf->get( "DisableCounters" ) && $conf->get( "EnableCountersAtTheFooter" ) ) {
 
 			$viewcount = HitCounters::getCount( $skin->getTitle() );
 
@@ -191,14 +188,16 @@ class Hooks {
 					"Got viewcount=$viewcount and putting in page"
 				);
 				$msg = 'hitcounters-viewcount';
-				if ( $wgEnableAddTextLength ) {
+				if ( $conf->get( "EnableAddTextLength" ) ) {
 					$msg .= '-len';
 				}
 				$charactercount = $skin->getTitle()->getLength();
-				$tpl->set( 'viewcount',
-					$skin->msg( $msg )
-						->numParams( $viewcount )
-						->numParams( $charactercount )->parse() );
+				$viewcountMsg = $skin->msg( $msg )
+					->numParams( $viewcount )
+					->numParams( $charactercount )->parse();
+
+				// Set up the footer
+				$footerLinks['viewcount'] = $viewcountMsg;
 			}
 		}
 	}
