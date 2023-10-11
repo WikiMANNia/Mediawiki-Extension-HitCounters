@@ -2,7 +2,7 @@
 
 namespace HitCounters;
 
-use MediaWiki\MediaWikiServices;
+use MWNamespace;
 
 /**
  * Settings is a singleton - used to get access to DB.
@@ -12,17 +12,21 @@ use MediaWiki\MediaWikiServices;
 * backward compatibility
 * fix an issue that was introduced here:
 * https://github.com/WikiMANNia/mediawiki-extensions-HitCounters/commit/822140f6d96974f5051449837e7f46a771d5f6a5#diff-1b6cef982bd7ace2232d91536185b83a
+* @since 1.31.15
 * @since 1.35.3
 * define( 'DB_PRIMARY', ILoadBalancer::DB_PRIMARY )
-* DB_PRIMARY remains undefined in MediaWiki before v1.35.3
+* DB_PRIMARY remains undefined in MediaWiki before v1.31.15/v1.35.3
+* @since 1.28.0
+* define( 'DB_REPLICA', ILoadBalancer::DB_REPLICA )
+* DB_REPLICA remains undefined in MediaWiki before v1.28
 */
 defined('DB_PRIMARY') or define('DB_PRIMARY', DB_MASTER);
+defined('DB_REPLICA') or define('DB_REPLICA', DB_SLAVE);
 
 
 class DBConnect {
 
 	private static $instance;
-	private static $services;
 
 	private function __construct() { }
 
@@ -35,7 +39,6 @@ class DBConnect {
 		if ( self::$instance === null ) {
 			// Erstelle eine neue Instanz, falls noch keine vorhanden ist.
 			self::$instance = new self();
-			self::$services = MediaWikiServices::getInstance();
 		}
 
 		// Liefere immer die selbe Instanz.
@@ -50,16 +53,9 @@ class DBConnect {
 		return wfGetDB( DB_PRIMARY );
 	}
 
-	public static function getWritingConnectFromLoadBalancer() {
-		$lb = self::$services->getDBLoadBalancer();
-		return $lb->getConnection( DB_PRIMARY, [], false );
-	}
-
 	public static function getQueryInfo() {
 
-		$namespaces = MediaWikiServices::getInstance()
-					->getNamespaceInfo()
-					->getContentNamespaces();
+		$namespaces = MWNamespace::getContentNamespaces();
 
 		return [
 			'tables' => [

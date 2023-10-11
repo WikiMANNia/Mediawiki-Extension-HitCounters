@@ -31,29 +31,24 @@ namespace HitCounters;
 
 use Html;
 use Linker;
-use MediaWiki\MediaWikiServices;
 use QueryPage;
 use Skin;
 use Title;
 
 class SpecialPopularPages extends QueryPage {
 
-	private $mLinkRenderer;
-	private $mContentLanguage;
-	private string $mMsgToken;
+	private $mMsgToken;
 
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
 
-		$enableAddPageId     = MediaWikiServices::getInstance()->getUserOptionsLookup()->getBoolOption( $this->getUser(), 'hitcounters-pageid' );
-		$enableAddTextLength = MediaWikiServices::getInstance()->getUserOptionsLookup()->getBoolOption( $this->getUser(), 'hitcounters-textlength' );
+		$user = $this->getUser();
+		$enableAddPageId     = $user->getBoolOption( 'hitcounters-pageid' );
+		$enableAddTextLength = $user->getBoolOption( 'hitcounters-textlength' );
 
 		$this->mMsgToken = 'hitcounters-nviews';
 		$this->mMsgToken .= $enableAddTextLength ? '-nlength' : '';
 		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
-
-		$this->mLinkRenderer = $this->getLinkRenderer();
-		$this->mContentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
 	}
 
 	public function isExpensive() {
@@ -90,7 +85,7 @@ class SpecialPopularPages extends QueryPage {
 			);
 		}
 
-		$link = $this->mLinkRenderer->makeKnownLink( $title );
+		$link = Linker::linkKnown( $title );
 
 		return $this->getLanguage()->specialList(
 			$link,
