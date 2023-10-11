@@ -44,6 +44,7 @@ class Hooks {
 		];
 		$preferences['hitcounters-numberofmostviewedpages'] = [
 			'type' => 'int',
+			'help-message' => 'hitcounters-numberofmostviewedpages-help',
 			'label-message' => 'hitcounters-numberofmostviewedpages-label',
 			'maxLength' => 4,
 			'default' => 50,
@@ -75,7 +76,7 @@ class Hooks {
 		$user = RequestContext::getMain()->getUser();
 		$param = DBConnect::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
-		$options['LIMIT'] = $user->getIntOption( 'hitcounters-numberofmostviewedpages' );
+		$options['LIMIT'] = $user->getIntOption( 'hitcounters-numberofmostviewedpages', 50 );
 		$res = $dbr->select(
 			$param['tables'], $param['fields'], [], __METHOD__,
 			$options, $param['join_conds']
