@@ -24,6 +24,7 @@
 	"hitcounters-statistics-views-peredit": "Views per edit",
 	"hitcounters-statistics-mostpopular": "Most viewed pages",
 	"prefs-hitcounters": "Hit Counters",
+	"hitcounters-numberofmostviewedpages-help": "Hide with the entry of “0”.",
 	"hitcounters-numberofmostviewedpages-label": "Number of most viewed pages",
 	"hitcounters-pageid-label": "Show page ID",
 	"hitcounters-textlength-label": "Show textlength",
