@@ -23,6 +23,7 @@
 	"hitcounters-statistics-views-peredit": "Aufrufe pro Bearbeitung",
 	"hitcounters-statistics-mostpopular": "Meistbetrachtete Seiten",
 	"prefs-hitcounters": "Seitenaufruf-Zähler",
+	"hitcounters-exempt-label": "Eigene Seitenaufrufe von der Statistik ausschließen",
 	"hitcounters-numberofmostviewedpages-help": "Mit der Eingabe von „0“ ausblenden.",
 	"hitcounters-numberofmostviewedpages-label": "Anzahl der meistbetrachteten Seiten",
 	"hitcounters-pageid-label": "Seiten-ID anzeigen",
