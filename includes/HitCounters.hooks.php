@@ -80,6 +80,11 @@ class Hooks implements
 	 */
 	public function onGetPreferences( $user, &$preferences ) {
 
+		$preferences['hitcounters-exempt'] = [
+			'type' => 'toggle',
+			'label-message' => 'hitcounters-exempt-label',
+			'section' => 'hitcounters',
+		];
 		$preferences['hitcounters-pageid'] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-pageid-label',
@@ -252,6 +257,7 @@ class Hooks implements
 		if (
 			!$this->config->get( "DisableCounters" ) &&
 			!$user->isAllowed( 'bot' ) &&
+			!$this->userOptionsLookup->getBoolOption( $user, 'hitcounters-exempt' ) &&
 			$wikipage->exists()
 		) {
 			DeferredUpdates::addUpdate( new ViewCountUpdate( $wikipage->getId() ) );
