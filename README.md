@@ -97,6 +97,13 @@ Benutzerdefinierte [Einstellungen](https://www.mediawiki.org/wiki/Help:Preferenc
 * `PageId`                             – Enable the page id in `Special:PopularPages` (Default is `false`)
 * `NumberOfMostViewedPages`            – Set the Number of Most Viewed Pages in [Statistics](https://www.mediawiki.org/wiki/Special:Statistics) (Default is `50`)
 
+v0.5.1
+
+Code Review.
+
+- Changed "configuration schema", replaced manifest version 1 with version 2.
+- Replaced static functions with implementing interfaces in class “Hooks”.
+
 # Default settings
 
 * $wgDisableCounters = `false`;              Set to `true` to disable them completely.
