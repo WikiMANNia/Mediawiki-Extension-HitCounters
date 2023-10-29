@@ -20,8 +20,6 @@
  * @file
  */
 
-use MediaWiki\MediaWikiServices;
-
 /**
  * Update for the 'page_counter' field, when $wgDisableCounters is false.
  *
@@ -30,16 +28,19 @@ use MediaWiki\MediaWikiServices;
  * from that table to update the 'page_counter' field in a batch operation.
  */
 class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
-	/** @var int Page ID to increment the view count */
-	protected $pageId;
+
+	protected int $pageId;
+	protected int $updateFreq;
 
 	/**
 	 * Constructor
 	 *
 	 * @param int $pageId Page ID to increment the view count
+	 * @param int $updateFreq
 	 */
-	public function __construct( $pageId ) {
+	public function __construct( $pageId, $updateFreq ) {
 		$this->pageId = intval( $pageId );
+		$this->updateFreq = $updateFreq;
 	}
 
 	public function getTransactionRoundRequirement() {
@@ -50,8 +51,8 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 	 * Run the update
 	 */
 	public function doUpdate() {
-		$updateFreq = MediaWikiServices::getInstance()->getMainConfig()
-													  ->get( "HitcounterUpdateFreq" );
+
+		$updateFreq = $this->updateFreq;
 		$dbw = DBConnect::getWritingConnect();
 		$pageId = $this->pageId;
 		$fname = __METHOD__;
@@ -101,9 +102,8 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 	}
 
 	protected function collect() {
-		$updateFreq = MediaWikiServices::getInstance()->getMainConfig()
-													  ->get( "HitcounterUpdateFreq" );
 
+		$updateFreq = $this->updateFreq;
 		$dbw = DBConnect::getWritingConnect();
 		$count = $dbw->selectRowCount(
 			'hit_counter_extension',
