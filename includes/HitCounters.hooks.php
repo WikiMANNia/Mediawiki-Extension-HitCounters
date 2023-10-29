@@ -18,23 +18,13 @@ use MediaWiki\Hook\SkinAddFooterLinksHook;
 use MediaWiki\Hook\SpecialStatsAddExtraHook;
 
 use AbuseFilterVariableHolder;
-use CoreParserFunctions;
-use DatabaseUpdater;
-use DeferredUpdates;
 use GlobalVarConfig;
-use IContextSource;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\User\UserIdentity;
 use MediaWiki\User\UserOptionsLookup;
 use Parser;
-use PPFrame;
-use RequestContext;
 use SiteStats;
 use Skin;
 use Title;
-use User;
-use ViewCountUpdate;
-use WikiPage;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,
@@ -57,20 +47,23 @@ class Hooks implements
 	SpecialStatsAddExtraHook
 {
 
-	/** @var Config */
-	private $config;
-	/** @var UserOptionsLookup */
-	private $userOptionsLookup;
+	private UserOptionsLookup $userOptionsLookup;
+	private bool $enabledCounters;
+	private bool $enabledCountersAtTheFooter;
+	private int $updateFreq;
 
 	/**
+	 * @param GlobalVarConfig $config
 	 * @param UserOptionsLookup $userOptionsLookup
 	 */
 	public function __construct(
 		GlobalVarConfig $config,
 		UserOptionsLookup $userOptionsLookup
 	) {
-		$this->config = $config;
 		$this->userOptionsLookup = $userOptionsLookup;
+		$this->enabledCounters = !$config->get( "DisableCounters" );
+		$this->enabledCountersAtTheFooter = $config->get( "EnableCountersAtTheFooter" );
+		$this->updateFreq = $config->get( "HitcounterUpdateFreq" );
 	}
 
 	/**
@@ -130,8 +123,15 @@ class Hooks implements
 	 */
 	public function onSpecialStatsAddExtra( &$extraStats, $context ) {
 
+		$user = $context->getUser();
+		$numberofmostviewedpages = $this->userOptionsLookup->getIntOption( $user, 'hitcounters-numberofmostviewedpages', 50 );
+		if ( $numberofmostviewedpages < 0 ) {
+			$numberofmostviewedpages = 0;
+		}
+
 		$totalEdits = SiteStats::edits() ?? 0;
 		$totalViews = HitCounters::views() ?? 0;
+
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-total'] = $totalViews;
 		$extraStats['hitcounters-statistics-header-views']
@@ -141,10 +141,9 @@ class Hooks implements
 				: 0;
 
 		$dbr = DBConnect::getReadingConnect();
-		$user = RequestContext::getMain()->getUser();
 		$param = DBConnect::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
-		$options['LIMIT'] = $this->userOptionsLookup->getIntOption( $user, 'hitcounters-numberofmostviewedpages', 50 );
+		$options['LIMIT'] = $numberofmostviewedpages;
 		$res = $dbr->select(
 			$param['tables'], $param['fields'], [], __METHOD__,
 			$options, $param['join_conds']
@@ -227,7 +226,7 @@ class Hooks implements
 
 		foreach ( self::getMagicWords() as $magicWord => $processingFunction ) {
 			if ( $magicWord === $magicWordId ) {
-				if ( !$this->config->get( "DisableCounters" ) ) {
+				if ( $this->enabledCounters ) {
 					$ret = $variableCache[$magicWordId] = CoreParserFunctions::formatRaw(
 						call_user_func( $processingFunction, $parser, $frame, null ),
 						null,
@@ -255,12 +254,12 @@ class Hooks implements
 
 		// Don't update page view counters on views from bot users (bug 14044)
 		if (
-			!$this->config->get( "DisableCounters" ) &&
+			$this->enabledCounters &&
 			!$user->isAllowed( 'bot' ) &&
 			!$this->userOptionsLookup->getBoolOption( $user, 'hitcounters-exempt' ) &&
 			$wikipage->exists()
 		) {
-			DeferredUpdates::addUpdate( new ViewCountUpdate( $wikipage->getId() ) );
+			DeferredUpdates::addUpdate( new ViewCountUpdate( $wikipage->getId(), $this->updateFreq ) );
 		}
 	}
 
@@ -282,7 +281,7 @@ class Hooks implements
 			return;
 		}
 
-		if ( !$this->config->get( "DisableCounters" ) && $this->config->get( "EnableCountersAtTheFooter" ) ) {
+		if ( $this->enabledCounters && $this->enabledCountersAtTheFooter ) {
 
 			$viewcount = HitCounters::getCount( $skin->getTitle() );
 
@@ -291,8 +290,9 @@ class Hooks implements
 					"HitCounters",
 					"Got viewcount=$viewcount and putting in page"
 				);
+				$enableAddTextLength = MediaWikiServices::getInstance()->getUserOptionsLookup()->getBoolOption( $this->getUser(), 'hitcounters-textlength' );
 				$msg = 'hitcounters-viewcount';
-				if ( $this->config->get( "EnableAddTextLength" ) ) {
+				if ( $enableAddTextLength ) {
 					$msg .= '-len';
 				}
 				$charactercount = $skin->getTitle()->getLength();

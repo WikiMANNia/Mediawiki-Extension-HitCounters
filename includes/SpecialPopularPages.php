@@ -30,7 +30,8 @@
 namespace HitCounters;
 
 use Html;
-use Linker;
+use Language;
+use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
 use QueryPage;
 use Skin;
@@ -38,22 +39,24 @@ use Title;
 
 class SpecialPopularPages extends QueryPage {
 
-	private $mLinkRenderer;
-	private $mContentLanguage;
+	private Language $mContentLanguage;
+	private LinkRenderer $mLinkRenderer;
 	private string $mMsgToken;
 
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
 
-		$enableAddPageId     = MediaWikiServices::getInstance()->getUserOptionsLookup()->getBoolOption( $this->getUser(), 'hitcounters-pageid' );
-		$enableAddTextLength = MediaWikiServices::getInstance()->getUserOptionsLookup()->getBoolOption( $this->getUser(), 'hitcounters-textlength' );
+		$this->mContentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
+		$this->mLinkRenderer = $this->getLinkRenderer();
+
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$user = $this->getUser();
+		$enableAddPageId     = $userOptionsLookup->getBoolOption( $user, 'hitcounters-pageid' );
+		$enableAddTextLength = $userOptionsLookup->getBoolOption( $user, 'hitcounters-textlength' );
 
 		$this->mMsgToken = 'hitcounters-nviews';
 		$this->mMsgToken .= $enableAddTextLength ? '-nlength' : '';
 		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
-
-		$this->mLinkRenderer = $this->getLinkRenderer();
-		$this->mContentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
 	}
 
 	public function isExpensive() {
