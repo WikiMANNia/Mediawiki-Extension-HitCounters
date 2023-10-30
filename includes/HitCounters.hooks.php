@@ -123,7 +123,7 @@ class Hooks implements
 	 */
 	public function onSpecialStatsAddExtra( &$extraStats, $context ) {
 
-		$user = $context->getAuthority();
+		$user = $context->getUser();
 		$numberofmostviewedpages = $this->userOptionsLookup->getIntOption( $user, 'hitcounters-numberofmostviewedpages', 50 );
 		if ( $numberofmostviewedpages < 0 ) {
 			$numberofmostviewedpages = 0;
