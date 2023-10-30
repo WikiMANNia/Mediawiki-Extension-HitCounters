@@ -20,6 +20,8 @@
  * @file
  */
 
+namespace HitCounters;
+
 /**
  * Update for the 'page_counter' field, when $wgDisableCounters is false.
  *
