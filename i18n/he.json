@@ -14,5 +14,6 @@
 	"hitcounters-statistics-views-total-desc": "צפיות בדפים שאינם קיימים ובדפים מיוחדים אינן כלולות",
 	"hitcounters-statistics-views-peredit": "מספר הצפיות לעריכה",
 	"hitcounters-statistics-mostpopular": "הדפים הנצפים ביותר",
+	"hitcounters-exempt-label": "לא לכלול את הצפיות שלך בדפים בסטטיסטיקה",
 	"abusefilter-edit-builder-vars-page-views": "מספר הצגות הדף"
 }
