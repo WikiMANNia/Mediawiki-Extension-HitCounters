@@ -1,6 +1,7 @@
 <?php
 /**
  * Implements Special:PopularPages
+ * A special page that list most viewed pages
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +22,11 @@
  * @ingroup SpecialPage
  */
 
-/**
- * A special page that list most viewed pages
- *
- * @ingroup SpecialPage
- */
-
 namespace HitCounters;
 
 use Html;
 use Language;
+use Linker;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
 use QueryPage;
