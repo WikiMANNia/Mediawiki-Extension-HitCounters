@@ -86,14 +86,26 @@ v0.4.0
 
 Refactoring: Add file `HitCountersDBConnect.php` and class `DBConnect`
 
+v0.4.1
+
+Code Review.
+
+v0.5.0
+
+Benutzerdefinierte [Einstellungen](https://www.mediawiki.org/wiki/Help:Preferences). / Custom [settings](https://www.mediawiki.org/wiki/Help:Preferences). / [Configuración](https://www.mediawiki.org/wiki/Help:Preferences) personalizada.
+* `TextLength`                         – Enable the textlength in `Special:PopularPages` (Default is `false`)
+* `PageId`                             – Enable the page id in `Special:PopularPages` (Default is `false`)
+* `NumberOfMostViewedPages`            – Set the Number of Most Viewed Pages in [Statistics](https://www.mediawiki.org/wiki/Special:Statistics) (Default is `50`)
+
 # Default settings
 
-* $wgDisableCounters = false;              Set to true to disable them completely.
-* $wgEnableAddPageId = false;              Set to true to display the page id on [[Special:PopularPages]].
-* $wgEnableAddTextLength = false;          Set to true to display the page length on [[Special:PopularPages]].
-* $wgEnableCountersAtTheFooter = false;    Set to true to display them at the footer.
-* $wgNumberOfMostViewedPages = 50;         Set the Number of Most Viewed Pages
-* $wgHitcounterUpdateFreq = 1;
+* $wgDisableCounters = `false`;              Set to `true` to disable them completely.
+* $wgEnableCountersAtTheFooter = `false`;    Set to `true` to display them at the footer.
+* $wgHitcounterUpdateFreq = `1`;
+
+## Compatibility
+
+This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.13`, `1.39.5` and, `1.40.1`.
 
 ## Background
 

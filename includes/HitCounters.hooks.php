@@ -1,4 +1,11 @@
 <?php
+/**
+ * Hooks for HitCounters extension
+ *
+ * @file
+ * @ingroup Extensions
+ */
+
 namespace HitCounters;
 
 use AbuseFilterVariableHolder;
@@ -10,7 +17,7 @@ use MediaWiki\MediaWikiServices;
 use Parser;
 use PPFrame;
 use SiteStats;
-use SkinTemplate;
+use Skin;
 use Title;
 use User;
 use ViewCountUpdate;
@@ -25,6 +32,33 @@ use WikiPage;
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Hooks {
+
+	/**
+	 * @param User $user
+	 * @param array &$preferences
+	 */
+	public static function onGetPreferences( User $user, array &$preferences ) {
+
+		$preferences['hitcounters-pageid'] = [
+			'type' => 'toggle',
+			'label-message' => 'hitcounters-pageid-label',
+			'section' => 'hitcounters',
+		];
+		$preferences['hitcounters-textlength'] = [
+			'type' => 'toggle',
+			'label-message' => 'hitcounters-textlength-label',
+			'section' => 'hitcounters',
+		];
+		$preferences['hitcounters-numberofmostviewedpages'] = [
+			'type' => 'int',
+			'help-message' => 'hitcounters-numberofmostviewedpages-help',
+			'label-message' => 'hitcounters-numberofmostviewedpages-label',
+			'maxLength' => 4,
+			'default' => 50,
+			'section' => 'hitcounters',
+		];
+	}
+
 	public static function onLoadExtensionSchemaUpdates(
 		DatabaseUpdater $updater
 	) {
@@ -32,10 +66,15 @@ class Hooks {
 	}
 
 	public static function onSpecialStatsAddExtra(
-		array &$extraStats, IContextSource $statsPage
+		array &$extraStats, IContextSource $context
 	) {
+		$conf = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$user = $context->getUser();
+		$numberofmostviewedpages = $conf->getIntOption( $user, 'hitcounters-numberofmostviewedpages', 50 );
+
 		$totalEdits = SiteStats::edits() ?? 0;
 		$totalViews = HitCounters::views() ?? 0;
+
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-total'] = $totalViews;
 		$extraStats['hitcounters-statistics-header-views']
@@ -45,10 +84,9 @@ class Hooks {
 				: 0;
 
 		$dbr = DBConnect::getReadingConnect();
-		$conf = MediaWikiServices::getInstance()->getMainConfig();
 		$param = DBConnect::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
-		$options['LIMIT'] = $conf->get( "NumberOfMostViewedPages" );
+		$options['LIMIT'] = $numberofmostviewedpages;
 		$res = $dbr->select(
 			$param['tables'], $param['fields'], [], __METHOD__,
 			$options, $param['join_conds']
@@ -98,6 +136,7 @@ class Hooks {
 
 	public static function onParserGetVariableValueSwitch( Parser $parser,
 		array &$cache, $magicWordId, &$ret, PPFrame $frame ) {
+
 		$conf = MediaWikiServices::getInstance()->getMainConfig();
 
 		foreach ( self::getMagicWords() as $magicWord => $processingFunction ) {
@@ -118,6 +157,7 @@ class Hooks {
 	}
 
 	public static function onPageViewUpdates( WikiPage $wikipage, User $user ) {
+
 		$conf = MediaWikiServices::getInstance()->getMainConfig();
 
 		// Don't update page view counters on views from bot users (bug 14044)
@@ -140,7 +180,7 @@ class Hooks {
 	 *   and value should be an HTML string.
 	 */
 	public static function onSkinAddFooterLinks(
-		SkinTemplate $skin,
+		Skin $skin,
 		string $key,
 		array &$footerLinks
 	) {

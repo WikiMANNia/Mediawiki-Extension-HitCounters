@@ -1,7 +1,7 @@
 {
 	"name": "HitCounters",
 	"namemsg": "hitcounters-extensionname",
-	"version": "0.4.1",
+	"version": "0.5.0",
 	"author": [
 		"[//mwstake.org Mark A. Hershberger]",
 		"[//wikimannia.org WikiMANNia]"
@@ -26,17 +26,18 @@
 		"PopularPages": "HitCounters\\SpecialPopularPages"
 	},
 	"Hooks": {
-		"SpecialStatsAddExtra": "HitCounters\\Hooks::onSpecialStatsAddExtra",
+		"GetPreferences": "HitCounters\\Hooks::onGetPreferences",
 		"LoadExtensionSchemaUpdates": "HitCounters\\Hooks::onLoadExtensionSchemaUpdates",
 		"MagicWordwgVariableIDs": "HitCounters\\Hooks::onMagicWordwgVariableIDs",
-		"ParserGetVariableValueSwitch": "HitCounters\\Hooks::onParserGetVariableValueSwitch",
-		"ParserFirstCallInit": "HitCounters\\Hooks::onParserFirstCallInit",
 		"PageViewUpdates": "HitCounters\\Hooks::onPageViewUpdates",
+		"ParserFirstCallInit": "HitCounters\\Hooks::onParserFirstCallInit",
+		"ParserGetVariableValueSwitch": "HitCounters\\Hooks::onParserGetVariableValueSwitch",
 		"SkinAddFooterLinks": "HitCounters\\Hooks::onSkinAddFooterLinks",
+		"SpecialStatsAddExtra": "HitCounters\\Hooks::onSpecialStatsAddExtra",
 		"AbuseFilter-builder": "HitCounters\\Hooks::onAbuseFilterBuilder",
+		"AbuseFilter-computeVariable": "HitCounters\\Hooks::onAbuseFilterComputeVariable",
 		"AbuseFilter-deprecatedVariables": "HitCounters\\Hooks::onAbuseFilterDeprecatedVariables",
-		"AbuseFilter-generateTitleVars": "HitCounters\\Hooks::onAbuseFilterGenerateTitleVars",
-		"AbuseFilter-computeVariable": "HitCounters\\Hooks::onAbuseFilterComputeVariable"
+		"AbuseFilter-generateTitleVars": "HitCounters\\Hooks::onAbuseFilterGenerateTitleVars"
 	},
 	"AutoloadClasses": {
 		"HitCounters\\DBConnect": "includes/HitCountersDBConnect.php",
@@ -49,10 +50,7 @@
 	"config": {
 		"HitcounterUpdateFreq": 1,
 		"DisableCounters": false,
-		"EnableCountersAtTheFooter": false,
-		"EnableAddTextLength": false,
-		"EnableAddPageId": false,
-		"NumberOfMostViewedPages": 50
+		"EnableCountersAtTheFooter": false
 	},
 	"manifest_version": 1
 }

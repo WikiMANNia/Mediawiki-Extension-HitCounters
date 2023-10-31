@@ -1,6 +1,7 @@
 <?php
 /**
  * Implements Special:PopularPages
+ * A special page that list most viewed pages
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +22,6 @@
  * @ingroup SpecialPage
  */
 
-/**
- * A special page that list most viewed pages
- *
- * @ingroup SpecialPage
- */
-
 namespace HitCounters;
 
 use Html;
@@ -38,8 +33,8 @@ use Title;
 
 class SpecialPopularPages extends QueryPage {
 
-	private $mLinkRenderer;
 	private $mContentLanguage;
+	private $mLinkRenderer;
 	private string $mMsgToken;
 
 	public function __construct( $name = 'PopularPages' ) {
@@ -48,8 +43,9 @@ class SpecialPopularPages extends QueryPage {
 		$this->mContentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
 		$this->mLinkRenderer = $this->getLinkRenderer();
 
-		$enableAddPageId     = $this->getConfig()->get( 'EnableAddPageId' );
-		$enableAddTextLength = $this->getConfig()->get( 'EnableAddTextLength' );
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$enableAddPageId     = $userOptionsLookup->getBoolOption( $this->getUser(), 'hitcounters-pageid' );
+		$enableAddTextLength = $userOptionsLookup->getBoolOption( $this->getUser(), 'hitcounters-textlength' );
 
 		$this->mMsgToken = 'hitcounters-nviews';
 		$this->mMsgToken .= $enableAddTextLength ? '-nlength' : '';
