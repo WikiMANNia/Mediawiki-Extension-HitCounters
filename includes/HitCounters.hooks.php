@@ -18,6 +18,8 @@ use MediaWiki\Hook\SkinAddFooterLinksHook;
 use MediaWiki\Hook\SpecialStatsAddExtraHook;
 
 use AbuseFilterVariableHolder;
+use CoreParserFunctions;
+use DeferredUpdates;
 use GlobalVarConfig;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
@@ -25,6 +27,7 @@ use Parser;
 use SiteStats;
 use Skin;
 use Title;
+use ViewCountUpdate;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,
@@ -123,7 +126,7 @@ class Hooks implements
 	 */
 	public function onSpecialStatsAddExtra( &$extraStats, $context ) {
 
-		$user = $context->getAuthority();
+		$user = $context->getUser();
 		$numberofmostviewedpages = $this->userOptionsLookup->getIntOption( $user, 'hitcounters-numberofmostviewedpages', 50 );
 		if ( $numberofmostviewedpages < 0 ) {
 			$numberofmostviewedpages = 0;
@@ -151,6 +154,7 @@ class Hooks implements
 
 		$most_viewed_pages_array = [];
 		if ( $res->numRows() > 0 ) {
+
 			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 
 			foreach ( $res as $row ) {
@@ -256,6 +260,7 @@ class Hooks implements
 		if (
 			$this->enabledCounters &&
 			!$user->isAllowed( 'bot' ) &&
+			!$user->isAllowed( 'sysop' ) &&
 			!$this->userOptionsLookup->getBoolOption( $user, 'hitcounters-exempt' ) &&
 			$wikipage->exists()
 		) {

@@ -20,6 +20,8 @@
 	"hitcounters-statistics-views-total-desc": "لا يتم تضمين مشاهدات الصفحات غير الموجودة والصفحات الخاصة",
 	"hitcounters-statistics-views-peredit": "المشاهدات لكل تحرير",
 	"hitcounters-statistics-mostpopular": "الصفحات الأكثر مشاهدة",
+	"prefs-hitcounters": "عدادات الرؤية",
+ 	"hitcounters-exempt-label": "تعداد بازدیدهای صفحه خود را از آمار حذف کنید",
 	"abusefilter-edit-builder-vars-page-views": "عدد مشاهدات الصفحة",
 	"abusefilter-edit-builder-vars-movedfrom-views": "مشاهدات مصدر الصفحة",
 	"abusefilter-edit-builder-vars-movedto-views": "مشاهدات الصفحة الهدف"
