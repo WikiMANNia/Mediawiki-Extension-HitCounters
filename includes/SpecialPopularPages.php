@@ -44,8 +44,9 @@ class SpecialPopularPages extends QueryPage {
 		$this->mLinkRenderer = $this->getLinkRenderer();
 
 		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
-		$enableAddPageId     = $userOptionsLookup->getBoolOption( $this->getUser(), 'hitcounters-pageid' );
-		$enableAddTextLength = $userOptionsLookup->getBoolOption( $this->getUser(), 'hitcounters-textlength' );
+		$user = $this->getUser();
+		$enableAddPageId     = $userOptionsLookup->getBoolOption( $user, 'hitcounters-pageid' );
+		$enableAddTextLength = $userOptionsLookup->getBoolOption( $user, 'hitcounters-textlength' );
 
 		$this->mMsgToken = 'hitcounters-nviews';
 		$this->mMsgToken .= $enableAddTextLength ? '-nlength' : '';

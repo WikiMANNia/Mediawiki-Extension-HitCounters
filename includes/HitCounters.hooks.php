@@ -8,20 +8,26 @@
 
 namespace HitCounters;
 
+use MediaWiki\Hook\GetMagicVariableIDsHook;
+use MediaWiki\Preferences\Hook\GetPreferencesHook;
+use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
+use MediaWiki\Page\Hook\PageViewUpdatesHook;
+use MediaWiki\Hook\ParserFirstCallInitHook;
+use MediaWiki\Hook\ParserGetVariableValueSwitchHook;
+use MediaWiki\Hook\SkinAddFooterLinksHook;
+use MediaWiki\Hook\SpecialStatsAddExtraHook;
+
 use AbuseFilterVariableHolder;
 use CoreParserFunctions;
-use DatabaseUpdater;
 use DeferredUpdates;
-use IContextSource;
+use GlobalVarConfig;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserOptionsLookup;
 use Parser;
-use PPFrame;
 use SiteStats;
 use Skin;
 use Title;
-use User;
 use ViewCountUpdate;
-use WikiPage;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,
@@ -30,14 +36,43 @@ use WikiPage;
  * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ *
+ * @phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
  */
-class Hooks {
+class Hooks implements
+	GetMagicVariableIDsHook,
+	GetPreferencesHook,
+	LoadExtensionSchemaUpdatesHook,
+	PageViewUpdatesHook,
+	ParserFirstCallInitHook,
+	ParserGetVariableValueSwitchHook,
+	SkinAddFooterLinksHook,
+	SpecialStatsAddExtraHook
+{
+
+	/** @var Config */
+	private $config;
+	/** @var UserOptionsLookup */
+	private $userOptionsLookup;
 
 	/**
-	 * @param User $user
-	 * @param array &$preferences
+	 * @param GlobalVarConfig $config
+	 * @param UserOptionsLookup $userOptionsLookup
 	 */
-	public static function onGetPreferences( User $user, array &$preferences ) {
+	public function __construct(
+		GlobalVarConfig $config,
+		UserOptionsLookup $userOptionsLookup
+	) {
+		$this->config = $config;
+		$this->userOptionsLookup = $userOptionsLookup;
+	}
+
+	/**
+	 * @param User $user User whose preferences are being modified
+	 * @param array &$preferences Preferences description array, to be fed to an HTMLForm object
+	 * @return bool|void True or no return value to continue or false to abort
+	 */
+	public function onGetPreferences( $user, &$preferences ) {
 
 		$preferences['hitcounters-pageid'] = [
 			'type' => 'toggle',
@@ -59,18 +94,33 @@ class Hooks {
 		];
 	}
 
-	public static function onLoadExtensionSchemaUpdates(
-		DatabaseUpdater $updater
-	) {
+	/**
+	 * https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
+	 * https://doc.wikimedia.org/mediawiki-core/master/php/classDatabaseUpdater.html
+	 *
+	 * @param DatabaseUpdater $updater DatabaseUpdater subclass
+	 * @return bool|void True or no return value to continue or false to abort
+	 */
+	public function onLoadExtensionSchemaUpdates( $updater ) {
+
 		HCUpdater::getDBUpdates( $updater );
 	}
 
-	public static function onSpecialStatsAddExtra(
-		array &$extraStats, IContextSource $context
-	) {
-		$conf = MediaWikiServices::getInstance()->getUserOptionsLookup();
+	/**
+	 * @param array &$extraStats Array to save the new stats
+	 *   	$extraStats['<name of statistic>'] => <value>;
+	 *   <value> can be an array with the keys "name" and "number":
+	 *   "name" is the HTML to be displayed in the name column
+	 *   "number" is the number to be displayed.
+	 *   or, <value> can be the number to be displayed and <name> is the
+	 *   message key to use in the name column,
+	 * @param IContextSource $context IContextSource object
+	 * @return bool|void True or no return value to continue or false to abort
+	 */
+	public function onSpecialStatsAddExtra( &$extraStats, $context ) {
+
 		$user = $context->getUser();
-		$numberofmostviewedpages = $conf->getIntOption( $user, 'hitcounters-numberofmostviewedpages', 50 );
+		$numberofmostviewedpages = $this->userOptionsLookup->getIntOption( $user, 'hitcounters-numberofmostviewedpages', 50 );
 
 		$totalEdits = SiteStats::edits() ?? 0;
 		$totalViews = HitCounters::views() ?? 0;
@@ -122,11 +172,25 @@ class Hooks {
 		];
 	}
 
-	public static function onMagicWordwgVariableIDs( array &$variableIDs ) {
+	/**
+	 * Use this hook to modify the list of magic variables.
+	 * Magic variables are localized with the magic word system,
+	 * and this hook is called by MagicWordFactory.
+	 *
+	 * @param string[] &$variableIDs array of magic word identifiers
+	 * @return bool|void True or no return value to continue or false to abort
+	 */
+	public function onGetMagicVariableIDs( &$variableIDs ) {
 		$variableIDs = array_merge( $variableIDs, array_keys( self::getMagicWords() ) );
 	}
 
-	public static function onParserFirstCallInit( Parser $parser ) {
+	/**
+	 * This hook is called when the parser initialises for the first time.
+	 *
+	 * @param Parser $parser Parser object being initialised
+	 * @return bool|void True or no return value to continue or false to abort
+	 */
+	public function onParserFirstCallInit( $parser ) {
 		foreach ( self::getMagicWords() as $magicWord => $processingFunction ) {
 			$parser->setFunctionHook( $magicWord, $processingFunction,
 				Parser::SFH_OBJECT_ARGS );
@@ -134,15 +198,30 @@ class Hooks {
 		return true;
 	}
 
-	public static function onParserGetVariableValueSwitch( Parser $parser,
-		array &$cache, $magicWordId, &$ret, PPFrame $frame ) {
-
-		$conf = MediaWikiServices::getInstance()->getMainConfig();
+	/**
+	 * This hook is called when the parser needs the value of a
+	 * custom magic word.
+	 *
+	 * @param Parser $parser
+	 * @param array &$variableCache Array to cache the value; when you return
+	 *   $variableCache[$magicWordId] should be the same as $ret
+	 * @param string $magicWordId Index of the magic word (hook should not mutate it!)
+	 * @param string &$ret Value of the magic word (the hook should set it)
+	 * @param PPFrame $frame PPFrame object to use for expanding any template variables
+	 * @return bool|void True or no return value to continue or false to abort
+	 */
+	public function onParserGetVariableValueSwitch(
+		$parser,
+		&$variableCache,
+		$magicWordId,
+		&$ret,
+		$frame
+	) {
 
 		foreach ( self::getMagicWords() as $magicWord => $processingFunction ) {
 			if ( $magicWord === $magicWordId ) {
-				if ( !$conf->get( "DisableCounters" ) ) {
-					$ret = $cache[$magicWordId] = CoreParserFunctions::formatRaw(
+				if ( !$this->config->get( "DisableCounters" ) ) {
+					$ret = $variableCache[$magicWordId] = CoreParserFunctions::formatRaw(
 						call_user_func( $processingFunction, $parser, $frame, null ),
 						null,
 						$parser->getTargetLanguage()
@@ -156,41 +235,47 @@ class Hooks {
 		return true;
 	}
 
-	public static function onPageViewUpdates( WikiPage $wikipage, User $user ) {
-
-		$conf = MediaWikiServices::getInstance()->getMainConfig();
+	/**
+	 * Use this hook to make database (or other) changes after a
+	 * page view is seen by MediaWiki.  Note this does not capture views made
+	 * via external caches such as Squid.
+	 *
+	 * @param WikiPage $wikipage Page being viewed
+	 * @param User $user User who is viewing
+	 * @return bool|void True or no return value to continue or false to abort
+	 */
+	public function onPageViewUpdates( $wikipage, $user ) {
 
 		// Don't update page view counters on views from bot users (bug 14044)
 		if (
-			!$conf->get( "DisableCounters" ) &&
+			!$this->config->get( "DisableCounters" ) &&
 			!$user->isAllowed( 'bot' ) &&
 			$wikipage->exists()
 		) {
-			DeferredUpdates::addUpdate( new ViewCountUpdate( $wikipage->getId() ) );
+			$updateFreq = $this->config->get( "HitcounterUpdateFreq" );
+			DeferredUpdates::addUpdate( new ViewCountUpdate( $wikipage->getId(), $updateFreq ) );
 		}
 	}
 
 	/**
-	 * Hook: SkinAddFooterLinks
+	 * This hook is called when generating the code used to display the
+	 * footer.
+	 *
 	 * @param Skin $skin
 	 * @param string $key the current key for the current group (row) of footer links.
 	 *   e.g. `info` or `places`.
-	 * @param array &$footerLinks an empty array that can be populated with new links.
+	 * @param array &$footerItems an empty array that can be populated with new links.
 	 *   keys should be strings and will be used for generating the ID of the footer item
 	 *   and value should be an HTML string.
+	 * @return bool|void True or no return value to continue or false to abort
 	 */
-	public static function onSkinAddFooterLinks(
-		Skin $skin,
-		string $key,
-		array &$footerLinks
-	) {
+	public function onSkinAddFooterLinks( Skin $skin, string $key, array &$footerItems ) {
+
 		if ( $key !== 'info' ) {
 			return;
 		}
 
-		$conf = MediaWikiServices::getInstance()->getMainConfig();
-
-		if ( !$conf->get( "DisableCounters" ) && $conf->get( "EnableCountersAtTheFooter" ) ) {
+		if ( !$this->config->get( "DisableCounters" ) && $this->config->get( "EnableCountersAtTheFooter" ) ) {
 
 			$viewcount = HitCounters::getCount( $skin->getTitle() );
 
@@ -200,7 +285,7 @@ class Hooks {
 					"Got viewcount=$viewcount and putting in page"
 				);
 				$msg = 'hitcounters-viewcount';
-				if ( $conf->get( "EnableAddTextLength" ) ) {
+				if ( $this->config->get( "EnableAddTextLength" ) ) {
 					$msg .= '-len';
 				}
 				$charactercount = $skin->getTitle()->getLength();
@@ -209,7 +294,7 @@ class Hooks {
 					->numParams( $charactercount )->parse();
 
 				// Set up the footer
-				$footerLinks['viewcount'] = $viewcountMsg;
+				$footerItems['viewcount'] = $viewcountMsg;
 			}
 		}
 	}
@@ -219,7 +304,7 @@ class Hooks {
 	 * @param array &$builderValues
 	 * @return void
 	 */
-	public static function onAbuseFilterBuilder( array &$builderValues ) {
+	public function onAbuseFilterBuilder( array &$builderValues ) {
 		$builderValues['vars']['page_views'] = 'page-views';
 		$builderValues['vars']['moved_from_views'] = 'movedfrom-views';
 		$builderValues['vars']['moved_to_views'] = 'movedto-views';
@@ -230,7 +315,7 @@ class Hooks {
 	 * @param array &$deprecatedVars
 	 * @return void
 	 */
-	public static function onAbuseFilterDeprecatedVariables( array &$deprecatedVars ) {
+	public function onAbuseFilterDeprecatedVariables( array &$deprecatedVars ) {
 		$deprecatedVars['article_views'] = 'page_views';
 	}
 
@@ -241,7 +326,7 @@ class Hooks {
 	 * @param string $prefix
 	 * @return void
 	 */
-	public static function onAbuseFilterGenerateTitleVars(
+	public function onAbuseFilterGenerateTitleVars(
 		AbuseFilterVariableHolder $vars,
 		Title $title,
 		$prefix
@@ -257,7 +342,7 @@ class Hooks {
 	 * @param null &$result
 	 * @return bool
 	 */
-	public static function onAbuseFilterComputeVariable( $method, $vars, $parameters, &$result ) {
+	public function onAbuseFilterComputeVariable( $method, $vars, $parameters, &$result ) {
 		// Both methods are needed because they're saved in the DB and are necessary for old entries
 		if ( $method === 'article-views' || $method === 'page-views' ) {
 			$result = HitCounters::getCount( $parameters['title'] );

@@ -1,7 +1,7 @@
 {
 	"name": "HitCounters",
 	"namemsg": "hitcounters-extensionname",
-	"version": "0.5.0",
+	"version": "0.5.1",
 	"author": [
 		"[//mwstake.org Mark A. Hershberger]",
 		"[//wikimannia.org WikiMANNia]"
@@ -26,18 +26,27 @@
 		"PopularPages": "HitCounters\\SpecialPopularPages"
 	},
 	"Hooks": {
-		"GetPreferences": "HitCounters\\Hooks::onGetPreferences",
-		"LoadExtensionSchemaUpdates": "HitCounters\\Hooks::onLoadExtensionSchemaUpdates",
-		"MagicWordwgVariableIDs": "HitCounters\\Hooks::onMagicWordwgVariableIDs",
-		"PageViewUpdates": "HitCounters\\Hooks::onPageViewUpdates",
-		"ParserFirstCallInit": "HitCounters\\Hooks::onParserFirstCallInit",
-		"ParserGetVariableValueSwitch": "HitCounters\\Hooks::onParserGetVariableValueSwitch",
-		"SkinAddFooterLinks": "HitCounters\\Hooks::onSkinAddFooterLinks",
-		"SpecialStatsAddExtra": "HitCounters\\Hooks::onSpecialStatsAddExtra",
-		"AbuseFilter-builder": "HitCounters\\Hooks::onAbuseFilterBuilder",
-		"AbuseFilter-computeVariable": "HitCounters\\Hooks::onAbuseFilterComputeVariable",
-		"AbuseFilter-deprecatedVariables": "HitCounters\\Hooks::onAbuseFilterDeprecatedVariables",
-		"AbuseFilter-generateTitleVars": "HitCounters\\Hooks::onAbuseFilterGenerateTitleVars"
+		"GetMagicVariableIDs": "main",
+		"GetPreferences": "main",
+		"LoadExtensionSchemaUpdates": "main",
+		"PageViewUpdates": "main",
+		"ParserFirstCallInit": "main",
+		"ParserGetVariableValueSwitch": "main",
+		"SkinAddFooterLinks": "main",
+		"SpecialStatsAddExtra": "main",
+		"AbuseFilter-builder": "main",
+		"AbuseFilter-computeVariable": "main",
+		"AbuseFilter-deprecatedVariables": "main",
+		"AbuseFilter-generateTitleVars": "main"
+	},
+	"HookHandlers": {
+		"main": {
+			"class": "HitCounters\\Hooks",
+			"services": [
+				"MainConfig",
+				"UserOptionsLookup"
+			]
+		}
 	},
 	"AutoloadClasses": {
 		"HitCounters\\DBConnect": "includes/HitCountersDBConnect.php",
@@ -48,9 +57,18 @@
 		"HitCounters\\HCUpdater": "includes/HCUpdater.php"
 	},
 	"config": {
-		"HitcounterUpdateFreq": 1,
-		"DisableCounters": false,
-		"EnableCountersAtTheFooter": false
+		"HitcounterUpdateFreq": {
+			"type": "int",
+			"value": 1
+		},
+		"DisableCounters": {
+			"type": "boolean",
+			"value": false
+		},
+		"EnableCountersAtTheFooter": {
+			"type": "boolean",
+			"value": false
+		}
 	},
-	"manifest_version": 1
+	"manifest_version": 2
 }
