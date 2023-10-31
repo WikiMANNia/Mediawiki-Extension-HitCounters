@@ -1,15 +1,16 @@
 <?php
 namespace HitCounters;
 
+use AbuseFilterVariableHolder;
 use CoreParserFunctions;
 use DatabaseUpdater;
 use DeferredUpdates;
 use IContextSource;
-use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 use MediaWiki\MediaWikiServices;
 use Parser;
 use PPFrame;
 use SiteStats;
+use SkinTemplate;
 use Title;
 use User;
 use ViewCountUpdate;
@@ -33,13 +34,13 @@ class Hooks {
 	public static function onSpecialStatsAddExtra(
 		array &$extraStats, IContextSource $statsPage
 	) {
-		$totalEdits = SiteStats::edits();
-		$totalViews = HitCounters::views();
+		$totalEdits = SiteStats::edits() ?? 0;
+		$totalViews = HitCounters::views() ?? 0;
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-total'] = $totalViews;
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-peredit'] =
-				$totalEdits
+				( $totalEdits > 0 )
 				? sprintf( '%.2f', $totalViews / $totalEdits )
 				: 0;
 
@@ -60,11 +61,12 @@ class Hooks {
 
 			foreach ( $res as $row ) {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
+				$key   = $title->getPrefixedText();
+				$link  = $linkRenderer->makeLink( $title );
 
 				if ( $title instanceof Title ) {
-					$most_viewed_pages_array[ $title->getPrefixedText() ]['number'] = $row->value;
-					$most_viewed_pages_array[ $title->getPrefixedText() ]['name'] =
-						$linkRenderer->makeLink( $title );
+					$most_viewed_pages_array[ $key ]['number'] = $row->value;
+					$most_viewed_pages_array[ $key ]['name']   = $link;
 				}
 			}
 			$res->free();
@@ -138,9 +140,9 @@ class Hooks {
 	 *   and value should be an HTML string.
 	 */
 	public static function onSkinAddFooterLinks(
-		$skin,
+		SkinTemplate $skin,
 		string $key,
-		?array &$footerLinks
+		array &$footerLinks
 	) {
 		if ( $key !== 'info' ) {
 			return;
@@ -167,11 +169,7 @@ class Hooks {
 					->numParams( $charactercount )->parse();
 
 				// Set up the footer
-				if ( is_array( $footerLinks ) ) {
-					array_splice( $footerLinks, 1, 0, [ 'viewcount' => $viewcountMsg ] );
-				} else {
-					$footerLinks['viewcount'] = $viewcountMsg;
-				}
+				$footerLinks['viewcount'] = $viewcountMsg;
 			}
 		}
 	}
@@ -198,13 +196,13 @@ class Hooks {
 
 	/**
 	 * Lazy-loads the article_views variable
-	 * @param VariableHolder $vars
+	 * @param AbuseFilterVariableHolder $vars
 	 * @param Title $title
 	 * @param string $prefix
 	 * @return void
 	 */
 	public static function onAbuseFilterGenerateTitleVars(
-		VariableHolder $vars,
+		AbuseFilterVariableHolder $vars,
 		Title $title,
 		$prefix
 	) {
@@ -214,7 +212,7 @@ class Hooks {
 	/**
 	 * Computes the article_views variables
 	 * @param string $method
-	 * @param VariableHolder $vars
+	 * @param AbuseFilterVariableHolder $vars
 	 * @param array $parameters
 	 * @param null &$result
 	 * @return bool

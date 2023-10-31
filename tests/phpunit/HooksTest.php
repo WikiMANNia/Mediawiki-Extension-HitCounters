@@ -22,11 +22,6 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$footerLinks = null;
-		Hooks::onSkinAddFooterLinks( $skinMock, "", $footerLinks );
-
-		$this->assertNull( $footerLinks, "footerLinks is un-changed (null)" );
-
 		$footerLinks = [];
 		Hooks::onSkinAddFooterLinks( $skinMock, "", $footerLinks );
 

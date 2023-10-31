@@ -40,10 +40,13 @@ class SpecialPopularPages extends QueryPage {
 
 	private $mLinkRenderer;
 	private $mContentLanguage;
-	private $mMsgToken;
+	private string $mMsgToken;
 
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
+
+		$this->mContentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
+		$this->mLinkRenderer = $this->getLinkRenderer();
 
 		$enableAddPageId     = $this->getConfig()->get( 'EnableAddPageId' );
 		$enableAddTextLength = $this->getConfig()->get( 'EnableAddTextLength' );
@@ -51,9 +54,6 @@ class SpecialPopularPages extends QueryPage {
 		$this->mMsgToken = 'hitcounters-nviews';
 		$this->mMsgToken .= $enableAddTextLength ? '-nlength' : '';
 		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
-
-		$this->mLinkRenderer = $this->getLinkRenderer();
-		$this->mContentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
 	}
 
 	public function isExpensive() {
@@ -90,10 +90,7 @@ class SpecialPopularPages extends QueryPage {
 			);
 		}
 
-		$link = $this->mLinkRenderer->makeKnownLink(
-			$title,
-			$this->mContentLanguage->convert( $title->getPrefixedText() )
-		);
+		$link = $this->mLinkRenderer->makeKnownLink( $title );
 
 		return $this->getLanguage()->specialList(
 			$link,

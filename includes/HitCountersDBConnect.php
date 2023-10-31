@@ -6,9 +6,6 @@ use MediaWiki\MediaWikiServices;
 
 /**
  * Settings is a singleton - used to get access to DB.
- *
- * Seit PHP 5.4 kann auch eine kurze Array-Syntax verwendet werden,
- * welche array() durch [] ersetzt.
  */
 
 /**
@@ -58,15 +55,17 @@ class DBConnect {
 		return $lb->getConnection( DB_PRIMARY, [], false );
 	}
 
-	public static function getDBPrefix() {
-		global $wgDBprefix;
-		return $wgDBprefix; // 'test_'
-	}
-
 	public static function getQueryInfo() {
 
+		$namespaces = MediaWikiServices::getInstance()
+					->getNamespaceInfo()
+					->getContentNamespaces();
+
 		return [
-			'tables' => [ 'p' => 'page', 'h' => 'hit_counter' ],
+			'tables' => [
+				'p' => 'page',
+				'h' => 'hit_counter'
+			],
 			'fields' => [
 				'namespace' => 'p.page_namespace',
 				'title'  => 'p.page_title',
@@ -75,14 +74,13 @@ class DBConnect {
 			],
 			'conds' => [
 				'p.page_is_redirect' => 0,
-				'p.page_namespace' => MediaWikiServices::getInstance()
-					->getNamespaceInfo()
-					->getContentNamespaces(),
+				'p.page_namespace' => $namespaces
 			],
 			'join_conds' => [
 				'p' => [
-					'INNER JOIN',
-					'p.page_id = h.page_id'
+					'INNER JOIN', [
+						'p.page_id = h.page_id'
+					]
 				]
 			]
 		];

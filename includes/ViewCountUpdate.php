@@ -50,9 +50,8 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 	 * Run the update
 	 */
 	public function doUpdate() {
-		$services = MediaWikiServices::getInstance();
-		$updateFreq = $services->getMainConfig()->get( "HitcounterUpdateFreq" );
-
+		$updateFreq = MediaWikiServices::getInstance()->getMainConfig()
+													  ->get( "HitcounterUpdateFreq" );
 		$dbw = DBConnect::getWritingConnect();
 		$pageId = $this->pageId;
 		$fname = __METHOD__;
@@ -87,7 +86,7 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 						$dbw->lock( $lockName, $fname );
 						$dbw->insert( 'hit_counter_extension', [ 'hc_id' => $pageId ], $fname );
 						$checkfreq = intval( $updateFreq / 25 + 1 );
-						if ( ( rand() % $checkfreq ) == 0 ) {
+						if ( ( ( rand() % $checkfreq ) == 0 ) && ( $dbw->lastErrno() == 0 ) ) {
 							$this->collect();
 						}
 						$dbw->unlock( $lockName, $fname );
@@ -102,10 +101,10 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 	}
 
 	protected function collect() {
-		$services = MediaWikiServices::getInstance();
-		$updateFreq = $services->getMainConfig()->get( "HitcounterUpdateFreq" );
+		$updateFreq = MediaWikiServices::getInstance()->getMainConfig()
+													  ->get( "HitcounterUpdateFreq" );
 
-		$dbw = DBConnect::getWritingConnectFromLoadBalancer();
+		$dbw = DBConnect::getWritingConnect();
 		$count = $dbw->selectRowCount(
 			'hit_counter_extension',
 			'*',
