@@ -20,8 +20,6 @@
  * @file
  */
 
-namespace HitCounters;
-
 /**
  * Update for the 'page_counter' field, when $wgDisableCounters is false.
  *
@@ -54,9 +52,9 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 	 */
 	public function doUpdate() {
 
+		$pageId     = $this->pageId;
 		$updateFreq = $this->updateFreq;
 		$dbw = DBConnect::getWritingConnect();
-		$pageId = $this->pageId;
 		$fname = __METHOD__;
 
 		wfDebugLog( "HitCounter", "update freq set to: $wgHitcounterUpdateFreq;" );

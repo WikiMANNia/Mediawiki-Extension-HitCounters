@@ -18,6 +18,8 @@ use MediaWiki\Hook\SkinAddFooterLinksHook;
 use MediaWiki\Hook\SpecialStatsAddExtraHook;
 
 use AbuseFilterVariableHolder;
+use CoreParserFunctions;
+use DeferredUpdates;
 use GlobalVarConfig;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
@@ -25,6 +27,7 @@ use Parser;
 use SiteStats;
 use Skin;
 use Title;
+use ViewCountUpdate;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,
@@ -151,6 +154,7 @@ class Hooks implements
 
 		$most_viewed_pages_array = [];
 		if ( $res->numRows() > 0 ) {
+
 			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 
 			foreach ( $res as $row ) {

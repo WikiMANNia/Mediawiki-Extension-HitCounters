@@ -110,7 +110,7 @@ v0.5.2
 
 v0.5.3
 
-- Hard setting: "Exclude admin page views from statistics"
+- Hard setting: "Exclude admins page views from statistics"
 
 # Default settings
 

@@ -52,7 +52,7 @@
 		"HitCounters\\DBConnect": "includes/HitCountersDBConnect.php",
 		"HitCounters\\Hooks": "includes/HitCounters.hooks.php",
 		"HitCounters\\HitCounters": "includes/HitCounters.body.php",
-		"HitCounters\\ViewCountUpdate": "includes/ViewCountUpdate.php",
+		"ViewCountUpdate": "includes/ViewCountUpdate.php",
 		"HitCounters\\SpecialPopularPages": "includes/SpecialPopularPages.php",
 		"HitCounters\\HCUpdater": "includes/HCUpdater.php"
 	},
