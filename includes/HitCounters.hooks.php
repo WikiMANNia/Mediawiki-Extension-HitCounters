@@ -50,10 +50,10 @@ class Hooks implements
 	SpecialStatsAddExtraHook
 {
 
-	/** @var Config */
-	private $config;
-	/** @var UserOptionsLookup */
-	private $userOptionsLookup;
+	private UserOptionsLookup $userOptionsLookup;
+	private bool $enabledCounters;
+	private bool $enabledCountersAtTheFooter;
+	private int $updateFreq;
 
 	/**
 	 * @param GlobalVarConfig $config
@@ -63,8 +63,10 @@ class Hooks implements
 		GlobalVarConfig $config,
 		UserOptionsLookup $userOptionsLookup
 	) {
-		$this->config = $config;
 		$this->userOptionsLookup = $userOptionsLookup;
+		$this->enabledCounters = !$config->get( "DisableCounters" );
+		$this->enabledCountersAtTheFooter = $config->get( "EnableCountersAtTheFooter" );
+		$this->updateFreq = $config->get( "HitcounterUpdateFreq" );
 	}
 
 	/**
@@ -74,6 +76,11 @@ class Hooks implements
 	 */
 	public function onGetPreferences( $user, &$preferences ) {
 
+		$preferences['hitcounters-exempt'] = [
+			'type' => 'toggle',
+			'label-message' => 'hitcounters-exempt-label',
+			'section' => 'hitcounters',
+		];
 		$preferences['hitcounters-pageid'] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-pageid-label',
@@ -121,6 +128,9 @@ class Hooks implements
 
 		$user = $context->getUser();
 		$numberofmostviewedpages = $this->userOptionsLookup->getIntOption( $user, 'hitcounters-numberofmostviewedpages', 50 );
+		if ( $numberofmostviewedpages < 0 ) {
+			$numberofmostviewedpages = 0;
+		}
 
 		$totalEdits = SiteStats::edits() ?? 0;
 		$totalViews = HitCounters::views() ?? 0;
@@ -220,7 +230,7 @@ class Hooks implements
 
 		foreach ( self::getMagicWords() as $magicWord => $processingFunction ) {
 			if ( $magicWord === $magicWordId ) {
-				if ( !$this->config->get( "DisableCounters" ) ) {
+				if ( $this->enabledCounters ) {
 					$ret = $variableCache[$magicWordId] = CoreParserFunctions::formatRaw(
 						call_user_func( $processingFunction, $parser, $frame, null ),
 						null,
@@ -248,12 +258,12 @@ class Hooks implements
 
 		// Don't update page view counters on views from bot users (bug 14044)
 		if (
-			!$this->config->get( "DisableCounters" ) &&
+			$this->enabledCounters &&
 			!$user->isAllowed( 'bot' ) &&
+			!$this->userOptionsLookup->getBoolOption( $user, 'hitcounters-exempt' ) &&
 			$wikipage->exists()
 		) {
-			$updateFreq = $this->config->get( "HitcounterUpdateFreq" );
-			DeferredUpdates::addUpdate( new ViewCountUpdate( $wikipage->getId(), $updateFreq ) );
+			DeferredUpdates::addUpdate( new ViewCountUpdate( $wikipage->getId(), $this->updateFreq ) );
 		}
 	}
 
@@ -275,7 +285,7 @@ class Hooks implements
 			return;
 		}
 
-		if ( !$this->config->get( "DisableCounters" ) && $this->config->get( "EnableCountersAtTheFooter" ) ) {
+		if ( $this->enabledCounters && $this->enabledCountersAtTheFooter ) {
 
 			$viewcount = HitCounters::getCount( $skin->getTitle() );
 
@@ -284,8 +294,9 @@ class Hooks implements
 					"HitCounters",
 					"Got viewcount=$viewcount and putting in page"
 				);
+				$enableAddTextLength = MediaWikiServices::getInstance()->getUserOptionsLookup()->getBoolOption( $this->getUser(), 'hitcounters-textlength' );
 				$msg = 'hitcounters-viewcount';
-				if ( $this->config->get( "EnableAddTextLength" ) ) {
+				if ( $enableAddTextLength ) {
 					$msg .= '-len';
 				}
 				$charactercount = $skin->getTitle()->getLength();

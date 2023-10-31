@@ -25,7 +25,9 @@
 namespace HitCounters;
 
 use Html;
+use Language;
 use Linker;
+use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
 use QueryPage;
 use Skin;
@@ -33,8 +35,8 @@ use Title;
 
 class SpecialPopularPages extends QueryPage {
 
-	private $mContentLanguage;
-	private $mLinkRenderer;
+	private Language $mContentLanguage;
+	private LinkRenderer $mLinkRenderer;
 	private string $mMsgToken;
 
 	public function __construct( $name = 'PopularPages' ) {

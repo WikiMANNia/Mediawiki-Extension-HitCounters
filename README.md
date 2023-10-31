@@ -104,6 +104,10 @@ Code Review.
 - Changed "configuration schema", replaced manifest version 1 with version 2.
 - Replaced static functions with implementing interfaces in class “Hooks”.
 
+v0.5.2
+
+- Custom setting: "Exclude your own page views from statistics"
+
 # Default settings
 
 * $wgDisableCounters = `false`;              Set to `true` to disable them completely.
