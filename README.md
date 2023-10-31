@@ -108,6 +108,10 @@ v0.5.2
 
 - Custom setting: "Exclude your own page views from statistics"
 
+v0.5.3
+
+- Hard setting: "Exclude admins page views from statistics"
+
 # Default settings
 
 * $wgDisableCounters = `false`;              Set to `true` to disable them completely.

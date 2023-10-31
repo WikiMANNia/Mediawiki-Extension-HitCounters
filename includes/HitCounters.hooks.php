@@ -260,6 +260,7 @@ class Hooks implements
 		if (
 			$this->enabledCounters &&
 			!$user->isAllowed( 'bot' ) &&
+			!$user->isAllowed( 'sysop' ) &&
 			!$this->userOptionsLookup->getBoolOption( $user, 'hitcounters-exempt' ) &&
 			$wikipage->exists()
 		) {
