@@ -8,6 +8,17 @@ use MediaWiki\MediaWikiServices;
  * Settings is a singleton - used to get access to DB.
  */
 
+/**
+* backward compatibility
+* fix an issue that was introduced here:
+* https://github.com/WikiMANNia/mediawiki-extensions-HitCounters/commit/822140f6d96974f5051449837e7f46a771d5f6a5#diff-1b6cef982bd7ace2232d91536185b83a
+* @since 1.35.3
+* define( 'DB_PRIMARY', ILoadBalancer::DB_PRIMARY )
+* DB_PRIMARY remains undefined in MediaWiki before v1.35.3
+*/
+defined('DB_PRIMARY') or define('DB_PRIMARY', DB_MASTER);
+
+
 class DBConnect {
 
 	private static $instance;
