@@ -115,6 +115,11 @@ Version 0.5.3 is compatible with 1.38+.
 - Hard setting: "Exclude admins page views from statistics"
 - Fix - 6 Jun 2022: Fix compatability with AbuseFilter on 1.38 - [diff](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/e93a7938f6b069e43a1b5847f0f0313fb44748cd)
 
+v0.5.4
+
+- Refactoring: Change namespace from `HitCounters` to `MediaWiki\Extension\HitCounters`
+- Refactoring: Move sql files from `sql` to `sql\mysql`
+
 # Default settings
 
 * $wgDisableCounters = `false`;              Set to `true` to disable them completely.
