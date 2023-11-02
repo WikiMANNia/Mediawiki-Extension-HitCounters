@@ -313,22 +313,45 @@ class Hooks implements
 
 	/**
 	 * Tells AbuseFilter about our variables
-	 * @param array &$builderValues
+	 * @param array &$realValues
 	 * @return void
 	 */
-	public function onAbuseFilterBuilder( array &$builderValues ) {
-		$builderValues['vars']['page_views'] = 'page-views';
-		$builderValues['vars']['moved_from_views'] = 'movedfrom-views';
-		$builderValues['vars']['moved_to_views'] = 'movedto-views';
+	public function onAbuseFilterBuilder( array &$realValues ) {
+		$realValues['vars']['page_views'] = 'page-views';
+		$realValues['vars']['moved_from_views'] = 'movedfrom-views';
+		$realValues['vars']['moved_to_views'] = 'movedto-views';
+	}
+
+	/**
+	 * Computes the article_views variables
+	 * @param string $method
+	 * @param AbuseFilterVariableHolder $vars
+	 * @param array $parameters
+	 * @param null &$result
+	 * @return bool
+	 */
+	public function onAbuseFilterComputeVariable(
+		string $method,
+		AbuseFilterVariableHolder $vars,
+		array $parameters,
+		&$result
+	) {
+		// Both methods are needed because they're saved in the DB and are necessary for old entries
+		if ( $method === 'article-views' || $method === 'page-views' ) {
+			$result = HitCounters::getCount( $parameters['title'] );
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/**
 	 * Old, deprecated syntax
-	 * @param array &$deprecatedVars
+	 * @param array &$deprecatedVariables
 	 * @return void
 	 */
-	public function onAbuseFilterDeprecatedVariables( array &$deprecatedVars ) {
-		$deprecatedVars['article_views'] = 'page_views';
+	public function onAbuseFilterDeprecatedVariables( array &$deprecatedVariables ) {
+		$deprecatedVariables['article_views'] = 'page_views';
 	}
 
 	/**
@@ -341,26 +364,8 @@ class Hooks implements
 	public function onAbuseFilterGenerateTitleVars(
 		AbuseFilterVariableHolder $vars,
 		Title $title,
-		$prefix
+		string $prefix
 	) {
 		$vars->setLazyLoadVar( $prefix . '_VIEWS', 'page-views', [ 'title' => $title ] );
-	}
-
-	/**
-	 * Computes the article_views variables
-	 * @param string $method
-	 * @param AbuseFilterVariableHolder $vars
-	 * @param array $parameters
-	 * @param null &$result
-	 * @return bool
-	 */
-	public function onAbuseFilterComputeVariable( $method, $vars, $parameters, &$result ) {
-		// Both methods are needed because they're saved in the DB and are necessary for old entries
-		if ( $method === 'article-views' || $method === 'page-views' ) {
-			$result = HitCounters::getCount( $parameters['title'] );
-			return false;
-		} else {
-			return true;
-		}
 	}
 }

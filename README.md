@@ -110,6 +110,8 @@ v0.5.2
 
 v0.5.3
 
+Version 0.5.3 is compatible with 1.35+ to 1.37+.
+
 - Hard setting: "Exclude admins page views from statistics"
 
 # Default settings
