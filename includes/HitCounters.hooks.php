@@ -6,7 +6,7 @@
  * @ingroup Extensions
  */
 
-namespace HitCounters;
+namespace MediaWiki\Extension\HitCounters;
 
 use MediaWiki\Hook\GetMagicVariableIDsHook;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
@@ -17,6 +17,7 @@ use MediaWiki\Hook\ParserGetVariableValueSwitchHook;
 use MediaWiki\Hook\SkinAddFooterLinksHook;
 use MediaWiki\Hook\SpecialStatsAddExtraHook;
 use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
+use MediaWiki\Extension\HitCounters\ViewCountUpdate;
 
 use CoreParserFunctions;
 use DeferredUpdates;
@@ -27,7 +28,6 @@ use Parser;
 use SiteStats;
 use Skin;
 use Title;
-use ViewCountUpdate;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,
@@ -177,8 +177,8 @@ class Hooks implements
 
 	protected static function getMagicWords() {
 		return [
-			'numberofviews'     => [ 'HitCounters\HitCounters', 'numberOfViews' ],
-			'numberofpageviews' => [ 'HitCounters\HitCounters', 'numberOfPageViews' ]
+			'numberofviews'     => [ 'MediaWiki\Extension\HitCounters\HitCounters', 'numberOfViews' ],
+			'numberofpageviews' => [ 'MediaWiki\Extension\HitCounters\HitCounters', 'numberOfPageViews' ]
 		];
 	}
 

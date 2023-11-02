@@ -22,7 +22,7 @@
  * @ingroup SpecialPage
  */
 
-namespace HitCounters;
+namespace MediaWiki\Extension\HitCounters;
 
 use Html;
 use Language;
