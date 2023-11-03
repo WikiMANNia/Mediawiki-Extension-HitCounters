@@ -71,6 +71,19 @@ Benutzerdefinierte [Einstellungen](https://www.mediawiki.org/wiki/Help:Preferenc
 * `PageId`                             – Enable the page id in `Special:PopularPages` (Default is `false`)
 * `NumberOfMostViewedPages`            – Set the Number of Most Viewed Pages in [Statistics](https://www.mediawiki.org/wiki/Special:Statistics) (Default is `50`)
 
+v0.5.2
+
+- Custom setting: "Exclude your own page views from statistics"
+
+v0.5.3
+
+- Hard setting: "Exclude admins page views from statistics"
+
+v0.5.4
+
+- Refactoring: Change namespace from `HitCounters` to `MediaWiki\Extension\HitCounters`
+- Refactoring: Move sql files from `sql` to `sql\mysql`
+
 # Default settings
 
 * $wgDisableCounters = `false`;              Set to `true` to disable them completely.

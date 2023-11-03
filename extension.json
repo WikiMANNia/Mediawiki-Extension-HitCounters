@@ -1,7 +1,7 @@
 {
 	"name": "HitCounters",
 	"namemsg": "hitcounters-extensionname",
-	"version": "0.5.0",
+	"version": "0.5.4",
 	"author": [
 		"[//mwstake.org Mark A. Hershberger]",
 		"[//wikimannia.org WikiMANNia]"
@@ -23,29 +23,29 @@
 		"HitCountersAlias": "HitCounters.i18n.alias.php"
 	},
 	"SpecialPages": {
-		"PopularPages": "HitCounters\\SpecialPopularPages"
+		"PopularPages": "MediaWiki\\Extension\\HitCounters\\SpecialPopularPages"
 	},
 	"Hooks": {
-		"GetPreferences": "HitCounters\\Hooks::onGetPreferences",
-		"SpecialStatsAddExtra": "HitCounters\\Hooks::onSpecialStatsAddExtra",
-		"LoadExtensionSchemaUpdates": "HitCounters\\Hooks::onLoadExtensionSchemaUpdates",
-		"MagicWordwgVariableIDs": "HitCounters\\Hooks::onMagicWordwgVariableIDs",
-		"ParserGetVariableValueSwitch": "HitCounters\\Hooks::onParserGetVariableValueSwitch",
-		"ParserFirstCallInit": "HitCounters\\Hooks::onParserFirstCallInit",
-		"PageViewUpdates": "HitCounters\\Hooks::onPageViewUpdates",
-		"SkinTemplateOutputPageBeforeExec": "HitCounters\\Hooks::onSkinTemplateOutputPageBeforeExec",
-		"AbuseFilter-builder": "HitCounters\\Hooks::onAbuseFilterBuilder",
-		"AbuseFilter-deprecatedVariables": "HitCounters\\Hooks::onAbuseFilterDeprecatedVariables",
-		"AbuseFilter-generateTitleVars": "HitCounters\\Hooks::onAbuseFilterGenerateTitleVars",
-		"AbuseFilter-computeVariable": "HitCounters\\Hooks::onAbuseFilterComputeVariable"
+		"GetPreferences": "MediaWiki\\Extension\\HitCounters\\Hooks::onGetPreferences",
+		"SpecialStatsAddExtra": "MediaWiki\\Extension\\HitCounters\\Hooks::onSpecialStatsAddExtra",
+		"LoadExtensionSchemaUpdates": "MediaWiki\\Extension\\HitCounters\\Hooks::onLoadExtensionSchemaUpdates",
+		"MagicWordwgVariableIDs": "MediaWiki\\Extension\\HitCounters\\Hooks::onMagicWordwgVariableIDs",
+		"ParserGetVariableValueSwitch": "MediaWiki\\Extension\\HitCounters\\Hooks::onParserGetVariableValueSwitch",
+		"ParserFirstCallInit": "MediaWiki\\Extension\\HitCounters\\Hooks::onParserFirstCallInit",
+		"PageViewUpdates": "MediaWiki\\Extension\\HitCounters\\Hooks::onPageViewUpdates",
+		"SkinTemplateOutputPageBeforeExec": "MediaWiki\\Extension\\HitCounters\\Hooks::onSkinTemplateOutputPageBeforeExec",
+		"AbuseFilter-builder": "MediaWiki\\Extension\\HitCounters\\Hooks::onAbuseFilterBuilder",
+		"AbuseFilter-deprecatedVariables": "MediaWiki\\Extension\\HitCounters\\Hooks::onAbuseFilterDeprecatedVariables",
+		"AbuseFilter-generateTitleVars": "MediaWiki\\Extension\\HitCounters\\Hooks::onAbuseFilterGenerateTitleVars",
+		"AbuseFilter-computeVariable": "MediaWiki\\Extension\\HitCounters\\Hooks::onAbuseFilterComputeVariable"
 	},
 	"AutoloadClasses": {
-		"HitCounters\\DBConnect": "includes/HitCountersDBConnect.php",
-		"HitCounters\\Hooks": "includes/HitCounters.hooks.php",
-		"HitCounters\\HitCounters": "includes/HitCounters.body.php",
+		"MediaWiki\\Extension\\HitCounters\\DBConnect": "includes/HitCountersDBConnect.php",
+		"MediaWiki\\Extension\\HitCounters\\Hooks": "includes/HitCounters.hooks.php",
+		"MediaWiki\\Extension\\HitCounters\\HitCounters": "includes/HitCounters.body.php",
 		"ViewCountUpdate": "includes/ViewCountUpdate.php",
-		"HitCounters\\SpecialPopularPages": "includes/SpecialPopularPages.php",
-		"HitCounters\\HCUpdater": "includes/HCUpdater.php"
+		"MediaWiki\\Extension\\HitCounters\\SpecialPopularPages": "includes/SpecialPopularPages.php",
+		"MediaWiki\\Extension\\HitCounters\\HCUpdater": "includes/HCUpdater.php"
 	},
 	"config": {
 		"HitcounterUpdateFreq": 1,

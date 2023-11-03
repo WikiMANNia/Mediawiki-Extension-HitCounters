@@ -1,5 +1,12 @@
 <?php
-namespace HitCounters;
+/**
+ * Hooks for HitCounters extension
+ *
+ * @file
+ * @ingroup Extensions
+ */
+
+namespace MediaWiki\Extension\HitCounters;
 
 use AbuseFilterVariableHolder;
 use CoreParserFunctions;
@@ -24,6 +31,8 @@ use WikiPage;
  * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ *
+ * @phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
  */
 class Hooks {
 
@@ -32,6 +41,12 @@ class Hooks {
 	 * @param array &$preferences
 	 */
 	public static function onGetPreferences( $user, &$preferences ) {
+
+		$preferences['hitcounters-exempt'] = [
+			'type' => 'toggle',
+			'label-message' => 'hitcounters-exempt-label',
+			'section' => 'hitcounters',
+		];
 		$preferences['hitcounters-pageid'] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-pageid-label',
@@ -62,8 +77,15 @@ class Hooks {
 	public static function onSpecialStatsAddExtra(
 		array &$extraStats, IContextSource $statsPage
 	) {
+		$user = RequestContext::getMain()->getUser();
+		$numberofmostviewedpages = $user->getIntOption( 'hitcounters-numberofmostviewedpages', 50 );
+		if ( $numberofmostviewedpages < 0 ) {
+			$numberofmostviewedpages = 0;
+		}
+
 		$totalEdits = SiteStats::edits() ? SiteStats::edits() : 0;
 		$totalViews = HitCounters::views() ? HitCounters::views() : 0;
+
 		$extraStats['hitcounters-statistics-header-views']
 			['hitcounters-statistics-views-total'] = $totalViews;
 		$extraStats['hitcounters-statistics-header-views']
@@ -73,10 +95,9 @@ class Hooks {
 				: 0;
 
 		$dbr = DBConnect::getReadingConnect();
-		$user = RequestContext::getMain()->getUser();
 		$param = DBConnect::getQueryInfo();
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
-		$options['LIMIT'] = $user->getIntOption( 'hitcounters-numberofmostviewedpages', 50 );
+		$options['LIMIT'] = $numberofmostviewedpages;
 		$res = $dbr->select(
 			$param['tables'], $param['fields'], [], __METHOD__,
 			$options, $param['join_conds']
@@ -84,6 +105,7 @@ class Hooks {
 
 		$most_viewed_pages_array = [];
 		if ( $res->numRows() > 0 ) {
+
 			foreach ( $res as $row ) {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
 				$key   = $title->getPrefixedText();
@@ -103,9 +125,12 @@ class Hooks {
 	}
 
 	protected static function getMagicWords() {
+
+		$key = 'MediaWiki\Extension\HitCounters\HitCounters';
+
 		return [
-			'numberofviews'     => [ 'HitCounters\HitCounters', 'numberOfViews' ],
-			'numberofpageviews' => [ 'HitCounters\HitCounters', 'numberOfPageViews' ]
+			'numberofviews'     => [ $key, 'numberOfViews' ],
+			'numberofpageviews' => [ $key, 'numberOfPageViews' ]
 		];
 	}
 
@@ -149,6 +174,7 @@ class Hooks {
 		if (
 			!$wgDisableCounters &&
 			!$user->isAllowed( 'bot' ) &&
+			!$user->isAllowed( 'sysop' ) &&
 			$wikipage->exists()
 		) {
 			DeferredUpdates::addUpdate( new ViewCountUpdate( $wikipage->getId() ) );
@@ -215,6 +241,24 @@ class Hooks {
 	}
 
 	/**
+	 * Computes the article_views variables
+	 * @param string $method
+	 * @param AbuseFilterVariableHolder $vars
+	 * @param array $parameters
+	 * @param null &$result
+	 * @return bool
+	 */
+	public static function onAbuseFilterComputeVariable( $method, $vars, $parameters, &$result ) {
+		// Both methods are needed because they're saved in the DB and are necessary for old entries
+		if ( $method === 'article-views' || $method === 'page-views' ) {
+			$result = HitCounters::getCount( $parameters['title'] );
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
 	 * Old, deprecated syntax
 	 * @param array &$deprecatedVars
 	 * @return void
@@ -236,23 +280,5 @@ class Hooks {
 		$prefix
 	) {
 		$vars->setLazyLoadVar( $prefix . '_VIEWS', 'page-views', [ 'title' => $title ] );
-	}
-
-	/**
-	 * Computes the article_views variables
-	 * @param string $method
-	 * @param AbuseFilterVariableHolder $vars
-	 * @param array $parameters
-	 * @param null &$result
-	 * @return bool
-	 */
-	public static function onAbuseFilterComputeVariable( $method, $vars, $parameters, &$result ) {
-		// Both methods are needed because they're saved in the DB and are necessary for old entries
-		if ( $method === 'article-views' || $method === 'page-views' ) {
-			$result = HitCounters::getCount( $parameters['title'] );
-			return false;
-		} else {
-			return true;
-		}
 	}
 }

@@ -26,6 +26,7 @@
 	"hitcounters-statistics-views-peredit": "Visualizaciones por edición",
 	"hitcounters-statistics-mostpopular": "Páginas más vistas",
 	"prefs-hitcounters": "Hit Counters",
+	"hitcounters-exempt-label": "Excluir las páginas vistas propias de las estadísticas",
 	"hitcounters-numberofmostviewedpages-help": "Ocultar con la entrada “0”.",
 	"hitcounters-numberofmostviewedpages-label": "Número de páginas más vistas",
 	"hitcounters-pageid-label": "Mostrar ID de página",

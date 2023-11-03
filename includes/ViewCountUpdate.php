@@ -28,6 +28,7 @@
  * from that table to update the 'page_counter' field in a batch operation.
  */
 class ViewCountUpdate implements DeferrableUpdate {
+
 	/** @var int Page ID to increment the view count */
 	protected $pageId;
 
@@ -35,6 +36,7 @@ class ViewCountUpdate implements DeferrableUpdate {
 	 * Constructor
 	 *
 	 * @param int $pageId Page ID to increment the view count
+	 * @param int $updateFreq
 	 */
 	public function __construct( $pageId ) {
 		$this->pageId = intval( $pageId );
@@ -45,9 +47,10 @@ class ViewCountUpdate implements DeferrableUpdate {
 	 */
 	public function doUpdate() {
 		global $wgHitcounterUpdateFreq;
+
+		$pageId = $this->pageId;
 		$updateFreq = $wgHitcounterUpdateFreq;
 		$dbw = DBConnect::getWritingConnect();
-		$pageId = $this->pageId;
 		$fname = __METHOD__;
 
 		wfDebugLog( "HitCounter", "update freq set to: $wgHitcounterUpdateFreq;" );
