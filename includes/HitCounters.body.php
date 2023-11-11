@@ -1,6 +1,6 @@
 <?php
 
-namespace HitCounters;
+namespace MediaWiki\Extension\HitCounters;
 
 use ObjectCache;
 use Parser;

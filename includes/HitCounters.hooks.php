@@ -6,7 +6,7 @@
  * @ingroup Extensions
  */
 
-namespace HitCounters;
+namespace MediaWiki\Extension\HitCounters;
 
 use MediaWiki\Hook\GetMagicVariableIDsHook;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
@@ -17,7 +17,6 @@ use MediaWiki\Hook\ParserGetVariableValueSwitchHook;
 use MediaWiki\Hook\SkinAddFooterLinksHook;
 use MediaWiki\Hook\SpecialStatsAddExtraHook;
 
-use AbuseFilterVariableHolder;
 use CoreParserFunctions;
 use DeferredUpdates;
 use GlobalVarConfig;
@@ -176,9 +175,12 @@ class Hooks implements
 	}
 
 	protected static function getMagicWords() {
+
+		$key = 'MediaWiki\Extension\HitCounters\HitCounters';
+
 		return [
-			'numberofviews'     => [ 'HitCounters\HitCounters', 'numberOfViews' ],
-			'numberofpageviews' => [ 'HitCounters\HitCounters', 'numberOfPageViews' ]
+			'numberofviews'     => [ $key, 'numberOfViews' ],
+			'numberofpageviews' => [ $key, 'numberOfPageViews' ]
 		];
 	}
 
@@ -330,12 +332,7 @@ class Hooks implements
 	 * @param null &$result
 	 * @return bool
 	 */
-	public function onAbuseFilterComputeVariable(
-		string $method,
-		AbuseFilterVariableHolder $vars,
-		array $parameters,
-		&$result
-	) {
+	public function onAbuseFilterComputeVariable( $method, $vars, $parameters, &$result ) {
 		// Both methods are needed because they're saved in the DB and are necessary for old entries
 		if ( $method === 'article-views' || $method === 'page-views' ) {
 			$result = HitCounters::getCount( $parameters['title'] );
@@ -361,11 +358,7 @@ class Hooks implements
 	 * @param string $prefix
 	 * @return void
 	 */
-	public function onAbuseFilterGenerateTitleVars(
-		AbuseFilterVariableHolder $vars,
-		Title $title,
-		string $prefix
-	) {
+	public function onAbuseFilterGenerateTitleVars( $vars, $title, $prefix ) {
 		$vars->setLazyLoadVar( $prefix . '_VIEWS', 'page-views', [ 'title' => $title ] );
 	}
 }

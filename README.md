@@ -114,6 +114,11 @@ Version 0.5.3 is compatible with 1.35+ to 1.37+.
 
 - Hard setting: "Exclude admins page views from statistics"
 
+v0.5.4
+
+- Refactoring: Change namespace from `HitCounters` to `MediaWiki\Extension\HitCounters`
+- Refactoring: Move sql files from `sql` to `sql\mysql`
+
 # Default settings
 
 * $wgDisableCounters = `false`;              Set to `true` to disable them completely.

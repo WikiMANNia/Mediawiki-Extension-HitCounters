@@ -1,7 +1,7 @@
 {
 	"name": "HitCounters",
 	"namemsg": "hitcounters-extensionname",
-	"version": "0.5.3",
+	"version": "0.5.4",
 	"author": [
 		"[//mwstake.org Mark A. Hershberger]",
 		"[//wikimannia.org WikiMANNia]"
@@ -23,7 +23,7 @@
 		"HitCountersAlias": "HitCounters.i18n.alias.php"
 	},
 	"SpecialPages": {
-		"PopularPages": "HitCounters\\SpecialPopularPages"
+		"PopularPages": "MediaWiki\\Extension\\HitCounters\\SpecialPopularPages"
 	},
 	"Hooks": {
 		"GetMagicVariableIDs": "main",
@@ -41,7 +41,7 @@
 	},
 	"HookHandlers": {
 		"main": {
-			"class": "HitCounters\\Hooks",
+			"class": "MediaWiki\\Extension\\HitCounters\\Hooks",
 			"services": [
 				"MainConfig",
 				"UserOptionsLookup"
@@ -49,12 +49,12 @@
 		}
 	},
 	"AutoloadClasses": {
-		"HitCounters\\DBConnect": "includes/HitCountersDBConnect.php",
-		"HitCounters\\Hooks": "includes/HitCounters.hooks.php",
-		"HitCounters\\HitCounters": "includes/HitCounters.body.php",
+		"MediaWiki\\Extension\\HitCounters\\DBConnect": "includes/HitCountersDBConnect.php",
+		"MediaWiki\\Extension\\HitCounters\\Hooks": "includes/HitCounters.hooks.php",
+		"MediaWiki\\Extension\\HitCounters\\HitCounters": "includes/HitCounters.body.php",
 		"ViewCountUpdate": "includes/ViewCountUpdate.php",
-		"HitCounters\\SpecialPopularPages": "includes/SpecialPopularPages.php",
-		"HitCounters\\HCUpdater": "includes/HCUpdater.php"
+		"MediaWiki\\Extension\\HitCounters\\SpecialPopularPages": "includes/SpecialPopularPages.php",
+		"MediaWiki\\Extension\\HitCounters\\HCUpdater": "includes/HCUpdater.php"
 	},
 	"config": {
 		"HitcounterUpdateFreq": {
