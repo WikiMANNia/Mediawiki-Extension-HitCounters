@@ -17,7 +17,6 @@ use MediaWiki\Hook\ParserGetVariableValueSwitchHook;
 use MediaWiki\Hook\SkinAddFooterLinksHook;
 use MediaWiki\Hook\SpecialStatsAddExtraHook;
 use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
-use MediaWiki\Extension\HitCounters\ViewCountUpdate;
 
 use CoreParserFunctions;
 use DeferredUpdates;
@@ -28,6 +27,7 @@ use Parser;
 use SiteStats;
 use Skin;
 use Title;
+use ViewCountUpdate;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,
@@ -176,9 +176,12 @@ class Hooks implements
 	}
 
 	protected static function getMagicWords() {
+
+		$key = 'MediaWiki\Extension\HitCounters\HitCounters';
+
 		return [
-			'numberofviews'     => [ 'MediaWiki\Extension\HitCounters\HitCounters', 'numberOfViews' ],
-			'numberofpageviews' => [ 'MediaWiki\Extension\HitCounters\HitCounters', 'numberOfPageViews' ]
+			'numberofviews'     => [ $key, 'numberOfViews' ],
+			'numberofpageviews' => [ $key, 'numberOfPageViews' ]
 		];
 	}
 

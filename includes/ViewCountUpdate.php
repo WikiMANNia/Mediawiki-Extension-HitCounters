@@ -20,8 +20,6 @@
  * @file
  */
 
-namespace MediaWiki\Extension\HitCounters;
-
 /**
  * Update for the 'page_counter' field, when $wgDisableCounters is false.
  *

@@ -52,7 +52,7 @@
 		"MediaWiki\\Extension\\HitCounters\\DBConnect": "includes/HitCountersDBConnect.php",
 		"MediaWiki\\Extension\\HitCounters\\Hooks": "includes/HitCounters.hooks.php",
 		"MediaWiki\\Extension\\HitCounters\\HitCounters": "includes/HitCounters.body.php",
-		"MediaWiki\\Extension\\HitCounters\\ViewCountUpdate": "includes/ViewCountUpdate.php",
+		"ViewCountUpdate": "includes/ViewCountUpdate.php",
 		"MediaWiki\\Extension\\HitCounters\\SpecialPopularPages": "includes/SpecialPopularPages.php",
 		"MediaWiki\\Extension\\HitCounters\\HCUpdater": "includes/HCUpdater.php"
 	},
