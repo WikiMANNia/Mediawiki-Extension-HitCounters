@@ -16,8 +16,6 @@ use MediaWiki\Hook\ParserFirstCallInitHook;
 use MediaWiki\Hook\ParserGetVariableValueSwitchHook;
 use MediaWiki\Hook\SkinAddFooterLinksHook;
 use MediaWiki\Hook\SpecialStatsAddExtraHook;
-use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
-use MediaWiki\Extension\HitCounters\ViewCountUpdate;
 
 use CoreParserFunctions;
 use DeferredUpdates;
@@ -28,6 +26,7 @@ use Parser;
 use SiteStats;
 use Skin;
 use Title;
+use ViewCountUpdate;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,
@@ -176,9 +175,12 @@ class Hooks implements
 	}
 
 	protected static function getMagicWords() {
+
+		$key = 'MediaWiki\Extension\HitCounters\HitCounters';
+
 		return [
-			'numberofviews'     => [ 'MediaWiki\Extension\HitCounters\HitCounters', 'numberOfViews' ],
-			'numberofpageviews' => [ 'MediaWiki\Extension\HitCounters\HitCounters', 'numberOfPageViews' ]
+			'numberofviews'     => [ $key, 'numberOfViews' ],
+			'numberofpageviews' => [ $key, 'numberOfPageViews' ]
 		];
 	}
 
@@ -312,35 +314,25 @@ class Hooks implements
 	}
 
 	/**
-	 * Hook runner for the `AbuseFilter-builder` hook
-	 *
-	 * @param array &$realValues Builder values
-	 * @return bool|void True or no return value to continue or false to abort
+	 * Tells AbuseFilter about our variables
+	 * @param array &$realValues
+	 * @return void
 	 */
-	public function onAbuseFilter_builder( array &$realValues ) {
+	public function onAbuseFilterBuilder( array &$realValues ) {
 		$realValues['vars']['page_views'] = 'page-views';
 		$realValues['vars']['moved_from_views'] = 'movedfrom-views';
 		$realValues['vars']['moved_to_views'] = 'movedto-views';
 	}
 
 	/**
-	 * Hook runner for the AbuseFilter-computeVariable` hook
-	 *
-	 * Like AbuseFilter-interceptVariable but called if the requested method wasn't found.
-	 * Return true to indicate that the method is known to the hook and was computed successful.
-	 *
-	 * @param string $method Method to generate the variable
-	 * @param VariableHolder $vars
-	 * @param array $parameters Parameters with data to compute the value
-	 * @param ?string &$result Result of the computation
-	 * @return bool|void True or no return value to continue or false to abort
+	 * Computes the article_views variables
+	 * @param string $method
+	 * @param AbuseFilterVariableHolder $vars
+	 * @param array $parameters
+	 * @param null &$result
+	 * @return bool
 	 */
-	public function onAbuseFilter_computeVariable(
-		string $method,
-		VariableHolder $vars,
-		array $parameters,
-		?string &$result
-	) {
+	public function onAbuseFilterComputeVariable( $method, $vars, $parameters, &$result ) {
 		// Both methods are needed because they're saved in the DB and are necessary for old entries
 		if ( $method === 'article-views' || $method === 'page-views' ) {
 			$result = HitCounters::getCount( $parameters['title'] );
@@ -351,33 +343,22 @@ class Hooks implements
 	}
 
 	/**
-	 * Hook runner for the `AbuseFilter-deprecatedVariables` hook
-	 *
-	 * @param array &$deprecatedVariables deprecated variables, syntax: [ 'old_name' => 'new_name' ]
-	 * @return bool|void True or no return value to continue or false to abort
+	 * Old, deprecated syntax
+	 * @param array &$deprecatedVariables
+	 * @return void
 	 */
-	public function onAbuseFilter_deprecatedVariables( array &$deprecatedVariables ) {
+	public function onAbuseFilterDeprecatedVariables( array &$deprecatedVariables ) {
 		$deprecatedVariables['article_views'] = 'page_views';
 	}
 
 	/**
-	 * Hook runner for the `AbuseFilter-generateTitleVars` hook
-	 *
-	 * Allows altering the variables generated for a title
-	 *
-	 * @param VariableHolder $vars
+	 * Lazy-loads the article_views variable
+	 * @param AbuseFilterVariableHolder $vars
 	 * @param Title $title
-	 * @param string $prefix Variable name prefix
-	 * @param ?RecentChange $rc If the variables should be generated for an RC entry,
-	 *     this is the entry. Null if it's for the current action being filtered.
-	 * @return bool|void True or no return value to continue or false to abort
+	 * @param string $prefix
+	 * @return void
 	 */
-	public function onAbuseFilter_generateTitleVars(
-		VariableHolder $vars,
-		Title $title,
-		string $prefix,
-		?RecentChange $rc
-	) {
+	public function onAbuseFilterGenerateTitleVars( $vars, $title, $prefix ) {
 		$vars->setLazyLoadVar( $prefix . '_VIEWS', 'page-views', [ 'title' => $title ] );
 	}
 }
