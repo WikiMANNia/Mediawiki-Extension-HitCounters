@@ -87,7 +87,7 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 						$dbw->lock( $lockName, $fname );
 						$dbw->insert( 'hit_counter_extension', [ 'hc_id' => $pageId ], $fname );
 						$checkfreq = intval( $updateFreq / 25 + 1 );
-						if ( ( ( rand() % $checkfreq ) == 0 ) && ( $dbw->lastErrno() == 0 ) ) {
+						if ( ( rand() % $checkfreq ) == 0 ) {
 							$this->collect();
 						}
 						$dbw->unlock( $lockName, $fname );
