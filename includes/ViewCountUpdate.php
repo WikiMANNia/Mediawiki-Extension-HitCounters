@@ -36,7 +36,6 @@ class ViewCountUpdate implements DeferrableUpdate {
 	 * Constructor
 	 *
 	 * @param int $pageId Page ID to increment the view count
-	 * @param int $updateFreq
 	 */
 	public function __construct( $pageId ) {
 		$this->pageId = intval( $pageId );

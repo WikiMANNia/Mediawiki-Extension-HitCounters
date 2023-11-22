@@ -22,6 +22,10 @@
 	"hitcounters-statistics-views-total-desc": "Oproepen van niet-bestaande pagina's en speciale pagina's zijn niet inbegrepen",
 	"hitcounters-statistics-views-peredit": "Weergaven per bewerking",
 	"hitcounters-statistics-mostpopular": "Meest bekeken pagina's",
+	"prefs-hitcounters": "Hit Counters",
+	"hitcounters-exempt-label": "Sluit je eigen paginaweergaves uit van de statistieken",
+	"hitcounters-numberofmostviewedpages-help": "Verberg door “0” in te voeren.",
+	"hitcounters-numberofmostviewedpages-label": "Uw paginaweergaven van de statistieken uit te sluiten",
 	"abusefilter-edit-builder-vars-page-views": "Bekeken pagina's",
 	"abusefilter-edit-builder-vars-movedfrom-views": "Bekeken de origin pagina",
 	"abusefilter-edit-builder-vars-movedto-views": "Bekeken de landingspagina"

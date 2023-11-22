@@ -68,9 +68,23 @@ class Hooks {
 		return true;
 	}
 
+	/**
+	 * https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
+	 * https://doc.wikimedia.org/mediawiki-core/master/php/classDatabaseUpdater.html
+	 *
+	 * @param DatabaseUpdater $updater DatabaseUpdater subclass
+	 * @throws InvalidArgumentException
+	 * @return bool|void True or no return value to continue or false to abort
+	 */
 	public static function onLoadExtensionSchemaUpdates(
 		DatabaseUpdater $updater
 	) {
+		$type = $updater->getDB()->getType();
+
+		if ( !in_array( $type, [ 'mysql', 'postgres' ] ) ) {
+			throw new InvalidArgumentException( "HitCounters extension does not currently support $type database." );
+		}
+
 		HCUpdater::getDBUpdates( $updater );
 	}
 
