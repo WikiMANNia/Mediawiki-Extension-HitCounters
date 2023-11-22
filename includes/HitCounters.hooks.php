@@ -39,10 +39,31 @@ use ViewCountUpdate;
  *
  * @phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
  */
+class Hook implements LoadExtensionSchemaUpdatesHook {
+
+	/**
+	 * https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
+	 * https://doc.wikimedia.org/mediawiki-core/master/php/classDatabaseUpdater.html
+	 *
+	 * @param DatabaseUpdater $updater DatabaseUpdater subclass
+	 * @throws InvalidArgumentException
+	 * @return bool|void True or no return value to continue or false to abort
+	 */
+	public function onLoadExtensionSchemaUpdates( $updater ) {
+
+		$type = $updater->getDB()->getType();
+
+		if ( !in_array( $type, [ 'mysql', 'postgres' ] ) ) {
+			throw new InvalidArgumentException( "HitCounters extension does not currently support $type database." );
+		}
+
+		HCUpdater::getDBUpdates( $updater );
+	}
+}
+
 class Hooks implements
 	GetMagicVariableIDsHook,
 	GetPreferencesHook,
-	LoadExtensionSchemaUpdatesHook,
 	PageViewUpdatesHook,
 	ParserFirstCallInitHook,
 	ParserGetVariableValueSwitchHook,
@@ -99,18 +120,6 @@ class Hooks implements
 			'default' => 50,
 			'section' => 'hitcounters',
 		];
-	}
-
-	/**
-	 * https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
-	 * https://doc.wikimedia.org/mediawiki-core/master/php/classDatabaseUpdater.html
-	 *
-	 * @param DatabaseUpdater $updater DatabaseUpdater subclass
-	 * @return bool|void True or no return value to continue or false to abort
-	 */
-	public function onLoadExtensionSchemaUpdates( $updater ) {
-
-		HCUpdater::getDBUpdates( $updater );
 	}
 
 	/**

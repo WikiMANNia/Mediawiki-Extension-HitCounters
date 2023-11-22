@@ -28,7 +28,7 @@
 	"Hooks": {
 		"GetMagicVariableIDs": "main",
 		"GetPreferences": "main",
-		"LoadExtensionSchemaUpdates": "main",
+		"LoadExtensionSchemaUpdates": "SchemaChanges",
 		"PageViewUpdates": "main",
 		"ParserFirstCallInit": "main",
 		"ParserGetVariableValueSwitch": "main",
@@ -46,10 +46,14 @@
 				"MainConfig",
 				"UserOptionsLookup"
 			]
+		},
+		"SchemaChanges": {
+			"class": "MediaWiki\\Extension\\HitCounters\\Hook"
 		}
 	},
 	"AutoloadClasses": {
 		"MediaWiki\\Extension\\HitCounters\\DBConnect": "includes/HitCountersDBConnect.php",
+		"MediaWiki\\Extension\\HitCounters\\Hook": "includes/HitCounters.hooks.php",
 		"MediaWiki\\Extension\\HitCounters\\Hooks": "includes/HitCounters.hooks.php",
 		"MediaWiki\\Extension\\HitCounters\\HitCounters": "includes/HitCounters.body.php",
 		"ViewCountUpdate": "includes/ViewCountUpdate.php",
