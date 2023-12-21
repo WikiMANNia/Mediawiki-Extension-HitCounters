@@ -55,6 +55,9 @@ class DBConnect {
 		return $lb->getConnection( DB_PRIMARY, [], false );
 	}
 
+	/**
+	 * @return array
+	 */
 	public static function getQueryInfo() {
 
 		$namespaces = MediaWikiServices::getInstance()

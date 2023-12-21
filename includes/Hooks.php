@@ -17,7 +17,6 @@ use MediaWiki\Hook\ParserGetVariableValueSwitchHook;
 use MediaWiki\Hook\SkinAddFooterLinksHook;
 use MediaWiki\Hook\SpecialStatsAddExtraHook;
 
-use CoreParserFunctions;
 use DeferredUpdates;
 use GlobalVarConfig;
 use MediaWiki\MediaWikiServices;
@@ -26,7 +25,6 @@ use Parser;
 use SiteStats;
 use Skin;
 use Title;
-use ViewCountUpdate;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,
@@ -44,7 +42,7 @@ class Hook implements LoadExtensionSchemaUpdatesHook {
 	 * https://www.mediawiki.org/wiki/Manual:Hooks/LoadExtensionSchemaUpdates
 	 * https://doc.wikimedia.org/mediawiki-core/master/php/classDatabaseUpdater.html
 	 *
-	 * @param DatabaseUpdater $updater DatabaseUpdater subclass
+	 * @param DatabaseUpdater $updater
 	 * @throws InvalidArgumentException
 	 * @return bool|void True or no return value to continue or false to abort
 	 */
@@ -122,14 +120,8 @@ class Hooks implements
 	}
 
 	/**
-	 * @param array &$extraStats Array to save the new stats
-	 *   	$extraStats['<name of statistic>'] => <value>;
-	 *   <value> can be an array with the keys "name" and "number":
-	 *   "name" is the HTML to be displayed in the name column
-	 *   "number" is the number to be displayed.
-	 *   or, <value> can be the number to be displayed and <name> is the
-	 *   message key to use in the name column,
-	 * @param IContextSource $context IContextSource object
+	 * @param array &$extraStats
+	 * @param IContextSource $context
 	 * @return bool|void True or no return value to continue or false to abort
 	 */
 	public function onSpecialStatsAddExtra( &$extraStats, $context ) {
@@ -153,6 +145,7 @@ class Hooks implements
 
 		$dbr = DBConnect::getReadingConnect();
 		$param = DBConnect::getQueryInfo();
+		$options = [];
 		$options['ORDER BY'] = [ 'page_counter DESC' ];
 		$options['LIMIT'] = $numberofmostviewedpages;
 		$res = $dbr->select(
@@ -183,6 +176,9 @@ class Hooks implements
 		return true;
 	}
 
+	/**
+	 * @return array
+	 */
 	protected static function getMagicWords() {
 
 		$key = 'MediaWiki\Extension\HitCounters\HitCounters';
@@ -208,7 +204,7 @@ class Hooks implements
 	/**
 	 * This hook is called when the parser initialises for the first time.
 	 *
-	 * @param Parser $parser Parser object being initialised
+	 * @param Parser $parser
 	 * @return bool|void True or no return value to continue or false to abort
 	 */
 	public function onParserFirstCallInit( $parser ) {
@@ -237,12 +233,12 @@ class Hooks implements
 		$magicWordId,
 		&$ret,
 		$frame
-	) {
+	): bool {
 
 		foreach ( self::getMagicWords() as $magicWord => $processingFunction ) {
 			if ( $magicWord === $magicWordId ) {
 				if ( $this->enabledCounters ) {
-					$ret = $variableCache[$magicWordId] = CoreParserFunctions::formatRaw(
+					$ret = $variableCache[$magicWordId] = $parser->getTargetLanguage()->formatNum(
 						call_user_func( $processingFunction, $parser, $frame, null ),
 						null,
 						$parser->getTargetLanguage()

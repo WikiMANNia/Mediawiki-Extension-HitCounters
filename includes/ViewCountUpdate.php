@@ -20,6 +20,14 @@
  * @file
  */
 
+namespace MediaWiki\Extension\HitCounters;
+
+use DeferrableUpdate;
+use MediaWiki\MediaWikiServices;
+use MWExceptionHandler;
+use TransactionRoundAwareUpdate;
+use Wikimedia\Rdbms\DBError;
+
 /**
  * Update for the 'page_counter' field, when $wgDisableCounters is false.
  *
@@ -43,6 +51,9 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 		$this->updateFreq = $updateFreq;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getTransactionRoundRequirement() {
 		return self::TRX_ROUND_ABSENT;
 	}

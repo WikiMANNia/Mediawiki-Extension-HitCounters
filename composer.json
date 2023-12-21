@@ -32,6 +32,11 @@
 		"email": "mediawiki-l@lists.wikimedia.org",
 		"chat": "https://matrix.to/#/!MBxZoWJjBazjKVexqQ:matrix.org"
 	},
+	"autoload": {
+		"psr-4": {
+			"HitCounter\\": "includes/"
+		}
+	},
 	"require-dev": {
 		"mediawiki/mediawiki-codesniffer": "41.0.0",
 		"mediawiki/minus-x": "1.1.1",
@@ -48,6 +53,7 @@
 			"minus-x fix .",
 			"phpcbf"
 		],
-		"phpcs": "phpcs -sp"
+		"phpcs": "phpcs -sp --cache",
+		"phan": "phan -d . --long-progress-bar"
 	}
 }
