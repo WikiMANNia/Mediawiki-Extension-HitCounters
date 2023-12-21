@@ -63,6 +63,9 @@ class SpecialPopularPages extends QueryPage {
 		return false;
 	}
 
+	/**
+	 * @return array|null
+	 */
 	public function getQueryInfo() {
 		return DBConnect::getQueryInfo();
 	}
@@ -89,7 +92,13 @@ class SpecialPopularPages extends QueryPage {
 			);
 		}
 
-		$link = $this->mLinkRenderer->makeKnownLink( $title );
+		$link = $this->mLinkRenderer->makeKnownLink(
+			$title,
+			MediaWikiServices::getInstance()->
+				getLanguageConverterFactory()->
+				getLanguageConverter()->
+				convert( $title->getPrefixedText() )
+		);
 
 		return $this->getLanguage()->specialList(
 			$link,
@@ -100,6 +109,7 @@ class SpecialPopularPages extends QueryPage {
 		);
 	}
 
+	/** @inheritDoc */
 	protected function getGroupName() {
 		return 'wiki';
 	}

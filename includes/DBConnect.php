@@ -43,7 +43,8 @@ class DBConnect {
 	}
 
 	public static function getReadingConnect() {
-		return wfGetDB( DB_REPLICA );
+		$lb = self::$services->getDBLoadBalancer();
+		return $lb->getMaintenanceConnectionRef( DB_REPLICA );
 	}
 
 	public static function getWritingConnect() {
@@ -55,6 +56,9 @@ class DBConnect {
 		return $lb->getConnection( DB_PRIMARY, [], false );
 	}
 
+	/**
+	 * @return array
+	 */
 	public static function getQueryInfo() {
 
 		$namespaces = MediaWikiServices::getInstance()
