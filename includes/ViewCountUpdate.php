@@ -20,6 +20,12 @@
  * @file
  */
 
+namespace MediaWiki\Extension\HitCounters;
+
+use DeferrableUpdate;
+use MWExceptionHandler;
+use Wikimedia\Rdbms\DBError;
+
 /**
  * Update for the 'page_counter' field, when $wgDisableCounters is false.
  *

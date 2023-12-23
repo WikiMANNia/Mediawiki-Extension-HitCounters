@@ -54,6 +54,9 @@ class SpecialPopularPages extends QueryPage {
 		return false;
 	}
 
+	/**
+	 * @return array|null
+	 */
 	public function getQueryInfo() {
 		return DBConnect::getQueryInfo();
 	}
@@ -91,6 +94,7 @@ class SpecialPopularPages extends QueryPage {
 		);
 	}
 
+	/** @inheritDoc */
 	protected function getGroupName() {
 		return 'wiki';
 	}

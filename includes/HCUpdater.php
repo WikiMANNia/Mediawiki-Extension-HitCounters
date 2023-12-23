@@ -11,7 +11,8 @@ class HCUpdater extends DatabaseUpdater {
 
 		$type = $updater->getDB()->getType();
 
-		// Use $sqlDirBase for DBMS-independent patches and $base for DBMS-dependent patches
+		// Use $sqlDirBase for DBMS-independent patches and $base for
+		// DBMS-dependent patches
 		$sqlDirBase = __DIR__ . '/../../sql';
 		$base = $sqlDirBase . '/' . $type;
 
@@ -26,8 +27,13 @@ class HCUpdater extends DatabaseUpdater {
 		$this->extensionUpdates = [];
 	}
 
+	/**
+	 * @return array[]
+	 */
 	public function getCoreUpdateList() {
-		$updater = DatabaseUpdater::newForDb( $this->db, $this->shared, $this->maintenance );
+		$updater = DatabaseUpdater::newForDb(
+			$this->db, $this->shared, $this->maintenance
+		);
 		return $updater->getCoreUpdateList();
 	}
 }

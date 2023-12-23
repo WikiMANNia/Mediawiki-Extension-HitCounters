@@ -84,6 +84,10 @@ v0.5.4
 - Refactoring: Change namespace from `HitCounters` to `MediaWiki\Extension\HitCounters`
 - Refactoring: Move sql files from `sql` to `sql\mysql`
 
+v0.5.5
+
+- Initial cleanup, renaming files, 28 Nov 2023, Mark A. Hershberger
+
 # Default settings
 
 * $wgDisableCounters = `false`;              Set to `true` to disable them completely.
