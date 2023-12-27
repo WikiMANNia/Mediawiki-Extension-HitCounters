@@ -23,7 +23,6 @@
 namespace MediaWiki\Extension\HitCounters;
 
 use DeferrableUpdate;
-use MediaWiki\MediaWikiServices;
 use MWExceptionHandler;
 use TransactionRoundAwareUpdate;
 use Wikimedia\Rdbms\DBError;

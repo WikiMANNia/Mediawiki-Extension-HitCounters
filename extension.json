@@ -51,8 +51,14 @@
 			"class": "MediaWiki\\Extension\\HitCounters\\Hook"
 		}
 	},
-	"AutoloadNamespaces": {
-		"MediaWiki\\Extension\\HitCounters\\": "includes/"
+	"AutoloadClasses": {
+ 		"MediaWiki\\Extension\\HitCounters\\DBConnect": "includes/DBConnect.php",
+ 		"MediaWiki\\Extension\\HitCounters\\Hook": "includes/Hooks.php",
+ 		"MediaWiki\\Extension\\HitCounters\\Hooks": "includes/Hooks.php",
+ 		"MediaWiki\\Extension\\HitCounters\\HitCounters": "includes/HitCounters.php",
+ 		"MediaWiki\\Extension\\HitCounters\\ViewCountUpdate": "includes/ViewCountUpdate.php",
+ 		"MediaWiki\\Extension\\HitCounters\\SpecialPopularPages": "includes/SpecialPopularPages.php",
+ 		"MediaWiki\\Extension\\HitCounters\\HCUpdater": "includes/HCUpdater.php"
 	},
 	"config": {
 		"HitcounterUpdateFreq": {

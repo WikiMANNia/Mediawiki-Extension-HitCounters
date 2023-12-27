@@ -122,7 +122,7 @@ v0.5.4
 
 v0.5.5
 
-- Initial cleanup, 28 Nov 2023, Mark A. Hershberger
+- Initial cleanup, renaming files, 28 Nov 2023, Mark A. Hershberger
 
 # Default settings
 
