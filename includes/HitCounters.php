@@ -11,7 +11,12 @@ class HitCounters {
 	/** @var int|null */
 	protected static $mViews;
 
-	protected static function cacheStore( $cache, $key, $views ) {
+	/**
+	 * @param BagOStuff $cache
+	 * @param string $key
+	 * @param ?int $views
+	 */
+	protected static function cacheStore( $cache, $key, $views ): void {
 		if ( $views < 100 ) {
 			// Only cache for a minute
 			$cache->set( $key, $views, 60 );
@@ -39,29 +44,35 @@ class HitCounters {
 		$key = $cache->makeKey( 'viewcount', $title->getPrefixedDBkey() );
 		$views = $cache->get( $key );
 
-		if ( !$views || $views == 1 ) {
+		if ( $views === false || $views <= 1 ) {
 			$dbr = DBConnect::getReadingConnect();
 			$hits = $dbr->selectField(
 				[ 'hit_counter' ],
 				[ 'hits' => 'page_counter' ],
 				[ 'page_id' => $title->getArticleID() ],
-				__METHOD__ );
+				__METHOD__
+			);
 
 			if ( $hits !== false ) {
-				$views = $hits;
+				$views = (int)$hits;
 				self::cacheStore( $cache, $key, $views );
+			} else {
+				$views = 0;
 			}
 		}
 
-		return $views;
+		return (int)$views;
 	}
 
+	/**
+	 * @return int|null
+	 */
 	public static function views() {
 		# Should check for MiserMode here
 		$cache = ObjectCache::getInstance( CACHE_ANYTHING );
 		$key = $cache->makeKey( 'sitestats', 'activeusers-updated' );
 		// Re-calculate the count if the last tally is old...
-		if ( !self::$mViews ) {
+		if ( !isset( self::$mViews ) ) {
 			self::$mViews = $cache->get( $key );
 			wfDebugLog( "HitCounters", __METHOD__
 				. ": got " . var_export( self::$mViews, true ) .
@@ -110,6 +121,6 @@ class HitCounters {
 	public static function numberOfPageViews(
 		Parser $parser, PPFrame $frame, $args
 	) {
-		return self::getCount( $frame->title );
+		return self::getCount( $frame->getTitle() );
 	}
 }
