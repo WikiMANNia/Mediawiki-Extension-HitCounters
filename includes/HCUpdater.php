@@ -13,7 +13,7 @@ class HCUpdater extends DatabaseUpdater {
 
 		// Use $sqlDirBase for DBMS-independent patches and $base for
 		// DBMS-dependent patches
-		$base = $sqlDirBase = __DIR__ . '/../../sql/' . $type;
+		$base = $sqlDirBase = __DIR__ . '/../sql/' . $type;
 
 		$updater->addExtensionTable( 'hit_counter_extension', "$base/hit_counter_extension.sql" );
 		$updater->addExtensionTable( 'hit_counter', "$base/page_counter.sql" );
