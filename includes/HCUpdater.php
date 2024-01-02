@@ -13,7 +13,7 @@ class HCUpdater extends DatabaseUpdater {
 
 		// Use $sqlDirBase for DBMS-independent patches and $base for
 		// DBMS-dependent patches
-		$sqlDirBase = __DIR__ . '/../../sql';
+		$sqlDirBase = __DIR__ . '/../sql';
 		$base = $sqlDirBase . '/' . $type;
 
 		/* This is an ugly abuse to rename a table. */
