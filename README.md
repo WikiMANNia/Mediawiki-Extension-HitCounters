@@ -132,7 +132,7 @@ v0.5.5
 
 ## Compatibility
 
-This extension works from REL1_38 and has been tested up to MediaWiki version `1.39.5`, and `1.40.1`.
+This extension works from REL1_38 and has been tested up to MediaWiki version `1.39.6`, `1.40.2`, and `1.41.0`.
 
 ## Background
 
