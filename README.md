@@ -1,10 +1,40 @@
 # HitCounters
 
-Die Pflege dieses Forks der MediaWiki-Erweiterung [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters) wird von WikiMANNia verwaltet.
+Die Pflege dieses Forks der MediaWiki-Erweiterung [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters/de) wird von WikiMANNia verwaltet.
 
 The maintenance of this fork of the MediaWiki extension [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters) is managed by WikiMANNia.
 
-El mantenimiento de esta bifurcación de la extensión de MediaWiki [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters) está gestionado por WikiMANNia.
+El mantenimiento de esta bifurcación de la extensión de MediaWiki [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters/es) está gestionado por WikiMANNia.
+
+## Configuration
+
+Verfügbare [Parameter](https://www.mediawiki.org/wiki/Template:Extension#parameters/de) für LocalSettings.php. / Available [parameters](https://www.mediawiki.org/wiki/Template:Extension#parameters) for LocalSettings.php. / [Parámetros](https://www.mediawiki.org/wiki/Template:Extension#parameters/es) disponibles para LocalSettings.php.
+
+* $wgDisableCounters = `false`;
+
+When set to `true`, it disables the notice in the pages footer saying "This page has been accessed 256 times." as well as the [special page](https://www.mediawiki.org/wiki/Manual:Special_pages) `PopularPages`.
+
+* $wgEnableCountersAtTheFooter = `false`;
+
+When set to `true`, it enables the notice in the pages footer saying "This page has been accessed 256 times.", which is displayed assuming that `$wgDisableCounters` is set to `false`.
+
+* $wgHitcounterUpdateFreq = `1`;
+
+Sets how often page counters should be updated. Default value is `1`.
+
+* $wgEnableAddPageId = `false`;
+
+When set to `true`, it adds the [PageId](https://www.mediawiki.org/wiki/Help:Page_ID) to the special page `PopularPages`.
+
+* $wgEnableAddTextLength = `false`;
+
+When set to `true`, it adds the [TextLength](https://www.mediawiki.org/wiki/Manual:Page_table#page_len) to the special page `PopularPages`.
+
+Benutzerdefinierte [Einstellungen](https://www.mediawiki.org/wiki/Help:Preferences/de). / Custom [settings](https://www.mediawiki.org/wiki/Help:Preferences). / [Configuración](https://www.mediawiki.org/wiki/Help:Preferences/es) personalizada.
+* `Exempt`                             – Exclude your own page views from statistics (Default is `false`)
+* `TextLength`                         – Enable the textlength in `Special:PopularPages` (Default is `false`)
+* `PageId`                             – Enable the page id in `Special:PopularPages` (Default is `false`)
+* `NumberOfMostViewedPages`            – Set the Number of Most Viewed Pages in [Statistics](https://www.mediawiki.org/wiki/Special:Statistics) (Default is `50`)
 
 ## Version history
 
@@ -66,7 +96,8 @@ Code Review.
 
 v0.5.0
 
-Benutzerdefinierte [Einstellungen](https://www.mediawiki.org/wiki/Help:Preferences). / Custom [settings](https://www.mediawiki.org/wiki/Help:Preferences). / [Configuración](https://www.mediawiki.org/wiki/Help:Preferences) personalizada.
+Benutzerdefinierte [Einstellungen](https://www.mediawiki.org/wiki/Help:Preferences/de). / Custom [settings](https://www.mediawiki.org/wiki/Help:Preferences). / [Configuración](https://www.mediawiki.org/wiki/Help:Preferences/es) personalizada.
+* `Exempt`                             – Exclude your own page views from statistics (Default is `false`)
 * `TextLength`                         – Enable the textlength in `Special:PopularPages` (Default is `false`)
 * `PageId`                             – Enable the page id in `Special:PopularPages` (Default is `false`)
 * `NumberOfMostViewedPages`            – Set the Number of Most Viewed Pages in [Statistics](https://www.mediawiki.org/wiki/Special:Statistics) (Default is `50`)
@@ -88,15 +119,9 @@ v0.5.5
 
 - Initial cleanup, renaming files, 28 Nov 2023, Mark A. Hershberger
 
-# Default settings
-
-* $wgDisableCounters = `false`;              Set to `true` to disable them completely.
-* $wgEnableCountersAtTheFooter = `false`;    Set to `true` to display them at the footer.
-* $wgHitcounterUpdateFreq = `1`;
-
 ## Compatibility
 
-This extension works from REL1_25 and has been tested up to MediaWiki version `1.25.6`, `1.31.16` and, `1.35.13`.
+This extension works from REL1_25 and has been tested up to MediaWiki version `1.25.6`, `1.31.16`, and `1.35.14`.
 
 ## Background
 
