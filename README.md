@@ -22,18 +22,10 @@ When set to `true`, it enables the notice in the pages footer saying "This page 
 
 Sets how often page counters should be updated. Default value is `1`.
 
-* $wgEnableAddPageId = `false`;
-
-When set to `true`, it adds the [PageId](https://www.mediawiki.org/wiki/Help:Page_ID) to the special page `PopularPages`.
-
-* $wgEnableAddTextLength = `false`;
-
-When set to `true`, it adds the [TextLength](https://www.mediawiki.org/wiki/Manual:Page_table#page_len) to the special page `PopularPages`.
-
 Benutzerdefinierte [Einstellungen](https://www.mediawiki.org/wiki/Help:Preferences/de). / Custom [settings](https://www.mediawiki.org/wiki/Help:Preferences). / [Configuración](https://www.mediawiki.org/wiki/Help:Preferences/es) personalizada.
 * `Exempt`                             – Exclude your own page views from statistics (Default is `false`)
-* `TextLength`                         – Enable the textlength in `Special:PopularPages` (Default is `false`)
-* `PageId`                             – Enable the page id in `Special:PopularPages` (Default is `false`)
+* `TextLength`                         – Adds the [PageId](https://www.mediawiki.org/wiki/Help:Page_ID) to the special page `PopularPages` (Default is `false`)
+* `PageId`                             – Adds the [TextLength](https://www.mediawiki.org/wiki/Manual:Page_table#page_len) to the special page `PopularPages` (Default is `false`)
 * `NumberOfMostViewedPages`            – Set the Number of Most Viewed Pages in [Statistics](https://www.mediawiki.org/wiki/Special:Statistics) (Default is `50`)
 
 ## Version history
@@ -156,7 +148,7 @@ v0.5.5
 
 ## Compatibility
 
-This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.14`, `1.39.6`, and `1.40.2`.
+This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.14`, `1.39.8`, and `1.41.2`.
 
 ## Background
 
