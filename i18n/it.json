@@ -27,7 +27,7 @@
 	"hitcounters-statistics-mostpopular": "Pagine più viste",
 	"prefs-hitcounters": "Hit Counters",
 	"hitcounters-exempt-label": "Escludere le proprie visualizzazioni di pagina dalle statistiche",
-	"abusefilter-edit-builder-vars-page-views": "Visualizzazioni di pagina",
-	"abusefilter-edit-builder-vars-movedfrom-views": "Visualizzazioni della pagina sorgente",
-	"abusefilter-edit-builder-vars-movedto-views": "Visualizzazioni di pagina di destinazione"
+	"abusefilter-edit-builder-vars-page-views": "Visualizzazioni di pagina ($1)",
+	"abusefilter-edit-builder-vars-movedfrom-views": "Visualizzazioni della pagina sorgente ($1)"
+	"abusefilter-edit-builder-vars-movedto-views": "Visualizzazioni della pagina di destinazione ($1)"
 }

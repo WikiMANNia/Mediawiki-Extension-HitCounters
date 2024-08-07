@@ -26,7 +26,7 @@
 	"hitcounters-exempt-label": "Sluit je eigen paginaweergaves uit van de statistieken",
 	"hitcounters-numberofmostviewedpages-help": "Verberg door “0” in te voeren.",
 	"hitcounters-numberofmostviewedpages-label": "Uw paginaweergaven van de statistieken uit te sluiten",
-	"abusefilter-edit-builder-vars-page-views": "Bekeken pagina's",
-	"abusefilter-edit-builder-vars-movedfrom-views": "Bekeken de origin pagina",
-	"abusefilter-edit-builder-vars-movedto-views": "Bekeken de landingspagina"
+	"abusefilter-edit-builder-vars-page-views": "Bekeken $1 pagina's",
+	"abusefilter-edit-builder-vars-movedfrom-views": "Weergaven bronpagina ($1)",
+	"abusefilter-edit-builder-vars-movedto-views": "Weergaven doelpagina ($1)"
 }

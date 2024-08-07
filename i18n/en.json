@@ -29,7 +29,7 @@
 	"hitcounters-numberofmostviewedpages-label": "Number of most viewed pages",
 	"hitcounters-pageid-label": "Show page ID",
 	"hitcounters-textlength-label": "Show textlength",
-	"abusefilter-edit-builder-vars-page-views": "Page views",
-	"abusefilter-edit-builder-vars-movedfrom-views": "Source page views",
-	"abusefilter-edit-builder-vars-movedto-views": "Target page views"
+	"abusefilter-edit-builder-vars-page-views": "Page views ($1)",
+	"abusefilter-edit-builder-vars-movedfrom-views": "Source page views ($1)",
+	"abusefilter-edit-builder-vars-movedto-views": "Target page views ($1)"
 }

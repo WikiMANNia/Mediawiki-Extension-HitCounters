@@ -16,5 +16,7 @@
 	"hitcounters-statistics-mostpopular": "הדפים הנצפים ביותר",
 	"prefs-hitcounters": "Hit Counters",
 	"hitcounters-exempt-label": "לא לכלול את הצפיות שלך בדפים בסטטיסטיקה",
-	"abusefilter-edit-builder-vars-page-views": "מספר הצגות הדף"
+	"abusefilter-edit-builder-vars-page-views": "צפיות בדף ($1)",
+	"abusefilter-edit-builder-vars-movedfrom-views": "צפיות בדף מקור ($1)",
+	"abusefilter-edit-builder-vars-movedto-views": "צפיות בדף היעד ($1)"
 }

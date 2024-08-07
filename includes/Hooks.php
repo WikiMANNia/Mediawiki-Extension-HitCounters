@@ -72,6 +72,9 @@ class Hooks implements
 	private UserOptionsLookup $userOptionsLookup;
 	private bool $enabledCounters;
 	private bool $enabledCountersAtTheFooter;
+	private bool $enabledPageId;
+	private bool $enabledTextLength;
+	private int $numberOfMostViewedPages;
 	private int $updateFreq;
 
 	/**
@@ -85,6 +88,9 @@ class Hooks implements
 		$this->userOptionsLookup = $userOptionsLookup;
 		$this->enabledCounters = !$config->get( "DisableCounters" );
 		$this->enabledCountersAtTheFooter = $config->get( "EnableCountersAtTheFooter" );
+		$this->enabledPageId = $config->get( "PersonalSettingsEnabledPageId" );
+		$this->enabledTextLength = $config->get( "PersonalSettingsEnabledTextLength" );
+		$this->numberOfMostViewedPages = $config->get( "PersonalSettingsNumberOfMostViewedPages" );
 		$this->updateFreq = $config->get( "HitcounterUpdateFreq" );
 	}
 
@@ -98,25 +104,28 @@ class Hooks implements
 		$preferences['hitcounters-exempt'] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-exempt-label',
-			'section' => 'hitcounters',
+			'default' => false,
+			'section' => 'hitcounters'
 		];
 		$preferences['hitcounters-pageid'] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-pageid-label',
-			'section' => 'hitcounters',
+			'default' => $this->enabledPageId,
+			'section' => 'hitcounters'
 		];
 		$preferences['hitcounters-textlength'] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-textlength-label',
-			'section' => 'hitcounters',
+			'default' => $this->enabledTextLength,
+			'section' => 'hitcounters'
 		];
 		$preferences['hitcounters-numberofmostviewedpages'] = [
 			'type' => 'int',
 			'help-message' => 'hitcounters-numberofmostviewedpages-help',
 			'label-message' => 'hitcounters-numberofmostviewedpages-label',
 			'maxLength' => 4,
-			'default' => 50,
-			'section' => 'hitcounters',
+			'default' => $this->numberOfMostViewedPages,
+			'section' => 'hitcounters'
 		];
 	}
 

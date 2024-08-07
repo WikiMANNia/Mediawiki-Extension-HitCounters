@@ -25,7 +25,7 @@
 	"hitcounters-statistics-mostpopular": "Pages les plus consultées",
 	"prefs-hitcounters": "Hit Counters",
 	"hitcounters-exempt-label": "Exclure les propres pages vues des statistiques",
-	"abusefilter-edit-builder-vars-page-views": "Pages vues",
-	"abusefilter-edit-builder-vars-movedfrom-views": "Pages source vues",
-	"abusefilter-edit-builder-vars-movedto-views": "Pages cible vues"
+	"abusefilter-edit-builder-vars-page-views": "Affichage de pages ($1)",
+	"abusefilter-edit-builder-vars-movedfrom-views": "Consultations de pages sources ($1)",
+	"abusefilter-edit-builder-vars-movedto-views": "Consultations de pages cibles ($1)"
 }
