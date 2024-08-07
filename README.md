@@ -22,11 +22,17 @@ When set to `true`, it enables the notice in the pages footer saying "This page 
 
 Sets how often page counters should be updated. Default value is `1`.
 
+* $wgPersonalSettingsEnabledPageId = `false`;
+* $wgPersonalSettingsEnabledTextLength = `false`;
+* $wgPersonalSettingsNumberOfMostViewedPages = `50`;
+
+Default values for custom settings.
+
 Benutzerdefinierte [Einstellungen](https://www.mediawiki.org/wiki/Help:Preferences/de). / Custom [settings](https://www.mediawiki.org/wiki/Help:Preferences). / [Configuración](https://www.mediawiki.org/wiki/Help:Preferences/es) personalizada.
-* `Exempt`                             – Exclude your own page views from statistics (Default is `false`)
-* `TextLength`                         – Adds the [PageId](https://www.mediawiki.org/wiki/Help:Page_ID) to the special page `PopularPages` (Default is `false`)
-* `PageId`                             – Adds the [TextLength](https://www.mediawiki.org/wiki/Manual:Page_table#page_len) to the special page `PopularPages` (Default is `false`)
-* `NumberOfMostViewedPages`            – Set the Number of Most Viewed Pages in [Statistics](https://www.mediawiki.org/wiki/Special:Statistics) (Default is `50`)
+* `Exempt`                         – Exclude your own page views from statistics (Default is `false`)
+* `TextLength`                     – Adds the [PageId](https://www.mediawiki.org/wiki/Help:Page_ID) to the special page `PopularPages` (Default is $wgPersonalSettingsEnabledPageId)
+* `PageId`                         – Adds the [TextLength](https://www.mediawiki.org/wiki/Manual:Page_table#page_len) to the special page `PopularPages` (Default is $wgPersonalSettingsEnabledTextLength)
+* `NumberOfMostViewedPages`        – Set the Number of Most Viewed Pages in [Statistics](https://www.mediawiki.org/wiki/Special:Statistics) (Default is $wgPersonalSettingsNumberOfMostViewedPages)
 
 ## Version history
 
@@ -115,10 +121,6 @@ Code Review.
 v0.5.0
 
 Benutzerdefinierte [Einstellungen](https://www.mediawiki.org/wiki/Help:Preferences/de). / Custom [settings](https://www.mediawiki.org/wiki/Help:Preferences). / [Configuración](https://www.mediawiki.org/wiki/Help:Preferences/es) personalizada.
-* `Exempt`                             – Exclude your own page views from statistics (Default is `false`)
-* `TextLength`                         – Enable the textlength in `Special:PopularPages` (Default is `false`)
-* `PageId`                             – Enable the page id in `Special:PopularPages` (Default is `false`)
-* `NumberOfMostViewedPages`            – Set the Number of Most Viewed Pages in [Statistics](https://www.mediawiki.org/wiki/Special:Statistics) (Default is `50`)
 
 v0.5.1
 
@@ -146,6 +148,10 @@ v0.5.4
 v0.5.5
 
 - Initial cleanup, renaming files, 28 Nov 2023, Mark A. Hershberger
+
+v0.5.6
+
+- Default values for custom settings.
 
 ## Compatibility
 
