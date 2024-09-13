@@ -15,7 +15,6 @@ use DeferredUpdates;
 use IContextSource;
 use Parser;
 use PPFrame;
-use RequestContext;
 use QuickTemplate;
 use SiteStats;
 use SkinTemplate;
@@ -41,28 +40,41 @@ class Hooks {
 	 */
 	public static function onGetPreferences( $user, &$preferences ) {
 
-		$preferences['hitcounters-exempt'] = [
+		global $wgHitCountersEnabledPageId, $wgHitCountersEnabledTextLength, $wgHitCountersNumberOfMostViewedPages;
+
+		$preferences_key = 'hitcounters-exempt';
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, false );
+		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-exempt-label',
-			'section' => 'hitcounters',
+			'default' => $preferences_default,
+			'section' => 'hitcounters'
 		];
-		$preferences['hitcounters-pageid'] = [
+		$preferences_key = 'hitcounters-pageid';
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $wgHitCountersEnabledPageId );
+		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-pageid-label',
-			'section' => 'hitcounters',
+			'default' => $preferences_default,
+			'section' => 'hitcounters'
 		];
-		$preferences['hitcounters-textlength'] = [
+		$preferences_key = 'hitcounters-textlength';
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $wgHitCountersEnabledTextLength );
+		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-textlength-label',
-			'section' => 'hitcounters',
+			'default' => $preferences_default,
+			'section' => 'hitcounters'
 		];
-		$preferences['hitcounters-numberofmostviewedpages'] = [
+		$preferences_key = 'hitcounters-numberofmostviewedpages';
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $wgHitCountersNumberOfMostViewedPages );
+		$preferences[$preferences_key] = [
 			'type' => 'int',
 			'help-message' => 'hitcounters-numberofmostviewedpages-help',
 			'label-message' => 'hitcounters-numberofmostviewedpages-label',
 			'maxLength' => 4,
-			'default' => 50,
-			'section' => 'hitcounters',
+			'default' => $preferences_default,
+			'section' => 'hitcounters'
 		];
 		return true;
 	}
@@ -91,7 +103,7 @@ class Hooks {
 		array &$extraStats, IContextSource $statsPage
 	) {
 		$user = RequestContext::getMain()->getUser();
-		$numberofmostviewedpages = $user->getIntOption( 'hitcounters-numberofmostviewedpages', 50 );
+		$numberofmostviewedpages = $user->getIntOption( 'hitcounters-numberofmostviewedpages' );
 		if ( $numberofmostviewedpages < 0 ) {
 			$numberofmostviewedpages = 0;
 		}
