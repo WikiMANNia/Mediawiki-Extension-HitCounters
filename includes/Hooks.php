@@ -40,7 +40,7 @@ class Hooks {
 	 */
 	public static function onGetPreferences( $user, &$preferences ) {
 
-		global $wgHitCountersEnabledPageId, $wgHitCountersEnabledTextLength, $wgHitCountersNumberOfMostViewedPages;
+		global $wgPersonalSettingsEnabledPageId, $wgPersonalSettingsEnabledTextLength, $wgPersonalSettingsNumberOfMostViewedPages;
 
 		$preferences_key = 'hitcounters-exempt';
 		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, false );
@@ -51,7 +51,7 @@ class Hooks {
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-pageid';
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $wgHitCountersEnabledPageId );
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $wgPersonalSettingsEnabledPageId );
 		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-pageid-label',
@@ -59,7 +59,7 @@ class Hooks {
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-textlength';
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $wgHitCountersEnabledTextLength );
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $wgPersonalSettingsEnabledTextLength );
 		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-textlength-label',
@@ -67,7 +67,7 @@ class Hooks {
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-numberofmostviewedpages';
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $wgHitCountersNumberOfMostViewedPages );
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $wgPersonalSettingsNumberOfMostViewedPages );
 		$preferences[$preferences_key] = [
 			'type' => 'int',
 			'help-message' => 'hitcounters-numberofmostviewedpages-help',

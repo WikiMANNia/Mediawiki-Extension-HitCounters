@@ -51,9 +51,9 @@
 		"HitcounterUpdateFreq": 1,
 		"DisableCounters": false,
 		"EnableCountersAtTheFooter": false,
-		"HitCountersEnabledPageId": false,
-		"HitCountersEnabledTextLength": false,
-		"HitCountersNumberOfMostViewedPages": 50
+		"PersonalSettingsEnabledPageId": false,
+		"PersonalSettingsEnabledTextLength": false,
+		"PersonalSettingsNumberOfMostViewedPages": 50
 	},
 	"manifest_version": 1
 }
