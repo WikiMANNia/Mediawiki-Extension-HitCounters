@@ -71,6 +71,9 @@ class Hooks implements
 	private UserOptionsLookup $userOptionsLookup;
 	private bool $enabledCounters;
 	private bool $enabledCountersAtTheFooter;
+	private bool $enabledPageId;
+	private bool $enabledTextLength;
+	private int $numberOfMostViewedPages;
 	private int $updateFreq;
 
 	/**
@@ -84,6 +87,9 @@ class Hooks implements
 		$this->userOptionsLookup = $userOptionsLookup;
 		$this->enabledCounters = !$config->get( "DisableCounters" );
 		$this->enabledCountersAtTheFooter = $config->get( "EnableCountersAtTheFooter" );
+		$this->enabledPageId = $config->get( "PersonalSettingsEnabledPageId" );
+		$this->enabledTextLength = $config->get( "PersonalSettingsEnabledTextLength" );
+		$this->numberOfMostViewedPages = $config->get( "PersonalSettingsNumberOfMostViewedPages" );
 		$this->updateFreq = $config->get( "HitcounterUpdateFreq" );
 	}
 
@@ -94,28 +100,39 @@ class Hooks implements
 	 */
 	public function onGetPreferences( $user, &$preferences ) {
 
-		$preferences['hitcounters-exempt'] = [
+		$preferences_key = 'hitcounters-exempt';
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, false );
+		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-exempt-label',
-			'section' => 'hitcounters',
+			'default' => $preferences_default,
+			'section' => 'hitcounters'
 		];
-		$preferences['hitcounters-pageid'] = [
+		$preferences_key = 'hitcounters-pageid';
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $this->enabledPageId );
+		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-pageid-label',
-			'section' => 'hitcounters',
+			'default' => $preferences_default,
+			'section' => 'hitcounters'
 		];
-		$preferences['hitcounters-textlength'] = [
+		$preferences_key = 'hitcounters-textlength';
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $this->enabledTextLength );
+		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-textlength-label',
-			'section' => 'hitcounters',
+			'default' => $preferences_default,
+			'section' => 'hitcounters'
 		];
-		$preferences['hitcounters-numberofmostviewedpages'] = [
+		$preferences_key = 'hitcounters-numberofmostviewedpages';
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $this->numberOfMostViewedPages );
+		$preferences[$preferences_key] = [
 			'type' => 'int',
 			'help-message' => 'hitcounters-numberofmostviewedpages-help',
 			'label-message' => 'hitcounters-numberofmostviewedpages-label',
 			'maxLength' => 4,
-			'default' => 50,
-			'section' => 'hitcounters',
+			'default' => $preferences_default,
+			'section' => 'hitcounters'
 		];
 	}
 
