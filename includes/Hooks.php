@@ -68,12 +68,10 @@ class Hooks implements
 	SpecialStatsAddExtraHook
 {
 
+	private GlobalVarConfig $config;
 	private UserOptionsLookup $userOptionsLookup;
 	private bool $enabledCounters;
 	private bool $enabledCountersAtTheFooter;
-	private bool $enabledPageId;
-	private bool $enabledTextLength;
-	private int $numberOfMostViewedPages;
 	private int $updateFreq;
 
 	/**
@@ -84,13 +82,11 @@ class Hooks implements
 		GlobalVarConfig $config,
 		UserOptionsLookup $userOptionsLookup
 	) {
+		$this->config = $config;
 		$this->userOptionsLookup = $userOptionsLookup;
-		$this->enabledCounters = !$config->get( "DisableCounters" );
-		$this->enabledCountersAtTheFooter = $config->get( "EnableCountersAtTheFooter" );
-		$this->enabledPageId = $config->get( "PersonalSettingsEnabledPageId" );
-		$this->enabledTextLength = $config->get( "PersonalSettingsEnabledTextLength" );
-		$this->numberOfMostViewedPages = $config->get( "PersonalSettingsNumberOfMostViewedPages" );
-		$this->updateFreq = $config->get( "HitcounterUpdateFreq" );
+		$this->enabledCounters = !$config->get( 'DisableCounters' );
+		$this->enabledCountersAtTheFooter = $config->get( 'EnableCountersAtTheFooter' );
+		$this->updateFreq = $config->get( 'HitcounterUpdateFreq' );
 	}
 
 	/**
@@ -101,7 +97,8 @@ class Hooks implements
 	public function onGetPreferences( $user, &$preferences ) {
 
 		$preferences_key = 'hitcounters-exempt';
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, false );
+		$preferences_default = false;
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $preferences_default );
 		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-exempt-label',
@@ -109,7 +106,8 @@ class Hooks implements
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-pageid';
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $this->enabledPageId );
+		$preferences_default = $this->config->get( 'PersonalSettingsEnabledPageId' );
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $preferences_default );
 		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-pageid-label',
@@ -117,7 +115,8 @@ class Hooks implements
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-textlength';
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $this->enabledTextLength );
+		$preferences_default = $this->config->get( 'PersonalSettingsEnabledTextLength' );
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $preferences_default );
 		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-textlength-label',
@@ -125,7 +124,8 @@ class Hooks implements
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-numberofmostviewedpages';
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $this->numberOfMostViewedPages );
+		$preferences_default = $this->config->get( 'PersonalSettingsNumberOfMostViewedPages' );
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $preferences_default );
 		$preferences[$preferences_key] = [
 			'type' => 'int',
 			'help-message' => 'hitcounters-numberofmostviewedpages-help',
@@ -144,7 +144,7 @@ class Hooks implements
 	public function onSpecialStatsAddExtra( &$extraStats, $context ) {
 
 		$user = $context->getUser();
-		$numberofmostviewedpages = $this->userOptionsLookup->getIntOption( $user, 'hitcounters-numberofmostviewedpages', 50 );
+		$numberofmostviewedpages = $this->userOptionsLookup->getIntOption( $user, 'hitcounters-numberofmostviewedpages' );
 		if ( $numberofmostviewedpages < 0 ) {
 			$numberofmostviewedpages = 0;
 		}
