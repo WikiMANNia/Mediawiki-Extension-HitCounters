@@ -155,7 +155,7 @@ v0.5.6
 
 ## Compatibility
 
-This extension works from REL1_38 and has been tested up to MediaWiki version `1.39.8`, and `1.41.2`.
+This extension works from REL1_38 and has been tested up to MediaWiki version `1.39.8`, `1.41.2`, and `1.42.1`.
 
 ## Background
 
