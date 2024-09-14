@@ -95,10 +95,6 @@ Code Review.
 v0.5.0
 
 Benutzerdefinierte [Einstellungen](https://www.mediawiki.org/wiki/Help:Preferences/de). / Custom [settings](https://www.mediawiki.org/wiki/Help:Preferences). / [Configuración](https://www.mediawiki.org/wiki/Help:Preferences/es) personalizada.
-* `Exempt`                             – Exclude your own page views from statistics (Default is `false`)
-* `TextLength`                         – Enable the textlength in `Special:PopularPages` (Default is `false`)
-* `PageId`                             – Enable the page id in `Special:PopularPages` (Default is `false`)
-* `NumberOfMostViewedPages`            – Set the Number of Most Viewed Pages in [Statistics](https://www.mediawiki.org/wiki/Special:Statistics) (Default is `50`)
 
 v0.5.2
 

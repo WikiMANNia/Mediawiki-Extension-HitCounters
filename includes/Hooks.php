@@ -43,7 +43,7 @@ class Hooks {
 		global $wgPersonalSettingsEnabledPageId, $wgPersonalSettingsEnabledTextLength, $wgPersonalSettingsNumberOfMostViewedPages;
 
 		$preferences_key = 'hitcounters-exempt';
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, false );
+		$preferences_default = $user->getBoolOption( $preferences_key );
 		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-exempt-label',
@@ -51,7 +51,7 @@ class Hooks {
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-pageid';
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $wgPersonalSettingsEnabledPageId );
+		$preferences_default = $user->getBoolOption( $preferences_key );
 		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-pageid-label',
@@ -59,7 +59,7 @@ class Hooks {
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-textlength';
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $wgPersonalSettingsEnabledTextLength );
+		$preferences_default = $user->getBoolOption( $preferences_key );
 		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-textlength-label',
@@ -67,7 +67,7 @@ class Hooks {
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-numberofmostviewedpages';
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $wgPersonalSettingsNumberOfMostViewedPages );
+		$preferences_default = $user->getIntOption( $preferences_key, $wgPersonalSettingsNumberOfMostViewedPages );
 		$preferences[$preferences_key] = [
 			'type' => 'int',
 			'help-message' => 'hitcounters-numberofmostviewedpages-help',
@@ -204,6 +204,7 @@ class Hooks {
 			!$wgDisableCounters &&
 			!$user->isAllowed( 'bot' ) &&
 			!$user->isAllowed( 'sysop' ) &&
+			!$user->getBoolOption( 'hitcounters-exempt' ) &&
 			$wikipage->exists()
 		) {
 			DeferredUpdates::addUpdate( new ViewCountUpdate( $wikipage->getId() ) );
