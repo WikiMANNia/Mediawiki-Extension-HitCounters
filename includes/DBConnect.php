@@ -16,10 +16,6 @@ class DBConnect {
 	}
 
 	public static function getWritingConnect() {
-		return wfGetDB( DB_PRIMARY );
-	}
-
-	public static function getWritingConnectFromLoadBalancer() {
 		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
 		return $lb->getConnection( DB_PRIMARY, [], false );
 	}
