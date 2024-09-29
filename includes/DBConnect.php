@@ -11,17 +11,23 @@ use MediaWiki\MediaWikiServices;
 class DBConnect {
 
 	public static function getReadingConnect() {
-		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
-		return $lb->getMaintenanceConnectionRef( DB_REPLICA );
+		if ( method_exists( '\MediaWiki\MediaWikiServices', 'getConnectionProvider' ) ) {
+			$cp = MediaWikiServices::getInstance()->getConnectionProvider();
+			return $cp->getReplicaDatabase();
+		} else {
+			$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
+			return $lb->getMaintenanceConnectionRef( DB_REPLICA );
+		}
 	}
 
 	public static function getWritingConnect() {
-		return wfGetDB( DB_PRIMARY );
-	}
-
-	public static function getWritingConnectFromLoadBalancer() {
-		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
-		return $lb->getConnection( DB_PRIMARY, [], false );
+		if ( method_exists( '\MediaWiki\MediaWikiServices', 'getConnectionProvider' ) ) {
+			$cp = MediaWikiServices::getInstance()->getConnectionProvider();
+			return $cp->getPrimaryDatabase();
+		} else {
+			$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
+			return $lb->getConnection( DB_PRIMARY, [], false );
+		}
 	}
 
 	/**
