@@ -281,14 +281,14 @@ class Hooks implements
 	public function onPageViewUpdates( $wikipage, $user ) {
 
 		// Don't update page view counters on views from bot users (bug 14044)
-		if (
-			$this->enabledCounters &&
-			!$user->isAllowed( 'bot' ) &&
-			!$user->isAllowed( 'sysop' ) &&
-			!$this->userOptionsLookup->getBoolOption( $user, 'hitcounters-exempt' ) &&
-			$wikipage->exists()
-		) {
-			DeferredUpdates::addUpdate( new ViewCountUpdate( $wikipage->getId(), $this->updateFreq ) );
+		if ( $this->enabledCounters && $wikipage->exists() ) {
+			if (
+				!$user->isAllowed( 'bot' ) &&
+				!$user->isAllowed( 'sysop' ) &&
+				!$this->userOptionsLookup->getBoolOption( $user, 'hitcounters-exempt' )
+			) {
+				DeferredUpdates::addUpdate( new ViewCountUpdate( $wikipage->getId(), $this->updateFreq ) );
+			}
 		}
 	}
 

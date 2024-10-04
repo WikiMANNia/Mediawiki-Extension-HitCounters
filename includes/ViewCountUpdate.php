@@ -69,7 +69,7 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 
 		wfDebugLog( "HitCounter", "update freq set to: $wgHitcounterUpdateFreq;" );
 
-		if ( $updateFreq <= 1 || $dbw->getType() === 'sqlite' ) {
+		if ( ( $updateFreq <= 1 ) || ( $dbw->getType() === 'sqlite' ) ) {
 			$dbw->onTransactionCommitOrIdle(
 				static function () use ( $dbw, $pageId, $fname ) {
 					try {
