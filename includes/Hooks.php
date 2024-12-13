@@ -40,8 +40,6 @@ class Hooks {
 	 */
 	public static function onGetPreferences( $user, &$preferences ) {
 
-		global $wgPersonalSettingsEnabledPageId, $wgPersonalSettingsEnabledTextLength, $wgPersonalSettingsNumberOfMostViewedPages;
-
 		$preferences_key = 'hitcounters-exempt';
 		$preferences_default = $user->getBoolOption( $preferences_key );
 		$preferences[$preferences_key] = [
@@ -67,7 +65,7 @@ class Hooks {
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-numberofmostviewedpages';
-		$preferences_default = $user->getIntOption( $preferences_key, $wgPersonalSettingsNumberOfMostViewedPages );
+		$preferences_default = $user->getIntOption( $preferences_key );
 		$preferences[$preferences_key] = [
 			'type' => 'int',
 			'help-message' => 'hitcounters-numberofmostviewedpages-help',

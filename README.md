@@ -117,6 +117,10 @@ v0.5.6
 
 - Default values for custom settings.
 
+v0.5.7
+
+- Default values for custom settings with "DefaultUserOptions".
+
 ## Compatibility
 
 This extension works from REL1_25 and has been tested up to MediaWiki version `1.25.6`, `1.31.16`, and `1.35.14`.

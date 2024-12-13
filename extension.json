@@ -1,7 +1,7 @@
 {
 	"name": "HitCounters",
 	"namemsg": "hitcounters-extensionname",
-	"version": "0.5.6",
+	"version": "0.5.7",
 	"author": [
 		"[//mwstake.org Mark A. Hershberger]",
 		"[//wikimannia.org WikiMANNia]"
@@ -50,10 +50,13 @@
 	"config": {
 		"HitcounterUpdateFreq": 1,
 		"DisableCounters": false,
-		"EnableCountersAtTheFooter": false,
-		"PersonalSettingsEnabledPageId": false,
-		"PersonalSettingsEnabledTextLength": false,
-		"PersonalSettingsNumberOfMostViewedPages": 50
+		"EnableCountersAtTheFooter": false
+	},
+	"DefaultUserOptions": {
+		"hitcounters-exempt": false,
+		"hitcounters-pageid": false,
+		"hitcounters-textlength": false,
+		"hitcounters-numberofmostviewedpages": 50
 	},
 	"manifest_version": 1
 }
