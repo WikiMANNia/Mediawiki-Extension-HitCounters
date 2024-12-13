@@ -25,6 +25,12 @@
 	"hitcounters-statistics-views-total-desc": "Просмотры несуществующих и служебных страниц не учитываются",
 	"hitcounters-statistics-views-peredit": "Просмотров на правку",
 	"hitcounters-statistics-mostpopular": "Наиболее часто просматриваемые страницы",
+	"prefs-hitcounters": "Hit Counters",
+	"hitcounters-exempt-label": "Исключите просмотр собственных страниц из статистики",
+	"hitcounters-numberofmostviewedpages-help": "Скрыть с записью «0».",
+	"hitcounters-numberofmostviewedpages-label": "Количество наиболее просматриваемых страниц",
+	"hitcounters-pageid-label": "Показать page ID",
+	"hitcounters-textlength-label": "Показать textlength",
 	"abusefilter-edit-builder-vars-page-views": "Просмотров страниц",
 	"abusefilter-edit-builder-vars-movedfrom-views": "Просмотров исходной страницы",
 	"abusefilter-edit-builder-vars-movedto-views": "Просмотры целевой страницы"

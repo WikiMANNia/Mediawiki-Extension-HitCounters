@@ -86,7 +86,8 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 						wfDebugLog( "HitCounter", "Got an exception: " . $e->getMessage() );
 						MWExceptionHandler::logException( $e );
 					}
-				}
+				},
+				$fname
 			);
 		} else {
 			$dbw->onTransactionCommitOrIdle(
@@ -106,7 +107,8 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 						error_log( "exception during insert update: " . $e->getMessage() );
 						MWExceptionHandler::logException( $e );
 					}
-				}
+				},
+				$fname
 			);
 		}
 	}

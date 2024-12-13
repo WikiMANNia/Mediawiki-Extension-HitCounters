@@ -25,7 +25,11 @@
 	"hitcounters-statistics-mostpopular": "Pages les plus consultées",
 	"prefs-hitcounters": "Hit Counters",
 	"hitcounters-exempt-label": "Exclure les propres pages vues des statistiques",
-	"abusefilter-edit-builder-vars-page-views": "Pages vues",
-	"abusefilter-edit-builder-vars-movedfrom-views": "Pages source vues",
-	"abusefilter-edit-builder-vars-movedto-views": "Pages cible vues"
+	"hitcounters-numberofmostviewedpages-help": "Masquer avec l'entrée « 0 ».",
+	"hitcounters-numberofmostviewedpages-label": "Nombre de pages les plus consultées",
+	"hitcounters-pageid-label": "Afficher l'ID de la page",
+	"hitcounters-textlength-label": "Afficher la longueur du texte",
+	"abusefilter-edit-builder-vars-page-views": "Affichage de pages",
+	"abusefilter-edit-builder-vars-movedfrom-views": "Consultations de pages sources",
+	"abusefilter-edit-builder-vars-movedto-views": "Consultations de pages cibles"
 }
