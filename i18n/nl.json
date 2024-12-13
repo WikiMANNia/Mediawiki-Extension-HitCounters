@@ -21,7 +21,7 @@
 	"hitcounters-statistics-views-total": "Totaal weergeven",
 	"hitcounters-statistics-views-total-desc": "Oproepen van niet-bestaande pagina's en speciale pagina's zijn niet inbegrepen",
 	"hitcounters-statistics-views-peredit": "Weergaven per bewerking",
-	"hitcounters-statistics-mostpopular": "Meest bekeken pagina's",
+	"hitcounters-statistics-mostpopular": "Meest bekeken pagina’s",
 	"prefs-hitcounters": "Hit Counters",
 	"hitcounters-exempt-label": "Sluit je eigen paginaweergaves uit van de statistieken",
 	"hitcounters-numberofmostviewedpages-help": "Verberg door “0” in te voeren.",

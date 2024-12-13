@@ -33,5 +33,5 @@
 	"hitcounters-textlength-label": "Mostrar longitud de texto",
 	"abusefilter-edit-builder-vars-page-views": "Vistas de página ($1)",
 	"abusefilter-edit-builder-vars-movedfrom-views": "Vistas de la página de origen ($1)",
-	"abusefilter-edit-builder-vars-movedto-views": "Vistas de páginas de destino ($1)"
+	"abusefilter-edit-builder-vars-movedto-views": "Vistas de la página de destino ($1)"
 }

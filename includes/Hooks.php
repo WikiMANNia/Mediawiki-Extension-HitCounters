@@ -98,8 +98,7 @@ class Hooks implements
 	public function onGetPreferences( $user, &$preferences ) {
 
 		$preferences_key = 'hitcounters-exempt';
-		$preferences_default = false;
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $preferences_default );
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key );
 		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-exempt-label',
@@ -107,8 +106,7 @@ class Hooks implements
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-pageid';
-		$preferences_default = $this->config->get( 'PersonalSettingsEnabledPageId' );
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $preferences_default );
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key );
 		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-pageid-label',
@@ -116,8 +114,7 @@ class Hooks implements
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-textlength';
-		$preferences_default = $this->config->get( 'PersonalSettingsEnabledTextLength' );
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $preferences_default );
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key );
 		$preferences[$preferences_key] = [
 			'type' => 'toggle',
 			'label-message' => 'hitcounters-textlength-label',
@@ -125,8 +122,7 @@ class Hooks implements
 			'section' => 'hitcounters'
 		];
 		$preferences_key = 'hitcounters-numberofmostviewedpages';
-		$preferences_default = $this->config->get( 'PersonalSettingsNumberOfMostViewedPages' );
-		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key, $preferences_default );
+		$preferences_default = $this->userOptionsLookup->getOption( $user, $preferences_key );
 		$preferences[$preferences_key] = [
 			'type' => 'int',
 			'help-message' => 'hitcounters-numberofmostviewedpages-help',
