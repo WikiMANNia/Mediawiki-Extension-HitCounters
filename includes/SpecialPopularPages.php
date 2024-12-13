@@ -1,6 +1,7 @@
 <?php
 /**
  * Implements Special:PopularPages
+ * A special page that list most viewed pages
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,23 +22,37 @@
  * @ingroup SpecialPage
  */
 
-/**
- * A special page that list most viewed pages
- *
- * @ingroup SpecialPage
- */
-
-namespace HitCounters;
+namespace MediaWiki\Extension\HitCounters;
 
 use Html;
+use Language;
 use Linker;
+use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\MediaWikiServices;
 use QueryPage;
 use Skin;
 use Title;
 
 class SpecialPopularPages extends QueryPage {
+
+	private Language $mContentLanguage;
+	private LinkRenderer $mLinkRenderer;
+	private string $mMsgToken;
+
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
+
+		$this->mContentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
+		$this->mLinkRenderer = $this->getLinkRenderer();
+
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$user = $this->getUser();
+		$enableAddPageId     = $userOptionsLookup->getBoolOption( $user, 'hitcounters-pageid' );
+		$enableAddTextLength = $userOptionsLookup->getBoolOption( $user, 'hitcounters-textlength' );
+
+		$this->mMsgToken = 'hitcounters-nviews';
+		$this->mMsgToken .= $enableAddTextLength ? '-nlength' : '';
+		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
 	}
 
 	public function isExpensive() {
@@ -48,8 +63,11 @@ class SpecialPopularPages extends QueryPage {
 		return false;
 	}
 
+	/**
+	 * @return array|null
+	 */
 	public function getQueryInfo() {
-		return HitCounters::getQueryInfo();
+		return DBConnect::getQueryInfo();
 	}
 
 	/**
@@ -61,8 +79,6 @@ class SpecialPopularPages extends QueryPage {
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	public function formatResult( $skin, $result ) {
-		$enableAddTextLength = $this->getConfig()->get( 'EnableAddTextLength' );
-		$enableAddPageId = $this->getConfig()->get( 'EnableAddPageId' );
 
 		$title = Title::makeTitleSafe( $result->namespace, $result->title );
 		if ( !$title ) {
@@ -76,23 +92,24 @@ class SpecialPopularPages extends QueryPage {
 			);
 		}
 
-		$link = $this->getLinkRenderer()->makeKnownLink(
+		$link = $this->mLinkRenderer->makeKnownLink(
 			$title,
-			$this->getContentLanguage()->convert( $title->getPrefixedText() )
+			MediaWikiServices::getInstance()->
+				getLanguageConverterFactory()->
+				getLanguageConverter()->
+				convert( $title->getPrefixedText() )
 		);
 
-		$msg = 'hitcounters-pop-page-line';
-		$msg .= $enableAddTextLength ? '-len' : '';
-		$msg .= $enableAddPageId ? '-id' : '';
 		return $this->getLanguage()->specialList(
 			$link,
-			$this->msg( $msg )
-				 ->numParams( $result->value )
-				 ->numParams( $result->length )
-				 ->numParams( $title->getArticleID() )
+			$this->msg( $this->mMsgToken )
+				->numParams( $result->value )
+				->numParams( $result->length )
+				->numParams( $title->getArticleID() )
 		);
 	}
 
+	/** @inheritDoc */
 	protected function getGroupName() {
 		return 'wiki';
 	}
