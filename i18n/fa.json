@@ -2,19 +2,18 @@
 	"@metadata": {
 		"authors": [
 			"Alireza",
-			"Reza1615"
+			"Reza1615",
+			"Ebraminio",
+			"Rulebased"
 		]
 	},
-	"hitcounters-nviews": "$1 {{PLURAL:$1|بازدید|بازدید}}",
-	"hitcounters-viewcount": "از این صفحه {{PLURAL:$1|یک‌بار|$1بار}} بازدید شده‌است.",
+	"hitcounters-pop-page-line": "$1 {{PLURAL:$1|بازدید|بازدید}}",
 	"popularpages": "صفحه‌های محبوب",
 	"hitcounters-pageinfo-views": "شمار بازدیدها",
 	"hitcounters-statistics-header-views": "آمار بازدیدها",
 	"hitcounters-statistics-views-total": "مجموع بازدیدها",
-	"hitcounters-statistics-views-total-desc": "بازدید صفحه‌های ناموجود و صفحه‌های ویژه شامل نشده‌است",
+	"hitcounters-statistics-views-total-desc": "بازدید صفحه‌های ناموجود و صفحه‌های ویژه شامل نشده است",
 	"hitcounters-statistics-views-peredit": "تعداد بازدید به ازای هر ویرایش",
 	"hitcounters-statistics-mostpopular": "صفحه‌هایی که بیشترین تعداد بازدیدکننده را داشته‌اند",
-	"prefs-hitcounters": "Hit Counters",
-	"hitcounters-exempt-label": "تعداد بازدیدهای صفحه خود را از آمار حذف کنید",
 	"abusefilter-edit-builder-vars-page-views": "بازدیدهای صفحه"
 }
