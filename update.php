@@ -10,7 +10,7 @@
 
 namespace HitCounters;
 
-use Maintenance;
+use MediaWiki\Maintenance\Maintenance;
 
 # Stolen from WebStart.php, assuming you're running this in root
 $IP = getenv( 'MW_INSTALL_PATH' );
@@ -35,7 +35,7 @@ class UpdateHitCounter extends Maintenance {
 	public function execute() {
 		# Attempt to connect to the database as a privileged user
 		# This will vomit up an error if there are permissions problems
-		$dbconn = DBConnect::getWritingConnect();
+		$dbconn = $this->getDB( DB_PRIMARY );
 
 		$shared = $this->hasOption( 'doshared' );
 		$updater = HCUpdater::newForDb( $dbconn, $shared, $this );
