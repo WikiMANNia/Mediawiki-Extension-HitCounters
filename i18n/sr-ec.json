@@ -3,11 +3,12 @@
 		"authors": [
 			"Acamicamacaraca",
 			"Kizule",
+			"Milicevic01",
 			"Obsuser"
 		]
 	},
 	"hitcounters-desc": "Пружа статистику прегледа по страници",
-	"hitcounters-nviews": "$1 {{PLURAL:$1|преглед|прегледа}}",
+	"hitcounters-pop-page-line": "$1 {{PLURAL:$1|преглед|прегледа}}",
 	"popularpages": "Популарне странице",
 	"hitcounters-pageinfo-views": "Број прегледа",
 	"hitcounters-statistics-header-views": "Преглед статистика",
@@ -15,7 +16,9 @@
 	"hitcounters-statistics-views-total-desc": "Прегледи ка непостојећим страницама и специјалним страницама које нису укључене",
 	"hitcounters-statistics-views-peredit": "Прегледи по измени",
 	"hitcounters-statistics-mostpopular": "Најпосећеније странице",
-	"abusefilter-edit-builder-vars-page-views": "Прегледи странице",
-	"abusefilter-edit-builder-vars-movedfrom-views": "Прегледи изворне странице",
-	"abusefilter-edit-builder-vars-movedto-views": "Прегледи циљане странице"
+	"abusefilter-edit-builder-vars-page-views": "Прегледи странице ($1)",
+	"abusefilter-edit-builder-vars-movedfrom-views": "Прегледи изворне странице ($1)",
+	"abusefilter-edit-builder-vars-movedto-views": "Прегледи циљане странице ($1)",
+	"action-hitcounter-exempt": "изузмете своје прегледе из статистика",
+	"right-hitcounter-exempt": "изузимање сопствених прегледа страница из статистика"
 }
