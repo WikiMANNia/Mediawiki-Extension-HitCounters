@@ -50,8 +50,8 @@ class SpecialPopularPages extends QueryPage {
 		$enableAddPageId     = $userOptionsLookup->getBoolOption( $user, 'hitcounters-pageid' );
 		$enableAddTextLength = $userOptionsLookup->getBoolOption( $user, 'hitcounters-textlength' );
 
-		$this->mMsgToken = 'hitcounters-nviews';
-		$this->mMsgToken .= $enableAddTextLength ? '-nlength' : '';
+		$this->mMsgToken = 'hitcounters-pop-page-line';
+		$this->mMsgToken .= $enableAddTextLength ? '-len' : '';
 		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
 	}
 
@@ -78,7 +78,7 @@ class SpecialPopularPages extends QueryPage {
 	 * Suppressed because we can't choose the params
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function formatResult( $skin, $result ) {
+	protected function formatResult( $skin, $result ) {
 
 		$title = Title::makeTitleSafe( $result->namespace, $result->title );
 		if ( !$title ) {

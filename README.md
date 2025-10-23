@@ -150,9 +150,16 @@ v0.5.7
 
 - Default values for custom settings with "DefaultUserOptions".
 
+v0.6.0
+
+- Add database type `sqlite`
+- Add `hit_counter_extension.json` and `hit_counter.json`
+- Refactoring: Rename file name `page_counter.sql` into `hit_counter.sql`
+- Refactoring: Renaming in `i18n`
+
 ## Compatibility
 
-This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.14`, `1.39.8`, and `1.41.2`.
+This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.14`, `1.39.10`, and `1.41.4`.
 
 ## Background
 
