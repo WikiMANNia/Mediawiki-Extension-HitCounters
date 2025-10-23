@@ -14,10 +14,10 @@
 	"hitcounters-extensionname": "{{name}}",
 	"hitcounters-desc": "{{desc|name=HitCounters|url=https://www.mediawiki.org/wiki/Extension:HitCounters}}",
 	"hitcounters-page-label": "{{notranslate}} Shows title of pages that are the most viewed pages.",
-	"hitcounters-nviews": "This message is used on [[Special:PopularPages]] to say how many times each page has been viewed.\n\nPreceded by the page title, like: Page title ($1 views)\n\nParameters:\n* $1 - the number of views",
-	"hitcounters-nviews-id": "This message is used on [[Special:PopularPages]] to say how many times each page has been viewed as well as the page id.\n\nPreceded by the page title, like: Page title ($1 views)\n\nParameters:\n* $1 - the number of views\n* $3 - The page ID",
-	"hitcounters-nviews-nlength": "This message is used on [[Special:PopularPages]] to say how many times each page has been viewed as well as the length of the page.\n\nPreceded by the page title, like: Page title ($1 views)\n\nParameters:\n* $1 - the number of views\n* $2 - the number of views",
-	"hitcounters-nviews-nlength-id": "This message is used on [[Special:PopularPages]] to say how many times each page has been viewed as well as the length of the page and the page id.\n\nPreceded by the page title, like: Page title ($1 views)\n\nParameters:\n* $1 - the number of views\n* $2 - the number of views\n* $3 - The page ID",
+	"hitcounters-pop-page-line": "This message is used on [[Special:PopularPages]] to say how many times each page has been viewed.\n\nPreceded by the page title, like: Page title ($1 views)\n\nParameters:\n* $1 - the number of views",
+	"hitcounters-pop-page-line-id": "This message is used on [[Special:PopularPages]] to say how many times each page has been viewed as well as the page id.\n\nPreceded by the page title, like: Page title ($1 views)\n\nParameters:\n* $1 - the number of views\n* $3 - The page ID",
+	"hitcounters-pop-page-line-len": "This message is used on [[Special:PopularPages]] to say how many times each page has been viewed as well as the length of the page.\n\nPreceded by the page title, like: Page title ($1 views)\n\nParameters:\n* $1 - the number of views\n* $2 - the number of views",
+	"hitcounters-pop-page-line-len-id": "This message is used on [[Special:PopularPages]] to say how many times each page has been viewed as well as the length of the page and the page id.\n\nPreceded by the page title, like: Page title ($1 views)\n\nParameters:\n* $1 - the number of views\n* $2 - the number of views\n* $3 - The page ID",
 	"hitcounters-viewcount": "Used as page-view counter. Parameters:\n* $1 - number of pageviews",
 	"popularpages": "{{doc-special|PopularPages}}",
 	"popularpages-summary": "{{notranslate}} {{doc-specialpagesummary|popularpages}}",
@@ -27,7 +27,7 @@
 	"hitcounters-statistics-views-total-desc": "This message follows the message {{msg-mw|statistics-views-total}}, in [[Special:Statistics]].",
 	"hitcounters-statistics-views-peredit": "Used in [[Special:Statistics]]",
 	"hitcounters-statistics-mostpopular": "Used in [[Special:Statistics]]",
-	"abusefilter-edit-builder-vars-page-views": "The number of views that the page has. May not be enabled on all wikis. Abuse filter syntax option in a dropdown from the group {{msg-mw|abusefilter-edit-builder-group-vars}}.\n{{Identical|Page view}} ($1 is the text that will be inserted into the filter code editor.)",
-	"abusefilter-edit-builder-vars-movedfrom-views": "The number of views that the source page of a move has. May not be enabled on all wikis. Abuse filter syntax option in a dropdown from the group {{msg-mw|abusefilter-edit-builder-group-vars}}. ($1 is the text that will be inserted into the filter code editor.)",
-	"abusefilter-edit-builder-vars-movedto-views": "The number of views that the target page of a move has. May not be enabled on all wikis. Abuse filter syntax option in a dropdown from the group {{msg-mw|abusefilter-edit-builder-group-vars}}. ($1 is the text that will be inserted into the filter code editor.)"
+	"abusefilter-edit-builder-vars-page-views": "The number of views that the page has. May not be enabled on all wikis. Abuse filter syntax option in a dropdown from the group {{msg-mw|abusefilter-edit-builder-group-vars}}.\n\nParameters:\n* $1 - text that will be inserted into the filter code editor\n\n{{Identical|Page view}}",
+	"abusefilter-edit-builder-vars-movedfrom-views": "The number of views that the source page of a move has. May not be enabled on all wikis. Abuse filter syntax option in a dropdown from the group {{msg-mw|abusefilter-edit-builder-group-vars}}.\n\nParameters:\n* $1 - text that will be inserted into the filter code editor",
+	"abusefilter-edit-builder-vars-movedto-views": "The number of views that the target page of a move has. May not be enabled on all wikis. Abuse filter syntax option in a dropdown from the group {{msg-mw|abusefilter-edit-builder-group-vars}}.\n\nParameters:\n* $1 - text that will be inserted into the filter code editor"
 }

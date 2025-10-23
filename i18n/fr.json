@@ -1,7 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
+			"Funkytoast",
 			"Gomoko",
+			"Mahabarata",
 			"Verdy p",
 			"WikiMANNia",
 			"Wladek92"
@@ -9,10 +11,10 @@
 	},
 	"hitcounters-extensionname": "Hit Counters",
 	"hitcounters-desc": "Fournit les [[Special:PopularPages|statistiques de consultation par page]]",
-	"hitcounters-nviews": "{{PLURAL:$1|Une consultation|$1 consultations}}",
-	"hitcounters-nviews-id": "identifiant : $3 – {{PLURAL:$1|Une consultation|$1 consultations}}",
-	"hitcounters-nviews-nlength": "{{PLURAL:$1|Une consultation|$1 consultations}} – {{PLURAL:$2|1 caractère|$2 caractères}}",
-	"hitcounters-nviews-nlength-id": "identifiant : $3 – {{PLURAL:$1|Une consultation|$1 consultations}} – {{PLURAL:$2|1 caractère|$2 caractères}}",
+	"hitcounters-pop-page-line": "{{PLURAL:$1|Une vue|$1 vues}}",
+	"hitcounters-pop-page-line-id": "identifiant : $3 — {{PLURAL:$1|Une vue|$1 vues}}",
+	"hitcounters-pop-page-line-len": "{{PLURAL:$1|Une vue|$1 vues}} — {{PLURAL:$2|Une caractère|$2 caractères}}",
+	"hitcounters-pop-page-line-len-id": "identifiant : $3 — {{PLURAL:$1|Une vue|$1 vues}} – {{PLURAL:$2|1 caractère|$2 caractères}}",
 	"hitcounters-viewcount": "Cette page a été consultée {{PLURAL:$1|une fois|$1 fois}}.",
 	"hitcounters-viewcount-len": "Cette page a été consultée {{PLURAL:$1|une fois|$1 fois}} et contient {{PLURAL:$2|un caractère|$2 caractères}}.",
 	"hitcounters-viewcount-len-w": "Cette page a été consultée {{PLURAL:$1|une fois|$1 fois}} et contient {{PLURAL:$2|un caractère|$2 caractères}} ou {{PLURAL:$3|un mot|$3 mots}}.",
@@ -20,8 +22,8 @@
 	"hitcounters-pageinfo-views": "Nombre de consultations",
 	"hitcounters-statistics-header-views": "Statistiques des consultations",
 	"hitcounters-statistics-views-total": "Total des consultations",
-	"hitcounters-statistics-views-total-desc": "L'accès aux pages non existantes et aux pages spéciales ne sont pas inclus",
-	"hitcounters-statistics-views-peredit": "Nombre de consultations par édition",
+	"hitcounters-statistics-views-total-desc": "Les consultations de pages inexistantes et des pages spéciales ne sont pas incluses",
+	"hitcounters-statistics-views-peredit": "Consultations par modification",
 	"hitcounters-statistics-mostpopular": "Pages les plus consultées",
 	"prefs-hitcounters": "Hit Counters",
 	"hitcounters-exempt-label": "Exclure les propres pages vues des statistiques",
