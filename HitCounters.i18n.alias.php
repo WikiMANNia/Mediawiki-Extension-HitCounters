@@ -40,10 +40,20 @@ $specialPageAliases['nl'] = [
 
 /** Portuguese (Português) */
 $specialPageAliases['pt'] = [
-	'PopularPages' => [ 'Páginas_populares' ],
+	'PopularPages' => [ 'PáginasPopulares', 'Páginas_populares' ],
 ];
 
 /** Russian (русский) */
 $specialPageAliases['ru'] = [
-	'PopularPages' => [ 'Популярные_страницы' ],
+	'PopularPages' => [ 'ПопулярныеСтраницы', 'Популярные_страницы' ],
+];
+
+/** Serbian (Cyrillic script) (српски (ћирилица)‎) */
+$specialPageAliases['sr-ec'] = [
+	'PopularPages' => [ 'ПопуларнеСтранице', 'Популарне_странице' ],
+];
+
+/** Serbian (Latin script) (srpski (latinica)‎) */
+$specialPageAliases['sr-el'] = [
+	'PopularPages' => [ 'PopularneStranice', 'Popularne_stranice' ],
 ];

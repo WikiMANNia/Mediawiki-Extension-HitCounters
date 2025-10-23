@@ -152,6 +152,13 @@ v0.5.7
 - Fix - 22 Oct 2024: Add missing method from base class - [Bug: T377807](https://github.com/wikimedia/mediawiki-extensions-HitCounters/commit/I9d9b623647468237d1e057ca2a0c71d834995ca7)
 - Default values for custom settings with "DefaultUserOptions".
 
+v0.6.0
+
+- Add database type `sqlite`
+- Add `hit_counter_extension.json` and `hit_counter.json`
+- Refactoring: Rename file name `page_counter.sql` into `hit_counter.sql`
+- Refactoring: Renaming in `i18n`
+
 ## Compatibility
 
 This extension works from REL1_38 and has been tested up to MediaWiki version `1.38`, `1.39.11`, `1.42.3`, and `1.43.0`.

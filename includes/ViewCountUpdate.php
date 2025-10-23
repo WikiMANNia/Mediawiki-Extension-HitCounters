@@ -22,9 +22,9 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-use DeferrableUpdate;
+use MediaWiki\Deferred\DeferrableUpdate;
+use MediaWiki\Deferred\TransactionRoundAwareUpdate;
 use MWExceptionHandler;
-use TransactionRoundAwareUpdate;
 use Wikimedia\Rdbms\DBError;
 
 /**
@@ -36,6 +36,7 @@ use Wikimedia\Rdbms\DBError;
  */
 class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 
+	/** @var int Page ID to increment the view count */
 	protected int $pageId;
 	protected int $updateFreq;
 
@@ -45,7 +46,7 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 	 * @param int $pageId Page ID to increment the view count
 	 * @param int $updateFreq
 	 */
-	public function __construct( $pageId, $updateFreq ) {
+	public function __construct( int $pageId, int $updateFreq ) {
 		$this->pageId = intval( $pageId );
 		$this->updateFreq = $updateFreq;
 	}
@@ -91,7 +92,7 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 			);
 		} else {
 			$dbw->onTransactionCommitOrIdle(
-				static function () use ( $dbw, $pageId, $fname, $updateFreq ) {
+				function () use ( $dbw, $pageId, $fname, $updateFreq ) {
 					try {
 						// Since this table is non-transactional, the contention is minimal
 						$lockName = 'hit_counter_extension';

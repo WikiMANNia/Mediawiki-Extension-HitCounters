@@ -24,14 +24,14 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-use Html;
-use Language;
-use Linker;
+use MediaWiki\Html\Html;
+use MediaWiki\Language\Language;
+use MediaWiki\Linker\Linker;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
-use QueryPage;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\Title\Title;
 use Skin;
-use Title;
 
 class SpecialPopularPages extends QueryPage {
 
@@ -39,6 +39,9 @@ class SpecialPopularPages extends QueryPage {
 	private LinkRenderer $mLinkRenderer;
 	private string $mMsgToken;
 
+	/**
+	 * @param string $name
+	 */
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
 
@@ -50,8 +53,8 @@ class SpecialPopularPages extends QueryPage {
 		$enableAddPageId     = $userOptionsLookup->getBoolOption( $user, 'hitcounters-pageid' );
 		$enableAddTextLength = $userOptionsLookup->getBoolOption( $user, 'hitcounters-textlength' );
 
-		$this->mMsgToken = 'hitcounters-nviews';
-		$this->mMsgToken .= $enableAddTextLength ? '-nlength' : '';
+		$this->mMsgToken = 'hitcounters-pop-page-line';
+		$this->mMsgToken .= $enableAddTextLength ? '-len' : '';
 		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
 	}
 
@@ -72,13 +75,13 @@ class SpecialPopularPages extends QueryPage {
 
 	/**
 	 * @param Skin $skin
-	 * @param \stdClass $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 *
 	 * Suppressed because we can't choose the params
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
-	public function formatResult( $skin, $result ) {
+	protected function formatResult( $skin, $result ) {
 
 		$title = Title::makeTitleSafe( $result->namespace, $result->title );
 		if ( !$title ) {

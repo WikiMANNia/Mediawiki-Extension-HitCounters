@@ -2,21 +2,21 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-use DatabaseUpdater;
+use MediaWiki\Installer\DatabaseUpdater;
 
 /* hack to get at protected member */
 class HCUpdater extends DatabaseUpdater {
 
 	public static function getDBUpdates( DatabaseUpdater $updater ): void {
 
-		$type = $updater->getDB()->getType();
-
 		// Use $sqlDirBase for DBMS-independent patches and $base for
 		// DBMS-dependent patches
-		$base = $sqlDirBase = __DIR__ . '/../sql/' . $type;
+		$dbType = $updater->getDB()->getType();
+		$sqlDirBase = dirname( __DIR__ ) . '/sql';
+		$base = "$sqlDirBase/$dbType";
 
 		$updater->addExtensionTable( 'hit_counter_extension', "$base/hit_counter_extension.sql" );
-		$updater->addExtensionTable( 'hit_counter', "$base/page_counter.sql" );
+		$updater->addExtensionTable( 'hit_counter', "$base/hit_counter.sql" );
 	}
 
 	public function clearExtensionUpdates(): void {
@@ -28,7 +28,7 @@ class HCUpdater extends DatabaseUpdater {
 	 */
 	public function getCoreUpdateList() {
 		$updater = DatabaseUpdater::newForDb(
-			$this->db, $this->shared, $this->maintenance
+			$this->db, (bool)$this->shared, $this->maintenance
 		);
 		return $updater->getCoreUpdateList();
 	}

@@ -9,23 +9,28 @@
 namespace MediaWiki\Extension\HitCounters;
 
 use MediaWiki\Hook\GetMagicVariableIDsHook;
-use MediaWiki\Preferences\Hook\GetPreferencesHook;
-use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
-use MediaWiki\Page\Hook\PageViewUpdatesHook;
 use MediaWiki\Hook\ParserFirstCallInitHook;
 use MediaWiki\Hook\ParserGetVariableValueSwitchHook;
 use MediaWiki\Hook\SkinAddFooterLinksHook;
 use MediaWiki\Hook\SpecialStatsAddExtraHook;
-use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
+use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
+use MediaWiki\Page\Hook\PageViewUpdatesHook;
+use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
-use DeferredUpdates;
-use GlobalVarConfig;
+use MediaWiki\Config\GlobalVarConfig;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Deferred\DeferredUpdates;
+use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
+use MediaWiki\Installer\DatabaseUpdater;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\PPFrame;
+use MediaWiki\SiteStats\SiteStats;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use MediaWiki\User\UserOptionsLookup;
-use Parser;
-use SiteStats;
 use Skin;
-use Title;
+use WikiPage;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,
@@ -49,10 +54,10 @@ class Hook implements LoadExtensionSchemaUpdatesHook {
 	 */
 	public function onLoadExtensionSchemaUpdates( $updater ) {
 
-		$type = $updater->getDB()->getType();
+		$dbType = $updater->getDB()->getType();
 
-		if ( !in_array( $type, [ 'mysql', 'postgres' ] ) ) {
-			throw new InvalidArgumentException( "HitCounters extension does not currently support $type database." );
+		if ( !in_array( $type, [ 'mysql', 'postgres', 'sqlite' ] ) ) {
+			throw new InvalidArgumentException( "HitCounters extension does not currently support $dbType database." );
 		}
 
 		HCUpdater::getDBUpdates( $updater );
@@ -68,7 +73,6 @@ class Hooks implements
 	SkinAddFooterLinksHook,
 	SpecialStatsAddExtraHook
 {
-
 	private GlobalVarConfig $config;
 	private UserOptionsLookup $userOptionsLookup;
 	private bool $enabledCounters;
@@ -396,8 +400,7 @@ class Hooks implements
 	public function onAbuseFilter_generateTitleVars(
 		VariableHolder $vars,
 		Title $title,
-		string $prefix,
-		?RecentChange $rc
+		string $prefix
 	) {
 		$vars->setLazyLoadVar( $prefix . '_VIEWS', 'page-views', [ 'title' => $title ] );
 	}
