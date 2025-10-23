@@ -88,10 +88,10 @@ class Hooks {
 	public static function onLoadExtensionSchemaUpdates(
 		DatabaseUpdater $updater
 	) {
-		$type = $updater->getDB()->getType();
+		$dbType = $updater->getDB()->getType();
 
-		if ( !in_array( $type, [ 'mysql', 'postgres' ] ) ) {
-			throw new InvalidArgumentException( "HitCounters extension does not currently support $type database." );
+		if ( !in_array( $dbType, [ 'mysql', 'postgres', 'sqlite' ] ) ) {
+			throw new InvalidArgumentException( "HitCounters extension does not currently support $dbType database." );
 		}
 
 		HCUpdater::getDBUpdates( $updater );

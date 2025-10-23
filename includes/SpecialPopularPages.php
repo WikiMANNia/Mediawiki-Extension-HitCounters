@@ -41,8 +41,8 @@ class SpecialPopularPages extends QueryPage {
 		$enableAddPageId     = $user->getBoolOption( 'hitcounters-pageid' );
 		$enableAddTextLength = $user->getBoolOption( 'hitcounters-textlength' );
 
-		$this->mMsgToken = 'hitcounters-nviews';
-		$this->mMsgToken .= $enableAddTextLength ? '-nlength' : '';
+		$this->mMsgToken = 'hitcounters-pop-page-line';
+		$this->mMsgToken .= $enableAddTextLength ? '-len' : '';
 		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
 	}
 
