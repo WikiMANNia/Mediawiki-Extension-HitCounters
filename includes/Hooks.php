@@ -29,6 +29,7 @@ use MediaWiki\SiteStats\SiteStats;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use MediaWiki\User\UserOptionsLookup;
+use InvalidArgumentException;
 use Skin;
 use WikiPage;
 
@@ -56,7 +57,7 @@ class Hook implements LoadExtensionSchemaUpdatesHook {
 
 		$dbType = $updater->getDB()->getType();
 
-		if ( !in_array( $type, [ 'mysql', 'postgres', 'sqlite' ] ) ) {
+		if ( !in_array( dbType, [ 'mysql', 'postgres', 'sqlite' ] ) ) {
 			throw new InvalidArgumentException( "HitCounters extension does not currently support $dbType database." );
 		}
 
