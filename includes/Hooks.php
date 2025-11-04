@@ -19,6 +19,7 @@ use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
 use DeferredUpdates;
 use GlobalVarConfig;
+use InvalidArgumentException;
 use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
@@ -51,7 +52,7 @@ class Hook implements LoadExtensionSchemaUpdatesHook {
 
 		$dbType = $updater->getDB()->getType();
 
-		if ( !in_array( $type, [ 'mysql', 'postgres', 'sqlite' ] ) ) {
+		if ( !in_array( $dbType, [ 'mysql', 'postgres', 'sqlite' ] ) ) {
 			throw new InvalidArgumentException( "HitCounters extension does not currently support $dbType database." );
 		}
 
