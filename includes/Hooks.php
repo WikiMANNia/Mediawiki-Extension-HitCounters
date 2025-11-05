@@ -173,13 +173,20 @@ class Hooks implements
 			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 
 			foreach ( $res as $row ) {
-				$title = Title::makeTitleSafe( $row->namespace, $row->title );
-				$key   = $title->getPrefixedText();
-				$link  = $linkRenderer->makeLink( $title );
 
-				if ( $title instanceof Title ) {
+				if ( !empty( $row->title ) ) {
+					$key = $name = $row->title;
+					$title = Title::makeTitleSafe( $row->namespace, $row->title );
+
+					if ( $title instanceof Title ) {
+						$key   =  $title->getPrefixedText();
+						$name  = $linkRenderer->makeLink( $title );
+					} else if ( !empty( $row->namespace ) ) {
+						$name = $row->namespace . ':' . $name;
+					}
+
 					$most_viewed_pages_array[ $key ]['number'] = $row->value;
-					$most_viewed_pages_array[ $key ]['name']   = $link;
+					$most_viewed_pages_array[ $key ]['name']   = $name;
 				}
 			}
 			$res->free();
