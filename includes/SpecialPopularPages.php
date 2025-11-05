@@ -55,8 +55,9 @@ class SpecialPopularPages extends QueryPage {
 		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
 	}
 
+	/** @inheritDoc */
 	public function isExpensive() {
-		return false;
+		return true;
 	}
 
 	public function isSyndicated() {

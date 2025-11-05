@@ -9,16 +9,18 @@
 namespace MediaWiki\Extension\HitCounters;
 
 use MediaWiki\Hook\GetMagicVariableIDsHook;
-use MediaWiki\Preferences\Hook\GetPreferencesHook;
-use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
-use MediaWiki\Page\Hook\PageViewUpdatesHook;
 use MediaWiki\Hook\ParserFirstCallInitHook;
 use MediaWiki\Hook\ParserGetVariableValueSwitchHook;
 use MediaWiki\Hook\SkinAddFooterLinksHook;
 use MediaWiki\Hook\SpecialStatsAddExtraHook;
+use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
+use MediaWiki\Page\Hook\PageViewUpdatesHook;
+use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
 use DeferredUpdates;
 use GlobalVarConfig;
+use InvalidArgumentException;
+use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
 use Parser;
@@ -171,13 +173,20 @@ class Hooks implements
 			$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 
 			foreach ( $res as $row ) {
-				$title = Title::makeTitleSafe( $row->namespace, $row->title );
-				$key   = $title->getPrefixedText();
-				$link  = $linkRenderer->makeLink( $title );
 
-				if ( $title instanceof Title ) {
+				if ( !empty( $row->title ) ) {
+					$key = $name = $row->title;
+					$title = Title::makeTitleSafe( $row->namespace, $row->title );
+
+					if ( $title instanceof Title ) {
+						$key   =  $title->getPrefixedText();
+						$name  = $linkRenderer->makeLink( $title );
+					} else if ( !empty( $row->namespace ) ) {
+						$name = $row->namespace . ':' . $name;
+					}
+
 					$most_viewed_pages_array[ $key ]['number'] = $row->value;
-					$most_viewed_pages_array[ $key ]['name']   = $link;
+					$most_viewed_pages_array[ $key ]['name']   = $name;
 				}
 			}
 			$res->free();
