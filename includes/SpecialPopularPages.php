@@ -24,14 +24,14 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-use Html;
-use Language;
-use Linker;
+use MediaWiki\Html\Html;
+use MediaWiki\Language\Language;
+use MediaWiki\Linker\Linker;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
-use QueryPage;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\Title\Title;
 use Skin;
-use Title;
 
 class SpecialPopularPages extends QueryPage {
 
@@ -76,7 +76,7 @@ class SpecialPopularPages extends QueryPage {
 	/**
 	 * @param Skin $skin
 	 * @param stdClass $result Result row
-	 * @return string
+	 * @return string|bool String or false to skip
 	 *
 	 * Suppressed because we can't choose the params
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)

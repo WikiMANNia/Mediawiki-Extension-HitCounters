@@ -159,9 +159,13 @@ v0.6.0
 - Refactoring: Rename file name `page_counter.sql` into `hit_counter.sql`
 - Refactoring: Renaming in `i18n`
 
+v0.6.1
+
+- Compatibility with REL1_44
+
 ## Compatibility
 
-This extension works from REL1_38 and has been tested up to MediaWiki version `1.38`, `1.39.15`, `1.42.3`, and `1.43.5`.
+This extension works from REL1_43 and has been tested up to MediaWiki version `1.43.5` and `1.44.2`.
 
 ## Background
 

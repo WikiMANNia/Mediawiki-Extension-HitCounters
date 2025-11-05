@@ -1,7 +1,7 @@
 {
 	"name": "HitCounters",
 	"namemsg": "hitcounters-extensionname",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"author": [
 		"[//mwstake.org Mark A. Hershberger]",
 		"[//wikimannia.org WikiMANNia]"
@@ -11,10 +11,10 @@
 	"type": "variable",
 	"license-name": "GPL-3.0-or-later",
 	"requires": {
-		"MediaWiki": ">= 1.38.0"
+		"MediaWiki": ">= 1.43.0"
 	},
 	"platform": {
-		"php": ">= 7.3.19"
+		"php": ">= 8.1"
 	},
 	"MessagesDirs": {
 		"HitCounters": [

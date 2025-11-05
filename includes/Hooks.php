@@ -17,16 +17,21 @@ use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 use MediaWiki\Page\Hook\PageViewUpdatesHook;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
-use DeferredUpdates;
-use GlobalVarConfig;
-use InvalidArgumentException;
+use MediaWiki\Config\GlobalVarConfig;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
+use MediaWiki\Installer\DatabaseUpdater;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\PPFrame;
+use MediaWiki\SiteStats\SiteStats;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use MediaWiki\User\UserOptionsLookup;
-use Parser;
-use SiteStats;
+use InvalidArgumentException;
 use Skin;
-use Title;
+use WikiPage;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,

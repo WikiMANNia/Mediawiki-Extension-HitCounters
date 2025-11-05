@@ -2,21 +2,22 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\PPFrame;
+use MediaWiki\Title\Title;
 use ObjectCache;
-use Parser;
-use PPFrame;
-use Title;
+use Wikimedia\ObjectCache\BagOStuff;
 
 class HitCounters {
-	/** @var int|null */
-	protected static $mViews;
+
+	protected static ?int $mViews;
 
 	/**
 	 * @param BagOStuff $cache
 	 * @param string $key
 	 * @param ?int $views
 	 */
-	protected static function cacheStore( $cache, $key, $views ): void {
+	protected static function cacheStore( BagOStuff $cache, string $key, ?int $views ): void {
 		if ( $views < 100 ) {
 			// Only cache for a minute
 			$cache->set( $key, $views, 60 );
@@ -30,7 +31,7 @@ class HitCounters {
 	 * @param Title $title
 	 * @return int|null The view count for the page
 	 */
-	public static function getCount( Title $title ) {
+	public static function getCount( Title $title ): ?int {
 		if ( $title->isSpecialPage() ) {
 			return null;
 		}
@@ -67,7 +68,7 @@ class HitCounters {
 	/**
 	 * @return int|null
 	 */
-	public static function views() {
+	public static function views(): ?int {
 		# Should check for MiserMode here
 		$cache = ObjectCache::getInstance( CACHE_ANYTHING );
 		$key = $cache->makeKey( 'sitestats', 'activeusers-updated' );
@@ -105,7 +106,7 @@ class HitCounters {
 	 */
 	public static function numberOfViews(
 		Parser $parser, PPFrame $frame, $args
-	) {
+	): ?int {
 		return self::views();
 	}
 
@@ -120,7 +121,7 @@ class HitCounters {
 	 */
 	public static function numberOfPageViews(
 		Parser $parser, PPFrame $frame, $args
-	) {
+	): ?int {
 		return self::getCount( $frame->getTitle() );
 	}
 }
