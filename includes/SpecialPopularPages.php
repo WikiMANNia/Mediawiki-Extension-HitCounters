@@ -24,14 +24,14 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-use MediaWiki\Html\Html;
-use MediaWiki\Language\Language;
-use MediaWiki\Linker\Linker;
+use Html;
+use Language;
+use Linker;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\SpecialPage\QueryPage;
-use MediaWiki\Title\Title;
+use QueryPage;
 use Skin;
+use Title;
 
 class SpecialPopularPages extends QueryPage {
 

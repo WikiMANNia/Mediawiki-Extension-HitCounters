@@ -17,21 +17,16 @@ use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 use MediaWiki\Page\Hook\PageViewUpdatesHook;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
-use MediaWiki\Config\GlobalVarConfig;
-use MediaWiki\Context\IContextSource;
-use MediaWiki\Deferred\DeferredUpdates;
-use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
-use MediaWiki\Installer\DatabaseUpdater;
-use MediaWiki\MediaWikiServices;
-use MediaWiki\Parser\Parser;
-use MediaWiki\Parser\PPFrame;
-use MediaWiki\SiteStats\SiteStats;
-use MediaWiki\Title\Title;
-use MediaWiki\User\User;
-use MediaWiki\User\UserOptionsLookup;
+use DeferredUpdates;
+use GlobalVarConfig;
 use InvalidArgumentException;
+use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserOptionsLookup;
+use Parser;
+use SiteStats;
 use Skin;
-use WikiPage;
+use Title;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,
@@ -57,7 +52,7 @@ class Hook implements LoadExtensionSchemaUpdatesHook {
 
 		$dbType = $updater->getDB()->getType();
 
-		if ( !in_array( dbType, [ 'mysql', 'postgres', 'sqlite' ] ) ) {
+		if ( !in_array( $dbType, [ 'mysql', 'postgres', 'sqlite' ] ) ) {
 			throw new InvalidArgumentException( "HitCounters extension does not currently support $dbType database." );
 		}
 
@@ -179,12 +174,15 @@ class Hooks implements
 
 			foreach ( $res as $row ) {
 				$title = Title::makeTitleSafe( $row->namespace, $row->title );
-				$key   = $title->getPrefixedText();
-				$link  = $linkRenderer->makeLink( $title );
+				if ( empty( $title ) ) {
+					// skip on 'null'
+					$key   = $title->getPrefixedText();
+					$link  = $linkRenderer->makeLink( $title );
 
-				if ( $title instanceof Title ) {
-					$most_viewed_pages_array[ $key ]['number'] = $row->value;
-					$most_viewed_pages_array[ $key ]['name']   = $link;
+					if ( $title instanceof Title ) {
+						$most_viewed_pages_array[ $key ]['number'] = $row->value;
+						$most_viewed_pages_array[ $key ]['name']   = $link;
+					}
 				}
 			}
 			$res->free();

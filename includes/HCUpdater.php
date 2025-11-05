@@ -2,7 +2,7 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-use MediaWiki\Installer\DatabaseUpdater;
+use DatabaseUpdater;
 
 /* hack to get at protected member */
 class HCUpdater extends DatabaseUpdater {
