@@ -39,6 +39,9 @@ class SpecialPopularPages extends QueryPage {
 	private LinkRenderer $mLinkRenderer;
 	private string $mMsgToken;
 
+	/**
+	 * @param string $name
+	 */
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
 
@@ -55,7 +58,6 @@ class SpecialPopularPages extends QueryPage {
 		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
 	}
 
-	/** @inheritDoc */
 	public function isExpensive() {
 		return true;
 	}
@@ -73,8 +75,8 @@ class SpecialPopularPages extends QueryPage {
 
 	/**
 	 * @param Skin $skin
-	 * @param \stdClass $result Result row
-	 * @return string
+	 * @param stdClass $result Result row
+	 * @return string|bool String or false to skip
 	 *
 	 * Suppressed because we can't choose the params
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -82,6 +84,7 @@ class SpecialPopularPages extends QueryPage {
 	protected function formatResult( $skin, $result ) {
 
 		$title = Title::makeTitleSafe( $result->namespace, $result->title );
+
 		if ( !$title ) {
 			return Html::element(
 				'span',
