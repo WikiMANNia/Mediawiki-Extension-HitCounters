@@ -76,7 +76,7 @@ class SpecialPopularPages extends QueryPage {
 	/**
 	 * @param Skin $skin
 	 * @param stdClass $result Result row
-	 * @return string
+	 * @return string|bool String or false to skip
 	 *
 	 * Suppressed because we can't choose the params
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -84,6 +84,7 @@ class SpecialPopularPages extends QueryPage {
 	protected function formatResult( $skin, $result ) {
 
 		$title = Title::makeTitleSafe( $result->namespace, $result->title );
+
 		if ( !$title ) {
 			return Html::element(
 				'span',
