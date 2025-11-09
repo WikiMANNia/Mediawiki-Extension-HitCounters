@@ -162,6 +162,7 @@ v0.6.0
 v0.6.1
 
 - Compatibility with REL1_44
+- The extension crashed if namespaces were not defined correctly in ´LocalSettings.php´. This has been fixed.
 
 ## Compatibility
 

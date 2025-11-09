@@ -179,15 +179,18 @@ class Hooks implements
 
 			foreach ( $res as $row ) {
 
-				if ( !empty( $row->title ) ) {
-					$key = $name = $row->title;
-					$title = Title::makeTitleSafe( $row->namespace, $row->title );
+				$name = $key = $row->title;
+				$namespace = $row->namespace;
+
+				if ( !empty( $name ) ) {
+
+					$title = Title::makeTitleSafe( $namespace, $name );
 
 					if ( $title instanceof Title ) {
-						$key   =  $title->getPrefixedText();
+						$key   = $title->getPrefixedText();
 						$name  = $linkRenderer->makeLink( $title );
-					} else if ( !empty( $row->namespace ) ) {
-						$name = $row->namespace . ':' . $name;
+					} else if ( !empty( $namespace ) ) {
+						$name = $namespace . ':' . $name;
 					}
 
 					$most_viewed_pages_array[ $key ]['number'] = $row->value;

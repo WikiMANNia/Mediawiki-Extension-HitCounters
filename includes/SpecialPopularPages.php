@@ -84,6 +84,7 @@ class SpecialPopularPages extends QueryPage {
 	protected function formatResult( $skin, $result ) {
 
 		$title = Title::makeTitleSafe( $result->namespace, $result->title );
+
 		if ( !$title ) {
 			return Html::element(
 				'span',

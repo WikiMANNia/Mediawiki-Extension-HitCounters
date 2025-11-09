@@ -12,11 +12,6 @@ class HitCounters {
 
 	protected static ?int $mViews;
 
-	/**
-	 * @param BagOStuff $cache
-	 * @param string $key
-	 * @param ?int $views
-	 */
 	protected static function cacheStore( BagOStuff $cache, string $key, ?int $views ): void {
 		if ( $views < 100 ) {
 			// Only cache for a minute
@@ -28,8 +23,7 @@ class HitCounters {
 	}
 
 	/**
-	 * @param Title $title
-	 * @return int|null The view count for the page
+	 * @return The view count for the page
 	 */
 	public static function getCount( Title $title ): ?int {
 		if ( $title->isSpecialPage() ) {
@@ -65,9 +59,6 @@ class HitCounters {
 		return (int)$views;
 	}
 
-	/**
-	 * @return int|null
-	 */
 	public static function views(): ?int {
 		# Should check for MiserMode here
 		$cache = ObjectCache::getInstance( CACHE_ANYTHING );
@@ -99,13 +90,9 @@ class HitCounters {
 	 * don't really need to use the $parser and $cache parameters.
 	 *
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-	 * @param Parser $parser
-	 * @param PPFrame $frame
-	 * @param array $args
-	 * @return int|null
 	 */
 	public static function numberOfViews(
-		Parser $parser, PPFrame $frame, $args
+		Parser $parser, PPFrame $frame, array $args
 	): ?int {
 		return self::views();
 	}
@@ -114,13 +101,9 @@ class HitCounters {
 	 * {{NUMBEROFPAGEVIEWS}} - number of total views of the page
 	 *
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-	 * @param Parser $parser
-	 * @param PPFrame $frame
-	 * @param array $args
-	 * @return int|null
 	 */
 	public static function numberOfPageViews(
-		Parser $parser, PPFrame $frame, $args
+		Parser $parser, PPFrame $frame, array $args
 	): ?int {
 		return self::getCount( $frame->getTitle() );
 	}
