@@ -131,13 +131,23 @@ class Hooks {
 		if ( $res->numRows() > 0 ) {
 
 			foreach ( $res as $row ) {
-				$title = Title::makeTitleSafe( $row->namespace, $row->title );
-				$key   = $title->getPrefixedText();
-				$link  = \Linker::linkKnown( $title );
 
-				if ( $title instanceof Title ) {
+				$name = $key = $row->title;
+				$namespace = $row->namespace;
+
+				if ( !empty( $name ) ) {
+
+					$title = Title::makeTitleSafe( $namespace, $name );
+
+					if ( $title instanceof Title ) {
+						$key   = $title->getPrefixedText();
+						$name  = \Linker::linkKnown( $title );
+					} else if ( !empty( $namespace ) ) {
+						$name = $namespace . ':' . $name;
+					}
+
 					$most_viewed_pages_array[ $key ]['number'] = $row->value;
-					$most_viewed_pages_array[ $key ]['name']   = $link;
+					$most_viewed_pages_array[ $key ]['name']   = $name;
 				}
 			}
 			$res->free();

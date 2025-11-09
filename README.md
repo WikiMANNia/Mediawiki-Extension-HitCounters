@@ -121,6 +121,10 @@ v0.6.0
 - Refactoring: Rename file name `page_counter.sql` into `hit_counter.sql`
 - Refactoring: Renaming in `i18n`
 
+v0.6.1
+
+- The extension crashed if namespaces were not defined correctly in ´LocalSettings.php´. This has been fixed.
+
 ## Compatibility
 
 This extension works from REL1_25 and has been tested up to MediaWiki version `1.25.6`, `1.31.16`, and `1.35.14`.
