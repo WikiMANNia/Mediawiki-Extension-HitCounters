@@ -17,8 +17,9 @@ use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 use MediaWiki\Page\Hook\PageViewUpdatesHook;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
-use MediaWiki\Config\GlobalVarConfig;
+use MediaWiki\Config\Config;
 use MediaWiki\Context\IContextSource;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 use MediaWiki\Installer\DatabaseUpdater;
@@ -74,7 +75,7 @@ class Hooks implements
 	SkinAddFooterLinksHook,
 	SpecialStatsAddExtraHook
 {
-	private GlobalVarConfig $config;
+	private Config $config;
 	private UserOptionsLookup $userOptionsLookup;
 	private bool $enabledCounters;
 	private bool $enabledCountersAtTheFooter;
@@ -85,7 +86,7 @@ class Hooks implements
 	 * @param UserOptionsLookup $userOptionsLookup
 	 */
 	public function __construct(
-		GlobalVarConfig $config,
+		Config $config,
 		UserOptionsLookup $userOptionsLookup
 	) {
 		$this->config = $config;
@@ -331,7 +332,8 @@ class Hooks implements
 					"HitCounters",
 					"Got viewcount=$viewcount and putting in page"
 				);
-				$enableAddTextLength = MediaWikiServices::getInstance()->getUserOptionsLookup()->getBoolOption( $this->getUser(), 'hitcounters-textlength' );
+				$ctx = RequestContext::getMain();
+				$enableAddTextLength = MediaWikiServices::getInstance()->getUserOptionsLookup()->getBoolOption( $ctx->getUser(), 'hitcounters-textlength' );
 				$msg = 'hitcounters-viewcount';
 				if ( $enableAddTextLength ) {
 					$msg .= '-len';
