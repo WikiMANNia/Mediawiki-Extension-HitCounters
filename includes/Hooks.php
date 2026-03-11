@@ -20,6 +20,7 @@ use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use DeferredUpdates;
 use GlobalVarConfig;
 use InvalidArgumentException;
+use RequestContext;
 use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
@@ -326,7 +327,8 @@ class Hooks implements
 					"HitCounters",
 					"Got viewcount=$viewcount and putting in page"
 				);
-				$enableAddTextLength = MediaWikiServices::getInstance()->getUserOptionsLookup()->getBoolOption( $this->getUser(), 'hitcounters-textlength' );
+				$ctx = RequestContext::getMain();
+				$enableAddTextLength = MediaWikiServices::getInstance()->getUserOptionsLookup()->getBoolOption( $ctx->getUser(), 'hitcounters-textlength' );
 				$msg = 'hitcounters-viewcount';
 				if ( $enableAddTextLength ) {
 					$msg .= '-len';
