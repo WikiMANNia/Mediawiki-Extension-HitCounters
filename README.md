@@ -161,9 +161,13 @@ v0.6.1
 
 - The extension crashed if namespaces were not defined correctly in ´LocalSettings.php´. This has been fixed.
 
+v0.6.2
+
+- Fix crash regarding the footer bar.
+
 ## Compatibility
 
-This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.14`, `1.39.15`, and `1.41.4`.
+This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.14`, `1.39.17`, and `1.41.4`.
 
 ## Background
 
