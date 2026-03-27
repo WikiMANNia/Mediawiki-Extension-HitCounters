@@ -29,9 +29,13 @@ use MediaWiki\Language\Language;
 use MediaWiki\Linker\Linker;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Skin\Skin;
 use MediaWiki\SpecialPage\QueryPage;
 use MediaWiki\Title\Title;
-use Skin;
+
+if ( version_compare( MW_VERSION, '1.44', '<' ) ) {
+	if ( !class_exists('MediaWiki\Skin\Skin') )  class_alias( '\Skin', '\MediaWiki\Skin\Skin' );
+}
 
 class SpecialPopularPages extends QueryPage {
 
@@ -110,6 +114,7 @@ class SpecialPopularPages extends QueryPage {
 				->numParams( $result->value )
 				->numParams( $result->length )
 				->numParams( $title->getArticleID() )
+				->parse()
 		);
 	}
 

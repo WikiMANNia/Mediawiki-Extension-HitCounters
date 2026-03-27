@@ -17,22 +17,36 @@ use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 use MediaWiki\Page\Hook\PageViewUpdatesHook;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
+use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
+
+use InvalidArgumentException;
 use MediaWiki\Config\Config;
 use MediaWiki\Context\IContextSource;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Deferred\DeferredUpdates;
-use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 use MediaWiki\Installer\DatabaseUpdater;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\WikiPage;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\PPFrame;
 use MediaWiki\SiteStats\SiteStats;
+use MediaWiki\Skin\Skin;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use MediaWiki\User\UserOptionsLookup;
-use InvalidArgumentException;
-use Skin;
-use WikiPage;
+
+// Class aliases for multi-version compatibility.
+// These need to be in global scope so phan can pick up on them,
+// and before any use statements that make use of the namespaced names.
+
+if ( version_compare( MW_VERSION, '1.44', '<' ) ) {
+	if ( !class_exists('MediaWiki\Page\WikiPage') )  class_alias( '\WikiPage', '\MediaWiki\Page\WikiPage' );
+	if ( !class_exists('MediaWiki\Skin\Skin') )  class_alias( '\Skin', '\MediaWiki\Skin\Skin' );
+}
+
+if ( version_compare( MW_VERSION, '1.45', '<' ) ) {
+	if ( !class_exists('MediaWiki\User\UserOptionsLookup') )  class_alias( '\User', '\MediaWiki\User\UserOptionsLookup' );
+}
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,
@@ -209,7 +223,7 @@ class Hooks implements
 	/**
 	 * @return array
 	 */
-	protected static function getMagicWords() {
+	protected static function getMagicWords(): array {
 
 		$key = 'MediaWiki\Extension\HitCounters\HitCounters';
 
@@ -253,7 +267,7 @@ class Hooks implements
 	 * @param array &$variableCache Array to cache the value; when you return
 	 *   $variableCache[$magicWordId] should be the same as $ret
 	 * @param string $magicWordId Index of the magic word (hook should not mutate it!)
-	 * @param string &$ret Value of the magic word (the hook should set it)
+	 * @param string|null &$ret Value of the magic word (the hook should set it)
 	 * @param PPFrame $frame PPFrame object to use for expanding any template variables
 	 * @return bool|void True or no return value to continue or false to abort
 	 */

@@ -10,6 +10,7 @@ use Wikimedia\ObjectCache\BagOStuff;
 
 class HitCounters {
 
+	/** @var int|null */
 	protected static ?int $mViews;
 
 	protected static function cacheStore( BagOStuff $cache, string $key, ?int $views ): void {
@@ -92,7 +93,7 @@ class HitCounters {
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	public static function numberOfViews(
-		Parser $parser, PPFrame $frame, array $args
+		Parser $parser, PPFrame $frame, $args
 	): ?int {
 		return self::views();
 	}
@@ -103,7 +104,7 @@ class HitCounters {
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	public static function numberOfPageViews(
-		Parser $parser, PPFrame $frame, array $args
+		Parser $parser, PPFrame $frame, $args
 	): ?int {
 		return self::getCount( $frame->getTitle() );
 	}

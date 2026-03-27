@@ -168,9 +168,13 @@ v0.6.2
 
 - Fix crash regarding the footer bar.
 
+v0.7.0
+
+- Compatibility with REL1_45
+
 ## Compatibility
 
-This extension works from REL1_43 and has been tested up to MediaWiki version `1.43.6` and `1.44.2`.
+This extension works from REL1_43 and has been tested up to MediaWiki versions `1.43.6`, `1.44.2`, and `1.45.1`.
 
 ## Background
 
