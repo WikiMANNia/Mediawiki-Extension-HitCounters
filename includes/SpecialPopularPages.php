@@ -59,7 +59,7 @@ class SpecialPopularPages extends QueryPage {
 	}
 
 	public function isExpensive() {
-		return true;
+		return false;
 	}
 
 	public function isSyndicated() {
@@ -110,6 +110,7 @@ class SpecialPopularPages extends QueryPage {
 				->numParams( $result->value )
 				->numParams( $result->length )
 				->numParams( $title->getArticleID() )
+				->parse()
 		);
 	}
 

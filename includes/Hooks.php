@@ -17,11 +17,12 @@ use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 use MediaWiki\Page\Hook\PageViewUpdatesHook;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
+use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
+
 use DeferredUpdates;
 use GlobalVarConfig;
 use InvalidArgumentException;
 use RequestContext;
-use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
 use Parser;
@@ -248,7 +249,7 @@ class Hooks implements
 	 * @param array &$variableCache Array to cache the value; when you return
 	 *   $variableCache[$magicWordId] should be the same as $ret
 	 * @param string $magicWordId Index of the magic word (hook should not mutate it!)
-	 * @param string &$ret Value of the magic word (the hook should set it)
+	 * @param string|null &$ret Value of the magic word (the hook should set it)
 	 * @param PPFrame $frame PPFrame object to use for expanding any template variables
 	 * @return bool|void True or no return value to continue or false to abort
 	 */

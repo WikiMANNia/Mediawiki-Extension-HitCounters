@@ -8,6 +8,7 @@ use PPFrame;
 use Title;
 
 class HitCounters {
+
 	/** @var int|null */
 	protected static $mViews;
 
