@@ -8,7 +8,7 @@
  * @ingroup Maintenance
  */
 
-namespace HitCounters;
+namespace MediaWiki\Extension\HitCounters;
 
 use Maintenance;
 

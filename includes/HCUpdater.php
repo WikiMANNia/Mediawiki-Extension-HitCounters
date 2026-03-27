@@ -2,7 +2,14 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-use DatabaseUpdater;
+use MediaWiki\Installer\DatabaseUpdater;
+
+// Class aliases for multi-version compatibility.
+// These need to be in global scope so phan can pick up on them,
+// and before any use statements that make use of the namespaced names.
+if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
+	if ( !class_exists('MediaWiki\Installer\DatabaseUpdater') )  class_alias( '\DatabaseUpdater', '\MediaWiki\Installer\DatabaseUpdater' );
+}
 
 /* hack to get at protected member */
 class HCUpdater extends DatabaseUpdater {

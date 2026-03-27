@@ -22,10 +22,14 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-use DeferrableUpdate;
+use MediaWiki\Deferred\DeferrableUpdate;
+use MediaWiki\Deferred\TransactionRoundAwareUpdate;
 use MWExceptionHandler;
-use TransactionRoundAwareUpdate;
 use Wikimedia\Rdbms\DBError;
+
+if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
+	if ( !class_exists('MediaWiki\Deferred\DeferredUpdates') )  class_alias( '\DeferredUpdates', '\MediaWiki\Deferred\DeferredUpdates' );
+}
 
 /**
  * Update for the 'page_counter' field, when $wgDisableCounters is false.
@@ -46,7 +50,7 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 	 * @param int $pageId Page ID to increment the view count
 	 * @param int $updateFreq
 	 */
-	public function __construct( $pageId, $updateFreq ) {
+	public function __construct( int $pageId, int $updateFreq ) {
 		$this->pageId = intval( $pageId );
 		$this->updateFreq = $updateFreq;
 	}

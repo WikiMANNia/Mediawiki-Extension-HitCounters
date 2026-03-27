@@ -2,21 +2,32 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\PPFrame;
+use MediaWiki\Title\Title;
 use ObjectCache;
-use Parser;
-use PPFrame;
-use Title;
+use Wikimedia\ObjectCache\BagOStuff;
+
+// Class aliases for multi-version compatibility.
+// These need to be in global scope so phan can pick up on them,
+// and before any use statements that make use of the namespaced names.
+if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+	if ( !class_exists('MediaWiki\Title\Title') )  class_alias( '\Title', '\MediaWiki\Title\Title' );
+}
+if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
+	if ( !class_exists('MediaWiki\Parser\Parser') )  class_alias( '\Parser', '\MediaWiki\Parser\Parser' );
+}
+if ( version_compare( MW_VERSION, '1.43', '<' ) ) {
+	if ( !class_exists('MediaWiki\Parser\PPFrame') )  class_alias( '\PPFrame', '\MediaWiki\Parser\PPFrame' );
+	if ( !class_exists('Wikimedia\ObjectCache\BagOStuff') )  class_alias( '\BagOStuff', '\Wikimedia\ObjectCache\BagOStuff' );
+}
 
 class HitCounters {
-	/** @var int|null */
-	protected static $mViews;
 
-	/**
-	 * @param BagOStuff $cache
-	 * @param string $key
-	 * @param ?int $views
-	 */
-	protected static function cacheStore( $cache, $key, $views ): void {
+	/** @var int|null */
+	protected static ?int $mViews;
+
+	protected static function cacheStore( BagOStuff $cache, string $key, ?int $views ): void {
 		if ( $views < 100 ) {
 			// Only cache for a minute
 			$cache->set( $key, $views, 60 );
@@ -27,10 +38,9 @@ class HitCounters {
 	}
 
 	/**
-	 * @param Title $title
-	 * @return int|null The view count for the page
+	 * @return The view count for the page
 	 */
-	public static function getCount( Title $title ) {
+	public static function getCount( Title $title ): ?int {
 		if ( $title->isSpecialPage() ) {
 			return null;
 		}
@@ -64,10 +74,7 @@ class HitCounters {
 		return (int)$views;
 	}
 
-	/**
-	 * @return int|null
-	 */
-	public static function views() {
+	public static function views(): ?int {
 		# Should check for MiserMode here
 		$cache = ObjectCache::getInstance( CACHE_ANYTHING );
 		$key = $cache->makeKey( 'sitestats', 'activeusers-updated' );
@@ -98,14 +105,10 @@ class HitCounters {
 	 * don't really need to use the $parser and $cache parameters.
 	 *
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-	 * @param Parser $parser
-	 * @param PPFrame $frame
-	 * @param array $args
-	 * @return int|null
 	 */
 	public static function numberOfViews(
 		Parser $parser, PPFrame $frame, $args
-	) {
+	): ?int {
 		return self::views();
 	}
 
@@ -113,14 +116,10 @@ class HitCounters {
 	 * {{NUMBEROFPAGEVIEWS}} - number of total views of the page
 	 *
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-	 * @param Parser $parser
-	 * @param PPFrame $frame
-	 * @param array $args
-	 * @return int|null
 	 */
 	public static function numberOfPageViews(
 		Parser $parser, PPFrame $frame, $args
-	) {
+	): ?int {
 		return self::getCount( $frame->getTitle() );
 	}
 }
