@@ -19,56 +19,21 @@ use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
 use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 
+use Config;
+use DatabaseUpdater;
+use DeferredUpdates;
+use IContextSource;
 use InvalidArgumentException;
-use MediaWiki\Config\Config;
-use MediaWiki\Context\IContextSource;
-use MediaWiki\Context\RequestContext;
-use MediaWiki\Deferred\DeferredUpdates;
-use MediaWiki\Installer\DatabaseUpdater;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Page\WikiPage;
-use MediaWiki\Parser\Parser;
-use MediaWiki\Parser\PPFrame;
-use MediaWiki\SiteStats\SiteStats;
-use MediaWiki\Skin\Skin;
-use MediaWiki\Title\Title;
-use MediaWiki\User\User;
+use Parser;
+use PPFrame;
+use RequestContext;
+use SiteStats;
+use Skin;
+use Title;
+use User;
 use MediaWiki\User\UserOptionsLookup;
-
-// Class aliases for multi-version compatibility.
-// These need to be in global scope so phan can pick up on them,
-// and before any use statements that make use of the namespaced names.
-
-if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
-	if ( !class_exists('MediaWiki\Title\Title') )  class_alias( '\Title', '\MediaWiki\Title\Title' );
-}
-
-if ( version_compare( MW_VERSION, '1.41', '<' ) ) {
-	if ( !class_exists('MediaWiki\Config\Config') )  class_alias( '\Config', '\MediaWiki\Config\Config' );
-	if ( !class_exists('MediaWiki\SiteStats\SiteStats') )  class_alias( '\SiteStats', '\MediaWiki\SiteStats\SiteStats' );
-	if ( !class_exists('MediaWiki\User\User') )  class_alias( '\User', '\MediaWiki\User\User' );
-}
-
-if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
-	if ( !class_exists('MediaWiki\Context\IContextSource') )  class_alias( '\IContextSource', '\MediaWiki\Context\IContextSource' );
-	if ( !class_exists('MediaWiki\Context\RequestContext') )  class_alias( '\RequestContext', '\MediaWiki\Context\RequestContext' );
-	if ( !class_exists('MediaWiki\Deferred\DeferredUpdates') )  class_alias( '\DeferredUpdates', '\MediaWiki\Deferred\DeferredUpdates' );
-	if ( !class_exists('MediaWiki\Installer\DatabaseUpdater') )  class_alias( '\DatabaseUpdater', '\MediaWiki\Installer\DatabaseUpdater' );
-	if ( !class_exists('MediaWiki\Parser\Parser') )  class_alias( '\Parser', '\MediaWiki\Parser\Parser' );
-}
-
-if ( version_compare( MW_VERSION, '1.43', '<' ) ) {
-	if ( !class_exists('MediaWiki\Parser\PPFrame') )  class_alias( '\PPFrame', '\MediaWiki\Parser\PPFrame' );
-}
-
-if ( version_compare( MW_VERSION, '1.44', '<' ) ) {
-	if ( !class_exists('MediaWiki\Page\WikiPage') )  class_alias( '\WikiPage', '\MediaWiki\Page\WikiPage' );
-	if ( !class_exists('MediaWiki\Skin\Skin') )  class_alias( '\Skin', '\MediaWiki\Skin\Skin' );
-}
-
-if ( version_compare( MW_VERSION, '1.45', '<' ) ) {
-	if ( !class_exists('MediaWiki\User\UserOptionsLookup') )  class_alias( '\User', '\MediaWiki\User\UserOptionsLookup' );
-}
+use WikiPage;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,

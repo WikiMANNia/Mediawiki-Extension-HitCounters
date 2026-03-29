@@ -24,32 +24,14 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-use MediaWiki\Html\Html;
-use MediaWiki\Language\Language;
-use MediaWiki\Linker\Linker;
+use Html;
+use Language;
+use Linker;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Skin\Skin;
-use MediaWiki\SpecialPage\QueryPage;
-use MediaWiki\Title\Title;
-
-if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
-	if ( !class_exists('MediaWiki\Html\Html') )  class_alias( '\Html', '\MediaWiki\Html\Html' );
-	if ( !class_exists('MediaWiki\Linker\Linker') )  class_alias( '\Linker', '\MediaWiki\Linker\Linker' );
-	if ( !class_exists('MediaWiki\Title\Title') )  class_alias( '\Title', '\MediaWiki\Title\Title' );
-}
-
-if ( version_compare( MW_VERSION, '1.41', '<' ) ) {
-	if ( !class_exists('MediaWiki\SpecialPage\QueryPage') )  class_alias( '\QueryPage', '\MediaWiki\SpecialPage\QueryPage' );
-}
-
-if ( version_compare( MW_VERSION, '1.43', '<' ) ) {
-	if ( !class_exists('MediaWiki\Language\Language') )  class_alias( '\Language', '\MediaWiki\Language\Language' );
-}
-
-if ( version_compare( MW_VERSION, '1.44', '<' ) ) {
-	if ( !class_exists('MediaWiki\Skin\Skin') )  class_alias( '\Skin', '\MediaWiki\Skin\Skin' );
-}
+use QueryPage;
+use Skin;
+use Title;
 
 class SpecialPopularPages extends QueryPage {
 

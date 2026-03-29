@@ -22,14 +22,10 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-use MediaWiki\Deferred\DeferrableUpdate;
-use MediaWiki\Deferred\TransactionRoundAwareUpdate;
+use DeferrableUpdate;
 use MWExceptionHandler;
+use TransactionRoundAwareUpdate;
 use Wikimedia\Rdbms\DBError;
-
-if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
-	if ( !class_exists('MediaWiki\Deferred\DeferredUpdates') )  class_alias( '\DeferredUpdates', '\MediaWiki\Deferred\DeferredUpdates' );
-}
 
 /**
  * Update for the 'page_counter' field, when $wgDisableCounters is false.
