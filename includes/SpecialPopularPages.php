@@ -24,6 +24,13 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
+// Class aliases for multi-version compatibility.
+// These need to be in global scope so phan can pick up on them,
+// and before any use statements that make use of the namespaced names.
+if ( !class_exists('MediaWiki\Skin\Skin') ) {
+	class_alias( '\Skin', '\MediaWiki\Skin\Skin' ); /* < 1.44 */
+}
+
 use MediaWiki\Html\Html;
 use MediaWiki\Language\Language;
 use MediaWiki\Linker\Linker;
@@ -32,10 +39,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Skin\Skin;
 use MediaWiki\SpecialPage\QueryPage;
 use MediaWiki\Title\Title;
-
-if ( version_compare( MW_VERSION, '1.44', '<' ) ) {
-	if ( !class_exists('MediaWiki\Skin\Skin') )  class_alias( '\Skin', '\MediaWiki\Skin\Skin' );
-}
 
 class SpecialPopularPages extends QueryPage {
 

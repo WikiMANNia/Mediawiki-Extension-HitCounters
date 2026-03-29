@@ -22,6 +22,10 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
+if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
+	if ( !class_exists('MediaWiki\Deferred\DeferredUpdates') )  class_alias( '\DeferredUpdates', '\MediaWiki\Deferred\DeferredUpdates' );
+}
+
 use MediaWiki\Deferred\DeferrableUpdate;
 use MediaWiki\Deferred\TransactionRoundAwareUpdate;
 use MWExceptionHandler;

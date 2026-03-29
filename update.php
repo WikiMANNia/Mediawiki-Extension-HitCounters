@@ -10,6 +10,10 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
+if ( class_exists( \Maintenance::class ) && !class_exists( \MediaWiki\Maintenance\Maintenance::class ) ) {
+	class_alias( \Maintenance::class, \MediaWiki\Maintenance\Maintenance::class ); /* < 1.45 */
+}
+
 use MediaWiki\Maintenance\Maintenance;
 
 # Stolen from WebStart.php, assuming you're running this in root

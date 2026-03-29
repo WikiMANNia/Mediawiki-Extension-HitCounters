@@ -19,6 +19,19 @@ use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
 use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 
+// Class aliases for multi-version compatibility.
+// These need to be in global scope so phan can pick up on them,
+// and before any use statements that make use of the namespaced names.
+if ( !class_exists('MediaWiki\Page\WikiPage') ) {
+	class_alias( '\WikiPage', '\MediaWiki\Page\WikiPage' ); /* < 1.44 */
+}
+if ( !class_exists('MediaWiki\Skin\Skin') ) {
+	class_alias( '\Skin', '\MediaWiki\Skin\Skin' ); /* < 1.44 */
+}
+if ( !class_exists('MediaWiki\User\UserOptionsLookup') ) {
+	class_alias( '\User', '\MediaWiki\User\UserOptionsLookup' ); /* < 1.45 */
+}
+
 use InvalidArgumentException;
 use MediaWiki\Config\Config;
 use MediaWiki\Context\IContextSource;
@@ -34,19 +47,6 @@ use MediaWiki\Skin\Skin;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use MediaWiki\User\UserOptionsLookup;
-
-// Class aliases for multi-version compatibility.
-// These need to be in global scope so phan can pick up on them,
-// and before any use statements that make use of the namespaced names.
-
-if ( version_compare( MW_VERSION, '1.44', '<' ) ) {
-	if ( !class_exists('MediaWiki\Page\WikiPage') )  class_alias( '\WikiPage', '\MediaWiki\Page\WikiPage' );
-	if ( !class_exists('MediaWiki\Skin\Skin') )  class_alias( '\Skin', '\MediaWiki\Skin\Skin' );
-}
-
-if ( version_compare( MW_VERSION, '1.45', '<' ) ) {
-	if ( !class_exists('MediaWiki\User\UserOptionsLookup') )  class_alias( '\User', '\MediaWiki\User\UserOptionsLookup' );
-}
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,

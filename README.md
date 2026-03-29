@@ -170,7 +170,7 @@ v0.6.2
 
 v0.7.0
 
-- Compatibility with REL1_45
+- Compatibility Maintenance until REL1_45
 
 ## Compatibility
 
