@@ -10,8 +10,8 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-if ( class_exists( \Maintenance::class ) && !class_exists( \MediaWiki\Maintenance\Maintenance::class ) ) {
-	class_alias( \Maintenance::class, \MediaWiki\Maintenance\Maintenance::class ); /* < 1.45 */
+if ( version_compare( MW_VERSION, '1.45', '<' ) ) {
+	class_exists( 'MediaWiki\Maintenance\Maintenance' ) or class_alias( '\Maintenance', '\MediaWiki\Maintenance\Maintenance' );
 }
 
 use MediaWiki\Maintenance\Maintenance;

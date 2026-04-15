@@ -22,14 +22,13 @@ use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 // Class aliases for multi-version compatibility.
 // These need to be in global scope so phan can pick up on them,
 // and before any use statements that make use of the namespaced names.
-if ( !class_exists('MediaWiki\Page\WikiPage') ) {
-	class_alias( '\WikiPage', '\MediaWiki\Page\WikiPage' ); /* < 1.44 */
+if ( version_compare( MW_VERSION, '1.44', '<' ) ) {
+	class_exists( 'MediaWiki\Page\WikiPage' ) or class_alias( '\WikiPage', '\MediaWiki\Page\WikiPage' );
+	class_exists( 'MediaWiki\Skin\Skin' ) or class_alias( '\Skin', '\MediaWiki\Skin\Skin' );
 }
-if ( !class_exists('MediaWiki\Skin\Skin') ) {
-	class_alias( '\Skin', '\MediaWiki\Skin\Skin' ); /* < 1.44 */
-}
-if ( !class_exists('MediaWiki\User\UserOptionsLookup') ) {
-	class_alias( '\User', '\MediaWiki\User\UserOptionsLookup' ); /* < 1.45 */
+
+if ( version_compare( MW_VERSION, '1.45', '<' ) ) {
+	class_exists( 'MediaWiki\User\UserOptionsLookup' ) or class_alias( '\User', '\MediaWiki\User\UserOptionsLookup' );
 }
 
 use InvalidArgumentException;
