@@ -172,9 +172,13 @@ v0.7.0
 
 - Compatibility with REL1_45
 
+v0.7.1
+
+- Fix an issue with ´LoadExtensionSchemaUpdates´
+
 ## Compatibility
 
-This extension works from REL1_43 and has been tested up to MediaWiki versions `1.43.6`, `1.44.2`, and `1.45.1`.
+This extension works from REL1_43 and has been tested up to MediaWiki versions `1.43.8`, `1.44.2`, and `1.45.3`.
 
 ## Background
 
