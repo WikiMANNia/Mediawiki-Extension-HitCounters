@@ -35,7 +35,6 @@ use Title;
 
 class SpecialPopularPages extends QueryPage {
 
-	private Language $mContentLanguage;
 	private LinkRenderer $mLinkRenderer;
 	private string $mMsgToken;
 
@@ -45,7 +44,6 @@ class SpecialPopularPages extends QueryPage {
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
 
-		$this->mContentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
 		$this->mLinkRenderer = $this->getLinkRenderer();
 
 		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();

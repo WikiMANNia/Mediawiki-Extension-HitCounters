@@ -175,6 +175,10 @@ v0.7.1
 
 - Fix an issue with ´LoadExtensionSchemaUpdates´
 
+v0.7.2
+
+- Compatibility issues: add ´Compat.php´
+
 ## Compatibility
 
 This extension works from REL1_38 and has been tested up to MediaWiki versions `1.38`, `1.39.17`, and `1.42.3`.

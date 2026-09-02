@@ -13,6 +13,9 @@ class HitCounters {
 	/** @var int|null */
 	protected static ?int $mViews;
 
+	/**
+	 * Cache function for $views
+	 */
 	protected static function cacheStore( BagOStuff $cache, string $key, ?int $views ): void {
 		if ( $views < 100 ) {
 			// Only cache for a minute
@@ -60,6 +63,9 @@ class HitCounters {
 		return (int)$views;
 	}
 
+	/**
+	 * Return $views
+	 */
 	public static function views(): ?int {
 		# Should check for MiserMode here
 		$cache = ObjectCache::getInstance( CACHE_ANYTHING );
