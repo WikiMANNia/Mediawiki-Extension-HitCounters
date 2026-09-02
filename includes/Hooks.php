@@ -19,18 +19,6 @@ use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
 use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 
-// Class aliases for multi-version compatibility.
-// These need to be in global scope so phan can pick up on them,
-// and before any use statements that make use of the namespaced names.
-if ( version_compare( MW_VERSION, '1.44', '<' ) ) {
-	class_exists( 'MediaWiki\Page\WikiPage' ) or class_alias( '\WikiPage', '\MediaWiki\Page\WikiPage' );
-	class_exists( 'MediaWiki\Skin\Skin' ) or class_alias( '\Skin', '\MediaWiki\Skin\Skin' );
-}
-
-if ( version_compare( MW_VERSION, '1.45', '<' ) ) {
-	class_exists( 'MediaWiki\User\UserOptionsLookup' ) or class_alias( '\User', '\MediaWiki\User\UserOptionsLookup' );
-}
-
 use InvalidArgumentException;
 use MediaWiki\Config\Config;
 use MediaWiki\Context\IContextSource;
@@ -108,6 +96,10 @@ class Hooks implements
 		$this->enabledCountersAtTheFooter = $config->get( 'EnableCountersAtTheFooter' );
 		$this->updateFreq = $config->get( 'HitcounterUpdateFreq' );
 	}
+
+    public static function onRegistration() {
+        Compat::init();
+    }
 
 	/**
 	 * @param User $user User whose preferences are being modified
@@ -219,9 +211,7 @@ class Hooks implements
 		return true;
 	}
 
-	/**
-	 * @return array
-	 */
+	/** @return array<string,array> $magicWord => [ int $caseSensitive, string ...$alias ] */
 	protected static function getMagicWords(): array {
 
 		$key = 'MediaWiki\Extension\HitCounters\HitCounters';
@@ -330,7 +320,7 @@ class Hooks implements
 	 *   and value should be an HTML string.
 	 * @return bool|void True or no return value to continue or false to abort
 	 */
-	public function onSkinAddFooterLinks( Skin $skin, string $key, array &$footerItems ) {
+	public function onSkinAddFooterLinks( $skin, string $key, array &$footerItems ) {
 
 		if ( $key !== 'info' ) {
 			return;

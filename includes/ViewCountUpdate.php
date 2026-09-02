@@ -22,10 +22,6 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
-	class_exists( 'MediaWiki\Deferred\DeferredUpdates' ) or class_alias( '\DeferredUpdates', '\MediaWiki\Deferred\DeferredUpdates' );
-}
-
 use MediaWiki\Deferred\DeferrableUpdate;
 use MediaWiki\Deferred\TransactionRoundAwareUpdate;
 use MWExceptionHandler;
@@ -72,7 +68,7 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 		$dbw = DBConnect::getWritingConnect();
 		$fname = __METHOD__;
 
-		wfDebugLog( "HitCounter", "update freq set to: $wgHitcounterUpdateFreq;" );
+		wfDebugLog( "HitCounter", "update freq set to: $updateFreq;" );
 
 		if ( ( $updateFreq <= 1 ) || ( $dbw->getType() === 'sqlite' ) ) {
 			$dbw->onTransactionCommitOrIdle(

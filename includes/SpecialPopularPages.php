@@ -24,15 +24,7 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-// Class aliases for multi-version compatibility.
-// These need to be in global scope so phan can pick up on them,
-// and before any use statements that make use of the namespaced names.
-if ( version_compare( MW_VERSION, '1.44', '<' ) ) {
-	class_exists( 'MediaWiki\Skin\Skin' ) or class_alias( '\Skin', '\MediaWiki\Skin\Skin' );
-}
-
 use MediaWiki\Html\Html;
-use MediaWiki\Language\Language;
 use MediaWiki\Linker\Linker;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
@@ -42,7 +34,6 @@ use MediaWiki\Title\Title;
 
 class SpecialPopularPages extends QueryPage {
 
-	private Language $mContentLanguage;
 	private LinkRenderer $mLinkRenderer;
 	private string $mMsgToken;
 
@@ -52,7 +43,6 @@ class SpecialPopularPages extends QueryPage {
 	public function __construct( $name = 'PopularPages' ) {
 		parent::__construct( $name );
 
-		$this->mContentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
 		$this->mLinkRenderer = $this->getLinkRenderer();
 
 		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
@@ -65,17 +55,17 @@ class SpecialPopularPages extends QueryPage {
 		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
 	}
 
+	/** @inheritDoc */
 	public function isExpensive() {
 		return false;
 	}
 
+	/** @inheritDoc */
 	public function isSyndicated() {
 		return false;
 	}
 
-	/**
-	 * @return array|null
-	 */
+	/** @inheritDoc */
 	public function getQueryInfo() {
 		return DBConnect::getQueryInfo();
 	}
