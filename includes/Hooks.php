@@ -202,9 +202,7 @@ class Hooks implements
 		return true;
 	}
 
-	/**
-	 * @return array
-	 */
+	/** @return array<string,array> $magicWord => [ int $caseSensitive, string ...$alias ] */
 	protected static function getMagicWords() {
 
 		$key = 'MediaWiki\Extension\HitCounters\HitCounters';

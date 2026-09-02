@@ -12,6 +12,9 @@ class HCUpdater extends DatabaseUpdater {
 		// Use $sqlDirBase for DBMS-independent patches and $base for
 		// DBMS-dependent patches
 		$dbType = $updater->getDB()->getType();
+		if ( !in_array( $dbType, [ 'mysql', 'postgres', 'sqlite' ] ) ) {
+			throw new InvalidArgumentException( "HitCounters extension does not currently support $dbType database." );
+		}
 		$sqlDirBase = dirname( __DIR__ ) . '/sql';
 		$base = "$sqlDirBase/$dbType";
 

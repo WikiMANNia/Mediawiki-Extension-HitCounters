@@ -68,7 +68,7 @@ class ViewCountUpdate implements DeferrableUpdate, TransactionRoundAwareUpdate {
 		$dbw = DBConnect::getWritingConnect();
 		$fname = __METHOD__;
 
-		wfDebugLog( "HitCounter", "update freq set to: $wgHitcounterUpdateFreq;" );
+		wfDebugLog( "HitCounter", "update freq set to: $updateFreq;" );
 
 		if ( ( $updateFreq <= 1 ) || ( $dbw->getType() === 'sqlite' ) ) {
 			$dbw->onTransactionCommitOrIdle(
