@@ -24,14 +24,13 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
-use Html;
-use Language;
-use Linker;
+use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
-use QueryPage;
-use Skin;
-use Title;
+use MediaWiki\Skin\Skin;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\Title\Title;
 
 class SpecialPopularPages extends QueryPage {
 
@@ -56,17 +55,17 @@ class SpecialPopularPages extends QueryPage {
 		$this->mMsgToken .= $enableAddPageId ? '-id' : '';
 	}
 
+	/** @inheritDoc */
 	public function isExpensive() {
 		return false;
 	}
 
+	/** @inheritDoc */
 	public function isSyndicated() {
 		return false;
 	}
 
-	/**
-	 * @return array|null
-	 */
+	/** @inheritDoc */
 	public function getQueryInfo() {
 		return DBConnect::getQueryInfo();
 	}
