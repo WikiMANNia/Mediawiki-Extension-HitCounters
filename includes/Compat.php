@@ -11,32 +11,18 @@ class Compat {
     private static function aliasCoreClasses(): void {
 
 		if ( class_exists( \Skin::class ) && /* < 1.44 */
-			!class_exists( \MediaWiki\Skin\Skin::class, false ) ) {
+			!class_exists( 'MediaWiki\\Skin\\Skin', false ) ) {
 			class_alias(
 				\Skin::class,
-				\MediaWiki\Skin\Skin::class
+				'MediaWiki\\Skin\\Skin'
 			);
 		}
 		if ( class_exists( \WikiPage::class ) && /* < 1.44 */
-			!class_exists( \MediaWiki\Page\WikiPage::class, false ) ) {
+			!class_exists( 'MediaWiki\\Page\\WikiPage', false ) ) {
 			class_alias(
 				\WikiPage::class,
-				\MediaWikiPage\WikiPage::class
+				'MediaWiki\\Page\\WikiPage'
 			);
 		}
-		if ( class_exists( \UserOptionsLookup::class ) && /* < 1.45 */
-			!class_exists( \MediaWiki\User\UserOptionsLookup::class, false ) ) {
-			class_alias(
-				\UserOptionsLookup::class,
-				\MediaWikiUser\UserOptionsLookup::class
-			);
-		}
-		if ( class_exists( \Maintenance::class ) && /* < 1.45 */
-			!class_exists( \MediaWiki\Maintenance\Maintenance::class, false ) ) {
-			class_alias(
-				\Maintenance::class,
-				\MediaWikiMaintenance\Maintenance::class
-			);
-		}
-    }
+	}
 }

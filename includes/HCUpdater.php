@@ -2,6 +2,14 @@
 
 namespace MediaWiki\Extension\HitCounters;
 
+if ( class_exists( \DatabaseUpdater::class ) && /* < 1.42 */
+	!class_exists( \MediaWiki\Installer\DatabaseUpdater::class, false ) ) {
+	class_alias(
+		\DatabaseUpdater::class,
+		\MediaWiki\Installer\DatabaseUpdater::class
+	);
+}
+
 use MediaWiki\Installer\DatabaseUpdater;
 
 /* hack to get at protected member */

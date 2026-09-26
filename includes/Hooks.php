@@ -17,22 +17,25 @@ use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 use MediaWiki\Page\Hook\PageViewUpdatesHook;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
+if ( class_exists( \GlobalVarConfig::class ) && /* < 1.41 */
+	!class_exists( \MediaWiki\Config\GlobalVarConfig::class, false ) ) {
+	class_alias(
+		\GlobalVarConfig::class,
+		\MediaWiki\Config\GlobalVarConfig::class
+	);
+}
+
 use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 
 use InvalidArgumentException;
-use MediaWiki\Config\Config;
-use MediaWiki\Context\IContextSource;
+use MediaWiki\Config\GlobalVarConfig;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Deferred\DeferredUpdates;
-use MediaWiki\Installer\DatabaseUpdater;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Page\WikiPage;
 use MediaWiki\Parser\Parser;
-use MediaWiki\Parser\PPFrame;
 use MediaWiki\SiteStats\SiteStats;
 use MediaWiki\Skin\Skin;
 use MediaWiki\Title\Title;
-use MediaWiki\User\User;
 use MediaWiki\User\UserOptionsLookup;
 
 /**
@@ -76,7 +79,7 @@ class Hooks implements
 	SkinAddFooterLinksHook,
 	SpecialStatsAddExtraHook
 {
-	private Config $config;
+	private GlobalVarConfig $config;
 	private UserOptionsLookup $userOptionsLookup;
 	private bool $enabledCounters;
 	private bool $enabledCountersAtTheFooter;
@@ -87,7 +90,7 @@ class Hooks implements
 	 * @param UserOptionsLookup $userOptionsLookup
 	 */
 	public function __construct(
-		Config $config,
+		GlobalVarConfig $config,
 		UserOptionsLookup $userOptionsLookup
 	) {
 		$this->config = $config;
