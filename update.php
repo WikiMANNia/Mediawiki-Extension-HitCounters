@@ -11,12 +11,11 @@
 namespace MediaWiki\Extension\HitCounters;
 
 if ( class_exists( \Maintenance::class ) && /* < 1.45 */
-	!class_exists( \MediaWiki\Maintenance\Maintenance::class, false ) ) {
+	!class_exists( 'MediaWiki\\Maintenance\\Maintenance', false ) ) {
 	class_alias(
 		\Maintenance::class,
-		\MediaWikiMaintenance\Maintenance::class
+		'MediaWiki\\Maintenance\\Maintenance'
 	);
-}
 }
 
 use MediaWiki\Maintenance\Maintenance;

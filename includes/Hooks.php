@@ -17,14 +17,6 @@ use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 use MediaWiki\Page\Hook\PageViewUpdatesHook;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 
-if ( class_exists( \GlobalVarConfig::class ) && /* < 1.41 */
-	!class_exists( \MediaWiki\Config\GlobalVarConfig::class, false ) ) {
-	class_alias(
-		\GlobalVarConfig::class,
-		\MediaWiki\Config\GlobalVarConfig::class
-	);
-}
-
 use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 
 use InvalidArgumentException;
@@ -36,7 +28,7 @@ use MediaWiki\Parser\Parser;
 use MediaWiki\SiteStats\SiteStats;
 use MediaWiki\Skin\Skin;
 use MediaWiki\Title\Title;
-use MediaWiki\User\UserOptionsLookup;
+use MediaWiki\User\Options\UserOptionsLookup;
 
 /**
  * PHPMD will warn us about these things here but since they're hooks,
