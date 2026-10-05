@@ -6,7 +6,7 @@ use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\PPFrame;
 use MediaWiki\Title\Title;
 use ObjectCache;
-use Wikimedia\ObjectCache\BagOStuff;
+use MediaWiki\ObjectCache\BagOStuff;
 
 class HitCounters {
 
