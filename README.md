@@ -161,7 +161,6 @@ v0.6.0
 
 v0.6.1
 
-- Compatibility with REL1_44
 - The extension crashed if namespaces were not defined correctly in ´LocalSettings.php´. This has been fixed.
 
 v0.6.2
@@ -170,7 +169,7 @@ v0.6.2
 
 v0.7.0
 
-- Compatibility with REL1_45
+- Compatibility issues
 
 v0.7.1
 
@@ -182,7 +181,7 @@ v0.7.2
 
 ## Compatibility
 
-This extension works from REL1_43 and has been tested up to MediaWiki versions `1.43.9`, `1.44.2`, and `1.45.3`.
+This extension works from REL1_38 and has been tested up to MediaWiki versions `1.38`, `1.39.17`, `1.41.2`, `1.42.3`, `1.43.9`, `1.44.2`, `1.45.9`, and `1.47.0-alpha`.
 
 ## Background
 
